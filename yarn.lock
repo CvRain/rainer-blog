@@ -776,10 +776,10 @@ binary-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.3.0.tgz#f6e14a97858d327252200242d4ccfe522c445522"
   integrity sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==
 
-bits-ui@^1.3.18:
-  version "1.3.18"
-  resolved "https://registry.yarnpkg.com/bits-ui/-/bits-ui-1.3.18.tgz#7549d7d1272745a02d4473d969aeb4fc28b497fc"
-  integrity sha512-4ZsJqMZUpCEGYMHfVSNZDbOTg3Haxwe01I5LMs4ZImjY7huDac7Dkh2KWTtOdc7jhj2vJprE9bJI4Ayg8gexXQ==
+bits-ui@^1.3.19:
+  version "1.3.19"
+  resolved "https://registry.yarnpkg.com/bits-ui/-/bits-ui-1.3.19.tgz#4ec4b1aaed33b19a659f8f9f2d7ff4a80a73dd69"
+  integrity sha512-2blb6dkgedHUsDXqCjvmtUi4Advgd9MhaJDT8r7bEWDzHI8HGsOoYsLeh8CxpEWWEYPrlGN+7k+kpxRhIDdFrQ==
   dependencies:
     "@floating-ui/core" "^1.6.4"
     "@floating-ui/dom" "^1.6.7"
@@ -1510,6 +1510,11 @@ lru-cache@^10.2.0:
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-10.4.3.tgz#410fc8a17b70e598013df257c2446b7f3383f119"
   integrity sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==
 
+lucide-svelte@^0.487.0:
+  version "0.487.0"
+  resolved "https://registry.yarnpkg.com/lucide-svelte/-/lucide-svelte-0.487.0.tgz#0ff0b8dde4db6d5208f044134bb788387df76a54"
+  integrity sha512-ags7npK5Nv6AI9LBpAbijpmHxcO9hOeP0/7yJ72++AOBWmwB0X7LqNQFJk1PBe4wM0UsgklWQdyRZyx8s9xyXg==
+
 magic-string@^0.30.11, magic-string@^0.30.15, magic-string@^0.30.3, magic-string@^0.30.5:
   version "0.30.17"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.30.17.tgz#450a449673d2460e5bbcfba9a61916a1714c7453"
@@ -1563,6 +1568,11 @@ minimatch@^9.0.4:
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/minipass/-/minipass-7.1.2.tgz#93a9626ce5e5e66bd4db86849e7515e92340a707"
   integrity sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==
+
+mode-watcher@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/mode-watcher/-/mode-watcher-0.5.1.tgz#310e6ac144b3f0b3cfb486e1015d9e746e503377"
+  integrity sha512-adEC6T7TMX/kzQlaO/MtiQOSFekZfQu4MC+lXyoceQG+U5sKpJWZ4yKXqw846ExIuWJgedkOIPqAYYRk/xHm+w==
 
 mri@^1.1.0:
   version "1.2.0"
