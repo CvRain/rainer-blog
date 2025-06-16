@@ -5,6 +5,7 @@
 	import { toggleMode } from 'mode-watcher';
 	import { getUserInfo, type UserInfo } from '$lib/api/user_request';
 	import { onMount } from 'svelte';
+	import { NavigationMenu } from 'bits-ui';
 
 	import {
 		BookOpen,
@@ -18,22 +19,15 @@
 		Sun,
 		Moon
 	} from 'lucide-svelte';
-	import { NavigationMenu } from 'bits-ui';
-	import axios from 'axios';
 
 	let userInfo: UserInfo | null = null;
-	let loading = true;
-	let error: string | null = null;
-
 	onMount(async () => {
         const result = await getUserInfo();
         if(result.code === 200){
             userInfo = result.data;
-            loading = true;
         }
         else  {
-            error = result.message;
-            loading = false;
+            console.error(result.message)
         }
 	});
 
@@ -92,7 +86,7 @@
 						</NavigationMenu.Item>
 						<NavigationMenu.Item>
 							<NavigationMenu.Link>
-								<Button variant="ghost">
+								<Button variant="ghost" href="/login">
 									<LogIn class="mr-2 h-4 w-4" />
 									登录
 								</Button>
