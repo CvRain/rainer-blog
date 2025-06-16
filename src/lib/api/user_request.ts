@@ -37,7 +37,7 @@ export async function login(userName: string, userPassword: string): Promise<Log
 
 export async function getUserInfo(): Promise<{code: number; message: string; data: UserInfo}> {
     const token = localStorage.getItem('token');
-    const response = await axios.get('http://localhost:4000/api/user/info', {
+    const response = await axios.get('http://localhost:4000/api/user', {
         headers: {
             'Authorization': `Bearer ${token}`
         }

@@ -6,6 +6,8 @@
 	import { getUserInfo, type UserInfo } from '$lib/api/user_request';
 	import { onMount } from 'svelte';
 	import { NavigationMenu } from 'bits-ui';
+	import NavHeader from '$lib/components/nav-header.svelte';
+	import NavFooter from '$lib/components/nav-footer.svelte';
 
 	import {
 		BookOpen,
@@ -46,75 +48,12 @@
 </script>
 
 <div class="flex min-h-screen flex-col">
-	<!-- 导航栏 -->
-	<nav class="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-sm">
-		<div class="mx-auto px-4 sm:px-6 lg:px-8">
-			<div class="flex h-16 items-center justify-between">
-				<div class="flex items-center space-x-2">
-					<Avatar class="h-8 w-8">
-						<AvatarImage src={userInfo?.user_avatar || '/images/avatar.png'} />
-						<AvatarFallback>CR</AvatarFallback>
-					</Avatar>
-					<span class="font-bold">{userInfo?.user_name || 'ClaudeRainer'}</span>
-				</div>
-
-				<NavigationMenu.Root class="flex flex-1 justify-end">
-					<NavigationMenu.List class="flex space-x-1">
-						<NavigationMenu.Item>
-							<NavigationMenu.Link>
-								<Button variant="ghost">
-									<BookOpen class="mr-2 h-4 w-4" />
-									首页
-								</Button>
-							</NavigationMenu.Link>
-						</NavigationMenu.Item>
-						<NavigationMenu.Item>
-							<NavigationMenu.Link>
-								<Button variant="ghost">
-									<Archive class="mr-2 h-4 w-4" />
-									归档
-								</Button>
-							</NavigationMenu.Link>
-						</NavigationMenu.Item>
-						<NavigationMenu.Item>
-							<NavigationMenu.Link>
-								<Button variant="ghost">
-									<LayoutGrid class="mr-2 h-4 w-4" />
-									分类
-								</Button>
-							</NavigationMenu.Link>
-						</NavigationMenu.Item>
-						<NavigationMenu.Item>
-							<NavigationMenu.Link>
-								<Button variant="ghost" href="/login">
-									<LogIn class="mr-2 h-4 w-4" />
-									登录
-								</Button>
-							</NavigationMenu.Link>
-						</NavigationMenu.Item>
-						<NavigationMenu.Item>
-							<NavigationMenu.Link>
-								<Button onclick={toggleMode} variant="outline" size="icon">
-									<Sun
-										class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
-									/>
-									<Moon
-										class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
-									/>
-									<span class="sr-only">Toggle theme</span>
-								</Button>
-							</NavigationMenu.Link>
-						</NavigationMenu.Item>
-					</NavigationMenu.List>
-				</NavigationMenu.Root>
-			</div>
-		</div>
-	</nav>
+	<NavHeader />
 
 	<!-- 背景横幅 -->
-	<div class="relative min-h-screen bg-gray-900">
+	<div class="relative -mt-16 min-h-screen bg-gray-900">
 		<img
-			src={userInfo?.user_bacground || '/images/placeholder.jpg'}
+			src={userInfo?.user_background || '/images/placeholder.jpg'}
 			alt="Banner"
 			class="h-screen w-full object-cover opacity-70"
 		/>
@@ -201,19 +140,5 @@
 		</div>
 	</main>
 
-	<!-- 底部 -->
-	<footer class="border-t bg-background/50">
-		<div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-			<div class="flex flex-col items-center justify-between md:flex-row">
-				<div class="mb-4 text-sm text-muted-foreground md:mb-0">
-					© 2024 claude rainer · 流荧微源
-				</div>
-				<div class="flex space-x-4">
-					<Button variant="link" size="sm">关于本站</Button>
-					<Button variant="link" size="sm">友情链接</Button>
-					<Button variant="link" size="sm">RSS订阅</Button>
-				</div>
-			</div>
-		</div>
-	</footer>
+	<NavFooter />
 </div>
