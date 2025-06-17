@@ -139,6 +139,4 @@
 			</div>
 		</div>
 	</main>
-
-	<NavFooter />
 </div>
