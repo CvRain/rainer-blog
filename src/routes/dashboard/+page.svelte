@@ -16,9 +16,9 @@
 	} from 'lucide-svelte';
 	import { getUserInfo, type UserInfo } from '$lib/api/user_request';
 	import { onMount } from 'svelte';
-	import Overview from './components/Overview.svelte';
-	import Themes from './components/Themes.svelte';
-	import Resources from './components/Resources.svelte';
+	import Overview from './components/overview.svelte';
+	import Themes from './components/themes.svelte';
+	import Resources from './components/resources.svelte';
 
 	let userInfo = $state<UserInfo>();
 	let isSidebarOpen = $state(true);
@@ -117,7 +117,7 @@
 					<a
 						href={item.href}
 						class="flex items-center space-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
-						on:click|preventDefault={() => (activeTab = item.href.slice(1))}
+						onclick={() => (activeTab = item.href.slice(1))}
 					>
 						<svelte:component this={item.icon} class="h-5 w-5" />
 						<span>{item.label}</span>

@@ -9,7 +9,19 @@
 		CardFooter
 	} from '$lib/components/ui/card';
 	import { Separator } from '$lib/components/ui/separator';
+	import { getArticleCount, getArticleCountThisWeek } from '@/api/article_request';
+	import { getCountThisWeek, getThemeCount } from '@/api/theme_request';
 	import { FolderOpen, FileText, Image, Eye, Edit } from 'lucide-svelte';
+	import { onMount } from 'svelte';
+
+    let themeCount = $state(0);
+    let themeThisWeekCount = $state(0);
+	let articleCount = $state(0);
+	let articleCountThisWeek = $state(0);
+	let collectionCount = $state(0);
+	let collectionThisWeekCount = $state(0);
+	let resourceCount = $state(0);
+	let resourceThisWeekCount = $state(0);
 
 	// 模拟数据
 	const themes = [
@@ -121,6 +133,40 @@
 			]
 		}
 	];
+
+    onMount(async () => {
+        const getThemeCountResponse = await getThemeCount();
+        if(getThemeCountResponse.code === 200){
+            themeCount = getThemeCountResponse.data!.count;
+        }else{
+            themeCount = 0;
+            alert(getThemeCountResponse.message);
+        }
+
+        const getThemeThisWeekCountResponse = await getCountThisWeek();
+        if(getThemeThisWeekCountResponse.code === 200){
+            themeThisWeekCount = getThemeThisWeekCountResponse.data!.count;
+        }else{
+            themeThisWeekCount = 0;
+            alert(getThemeThisWeekCountResponse.message);
+        }
+
+		const getArticleCountResponse = await getArticleCount();
+		if(getArticleCountResponse.code === 200){
+			articleCount = getArticleCountResponse.data!.count;
+		}else{
+			articleCount = 0;
+			alert(getArticleCountResponse.message);
+		}
+		
+		const getCollectionCountResponse = await getArticleCountThisWeek();
+		if(getCollectionCountResponse.code === 200){
+			articleCountThisWeek = getCollectionCountResponse.data!.count;
+		}else{
+			articleCountThisWeek = 0;
+			alert(getCollectionCountResponse.message);
+		}
+    });
 </script>
 
 <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -130,8 +176,8 @@
 			<FolderOpen class="h-4 w-4 text-muted-foreground" />
 		</CardHeader>
 		<CardContent>
-			<div class="text-2xl font-bold">{themes.length}</div>
-			<p class="text-xs text-muted-foreground">+1 本周新增</p>
+			<div class="text-2xl font-bold">{themeCount}</div>
+			<p class="text-xs text-muted-foreground">+{themeThisWeekCount} 本周新增</p>
 		</CardContent>
 	</Card>
 	<Card>
@@ -140,8 +186,8 @@
 			<FileText class="h-4 w-4 text-muted-foreground" />
 		</CardHeader>
 		<CardContent>
-			<div class="text-2xl font-bold">23</div>
-			<p class="text-xs text-muted-foreground">+5 本周新增</p>
+			<div class="text-2xl font-bold">{articleCount}</div>
+			<p class="text-xs text-muted-foreground">+{articleCountThisWeek} 本周新增</p>
 		</CardContent>
 	</Card>
 	<Card>
@@ -152,6 +198,16 @@
 		<CardContent>
 			<div class="text-2xl font-bold">{collections.length}</div>
 			<p class="text-xs text-muted-foreground">+2 本周新增</p>
+		</CardContent>
+	</Card>
+	<Card>
+		<CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
+			<CardTitle class="text-sm font-medium">总资源</CardTitle>
+			<Image class="h-4 w-4 text-muted-foreground" />
+		</CardHeader>
+		<CardContent>
+			<div class="text-2xl font-bold">114514</div>
+			<p class="text-xs text-muted-foreground">+1919810 本周新增</p>
 		</CardContent>
 	</Card>
 </div>
