@@ -10,18 +10,13 @@
 	} from '$lib/components/ui/card';
 	import { Separator } from '$lib/components/ui/separator';
 	import { getArticleCount, getArticleCountThisWeek } from '@/api/article_request';
+	import { getAssetOverview, type AssetOverview } from '@/api/statistic_request';
 	import { getCountThisWeek, getThemeCount } from '@/api/theme_request';
+	import { error } from '@sveltejs/kit';
 	import { FolderOpen, FileText, Image, Eye, Edit } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 
-    let themeCount = $state(0);
-    let themeThisWeekCount = $state(0);
-	let articleCount = $state(0);
-	let articleCountThisWeek = $state(0);
-	let collectionCount = $state(0);
-	let collectionThisWeekCount = $state(0);
-	let resourceCount = $state(0);
-	let resourceThisWeekCount = $state(0);
+    let assetOverview: AssetOverview | null = $state();
 
 	// 模拟数据
 	const themes = [
@@ -135,37 +130,11 @@
 	];
 
     onMount(async () => {
-        const getThemeCountResponse = await getThemeCount();
-        if(getThemeCountResponse.code === 200){
-            themeCount = getThemeCountResponse.data!.count;
-        }else{
-            themeCount = 0;
-            alert(getThemeCountResponse.message);
-        }
-
-        const getThemeThisWeekCountResponse = await getCountThisWeek();
-        if(getThemeThisWeekCountResponse.code === 200){
-            themeThisWeekCount = getThemeThisWeekCountResponse.data!.count;
-        }else{
-            themeThisWeekCount = 0;
-            alert(getThemeThisWeekCountResponse.message);
-        }
-
-		const getArticleCountResponse = await getArticleCount();
-		if(getArticleCountResponse.code === 200){
-			articleCount = getArticleCountResponse.data!.count;
-		}else{
-			articleCount = 0;
-			alert(getArticleCountResponse.message);
+        const assetOverviewResponse = await getAssetOverview();
+		if(assetOverviewResponse.code !== 200){
+			error(assetOverviewResponse.code, assetOverviewResponse.message);
 		}
-		
-		const getCollectionCountResponse = await getArticleCountThisWeek();
-		if(getCollectionCountResponse.code === 200){
-			articleCountThisWeek = getCollectionCountResponse.data!.count;
-		}else{
-			articleCountThisWeek = 0;
-			alert(getCollectionCountResponse.message);
-		}
+		assetOverview = assetOverviewResponse.data;
     });
 </script>
 
@@ -176,8 +145,8 @@
 			<FolderOpen class="h-4 w-4 text-muted-foreground" />
 		</CardHeader>
 		<CardContent>
-			<div class="text-2xl font-bold">{themeCount}</div>
-			<p class="text-xs text-muted-foreground">+{themeThisWeekCount} 本周新增</p>
+			<div class="text-2xl font-bold">{assetOverview?.theme_count}</div>
+			<p class="text-xs text-muted-foreground">+{assetOverview?.theme_append_weekly} 本周新增</p>
 		</CardContent>
 	</Card>
 	<Card>
@@ -186,8 +155,8 @@
 			<FileText class="h-4 w-4 text-muted-foreground" />
 		</CardHeader>
 		<CardContent>
-			<div class="text-2xl font-bold">{articleCount}</div>
-			<p class="text-xs text-muted-foreground">+{articleCountThisWeek} 本周新增</p>
+			<div class="text-2xl font-bold">{assetOverview?.article_count}</div>
+			<p class="text-xs text-muted-foreground">+{assetOverview?.article_append_weekly} 本周新增</p>
 		</CardContent>
 	</Card>
 	<Card>
@@ -196,8 +165,8 @@
 			<Image class="h-4 w-4 text-muted-foreground" />
 		</CardHeader>
 		<CardContent>
-			<div class="text-2xl font-bold">{collections.length}</div>
-			<p class="text-xs text-muted-foreground">+2 本周新增</p>
+			<div class="text-2xl font-bold">{assetOverview?.collection_count}</div>
+			<p class="text-xs text-muted-foreground">+{assetOverview?.collection_append_weekly} 本周新增</p>
 		</CardContent>
 	</Card>
 	<Card>
@@ -206,8 +175,8 @@
 			<Image class="h-4 w-4 text-muted-foreground" />
 		</CardHeader>
 		<CardContent>
-			<div class="text-2xl font-bold">114514</div>
-			<p class="text-xs text-muted-foreground">+1919810 本周新增</p>
+			<div class="text-2xl font-bold">{assetOverview?.resource_count}</div>
+			<p class="text-xs text-muted-foreground">+{assetOverview?.resource_append_weekly} 本周新增</p>
 		</CardContent>
 	</Card>
 </div>

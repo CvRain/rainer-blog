@@ -1,4 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
+import { API_BASE_URL, handleError, type BaseResponse } from './config';
+import { error } from '@sveltejs/kit';
 
 export interface UserInfo {
     user_name: string;
@@ -35,12 +37,9 @@ export async function login(userName: string, userPassword: string): Promise<Log
     return response.data;
 }
 
-export async function getUserInfo(): Promise<{code: number; message: string; data: UserInfo}> {
-    const token = localStorage.getItem('token');
-    const response = await axios.get('http://localhost:4000/api/user', {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    });
-    return response.data;
+export async function getUserInfo(): Promise<BaseResponse<UserInfo>> {    
+    return await axios.get(API_BASE_URL + "/user")
+    .then((response)=>{
+        return response.data;
+    }).catch(handleError)
 } 

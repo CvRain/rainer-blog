@@ -22,16 +22,10 @@
 		Moon
 	} from 'lucide-svelte';
 
-	let userInfo: UserInfo | null = null;
-	onMount(async () => {
-        const result = await getUserInfo();
-        if(result.code === 200){
-            userInfo = result.data;
-        }
-        else  {
-            console.error(result.message)
-        }
-	});
+	import type { PageServerData } from './$types';
+
+	const { data: pageServerData } = $props();
+	let userInfo: UserInfo | null = pageServerData.userinfo;
 
 	const articles = [
 		{
@@ -58,7 +52,9 @@
 			class="h-screen w-full object-cover opacity-70"
 		/>
 		<div class="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
-			<h2 class="mb-4 text-4xl font-bold text-white drop-shadow-lg">{userInfo?.user_signature || "此时我需要三缄其口"}</h2>
+			<h2 class="mb-4 text-4xl font-bold text-white drop-shadow-lg">
+				{userInfo?.user_signature || '此时我需要三缄其口'}
+			</h2>
 			<div class="flex space-x-6">
 				<Button variant="ghost" size="sm" class="text-white hover:bg-white/10">
 					<GithubIcon class="h-5 w-5" />
