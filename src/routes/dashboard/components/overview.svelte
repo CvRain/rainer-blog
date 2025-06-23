@@ -16,7 +16,7 @@
 	import { FolderOpen, FileText, Image, Eye, Edit } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 
-    let assetOverview: AssetOverview | null = $state();
+    let assetOverview: AssetOverview | null = $state(null);
 
 	// 模拟数据
 	const themes = [
@@ -134,7 +134,7 @@
 		if(assetOverviewResponse.code !== 200){
 			error(assetOverviewResponse.code, assetOverviewResponse.message);
 		}
-		assetOverview = assetOverviewResponse.data;
+		assetOverview = assetOverviewResponse.data ?? null;
     });
 </script>
 

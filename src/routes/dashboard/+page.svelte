@@ -20,7 +20,7 @@
 	import Themes from './components/themes.svelte';
 	import Resources from './components/resources.svelte';
 
-	let userInfo = $state<UserInfo>();
+	let userInfo: UserInfo | null = $state(null);
 	let isSidebarOpen = $state(true);
 	let activeTab = $state('overview');
 
@@ -38,6 +38,11 @@
 		{ icon: BookOpen, label: '主题管理', href: '#themes' },
 		{ icon: Image, label: '资源管理', href: '#resources' }
 	];
+
+	function handleTabChange(event: Event, tab: string) {
+		event.preventDefault();
+		activeTab = tab;
+	}
 </script>
 
 <div class="flex min-h-screen flex-col">
@@ -117,7 +122,7 @@
 					<a
 						href={item.href}
 						class="flex items-center space-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
-						onclick={() => (activeTab = item.href.slice(1))}
+						onclick={(e) => handleTabChange(e, item.href.slice(1))}
 					>
 						<svelte:component this={item.icon} class="h-5 w-5" />
 						<span>{item.label}</span>
