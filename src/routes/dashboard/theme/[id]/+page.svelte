@@ -20,7 +20,8 @@
 		MoreVertical,
 		Edit,
 		Trash2,
-		UploadCloud
+		UploadCloud,
+		BookMarked
 	} from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import Editor from './components/Editor.svelte';
@@ -213,12 +214,7 @@
 			<h1 class="text-lg font-semibold">{theme.title}</h1>
 		</div>
 		<div class="ml-auto flex items-center gap-2">
-			<Button
-				variant="ghost"
-				size="icon"
-				onclick={toggleSplitDirection}
-				title="切换分栏方向"
-			>
+			<Button variant="ghost" size="icon" onclick={toggleSplitDirection} title="切换分栏方向">
 				{#if splitDirection === 'vertical'}
 					<PanelRight class="h-5 w-5" />
 				{:else}
@@ -235,11 +231,11 @@
 					<!-- Chapters & Articles -->
 					<div class="mb-4">
 						<div class="mb-2 flex items-center justify-between px-2 py-1">
-							<h2 class="text-sm font-semibold">大纲</h2>
+							<h2 class="text-sm font-semibold tracking-tight text-muted-foreground">大纲</h2>
 							<Button
 								variant="ghost"
 								size="icon"
-								class="h-6 w-6"
+								class="h-7 w-7"
 								onclick={() => createNew('chapter')}
 								title="新建章节"
 							>
@@ -249,33 +245,35 @@
 						{#each theme.chapters as chapter (chapter.id)}
 							<div>
 								<div
-									class="group flex w-full items-center gap-1 rounded-md p-1 pr-0 text-sm hover:bg-accent"
+									class="group flex w-full items-center gap-1 rounded-md py-1 pr-1 text-sm hover:bg-accent"
 								>
 									<button
-										class="flex flex-1 items-center gap-1"
+										class="flex flex-1 items-center gap-1.5 pl-1 text-left"
 										onclick={() => (chapter.expanded = !chapter.expanded)}
 									>
 										{#if chapter.expanded}
-											<ChevronDown class="h-4 w-4" /> <FolderOpen class="h-4 w-4 text-sky-500" />
+											<ChevronDown class="h-4 w-4 shrink-0" />
+											<FolderOpen class="h-4 w-4 text-blue-500" />
 										{:else}
-											<ChevronRight class="h-4 w-4" /> <FolderClosed class="h-4 w-4 text-sky-500" />
+											<ChevronRight class="h-4 w-4 shrink-0" />
+											<FolderClosed class="h-4 w-4 text-blue-500" />
+										{/if}
+										{#if editingItem?.type === 'chapter' && editingItem.id === chapter.id}
+											<Input
+												class="h-6 w-full"
+												value={editingText}
+												onblur={handleRename}
+												onkeydown={(e) => e.key === 'Enter' && handleRename(e)}
+												autofocus
+											/>
+										{:else}
+											<span class="flex-1 truncate">{chapter.title}</span>
 										{/if}
 									</button>
-									{#if editingItem?.type === 'chapter' && editingItem.id === chapter.id}
-										<Input
-											class="h-6"
-											value={editingText}
-											onblur={handleRename}
-											onkeydown={(e) => e.key === 'Enter' && handleRename(e)}
-											autofocus
-										/>
-									{:else}
-										<span class="flex-1 truncate">{chapter.title}</span>
-									{/if}
 
 									<DropdownMenu.Root>
 										<DropdownMenu.Trigger
-											class="flex items-center justify-center h-6 w-6 rounded-md transition-colors opacity-0 group-hover:opacity-100 hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+											class="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-colors group-hover:opacity-100 hover:bg-accent-foreground/10"
 										>
 											<MoreVertical class="h-4 w-4" />
 										</DropdownMenu.Trigger>
@@ -283,7 +281,9 @@
 											<DropdownMenu.Item onclick={() => createNew('article', chapter)}>
 												<Plus class="mr-2 h-4 w-4" /> 新建文章
 											</DropdownMenu.Item>
-											<DropdownMenu.Item onclick={() => editItem('chapter', chapter.id, chapter.title)}>
+											<DropdownMenu.Item
+												onclick={() => editItem('chapter', chapter.id, chapter.title)}
+											>
 												<Edit class="mr-2 h-4 w-4" /> 重命名
 											</DropdownMenu.Item>
 											<DropdownMenu.Item
@@ -296,33 +296,34 @@
 									</DropdownMenu.Root>
 								</div>
 								{#if chapter.expanded}
-									<div class="ml-5 border-l pl-2">
+									<div class="ml-5 border-l border-dashed pl-2.5">
 										{#each chapter.articles as article (article.id)}
 											<div
-												class="group flex w-full items-center gap-2 rounded-md p-1 pr-0 text-sm hover:bg-accent"
+												class="group flex w-full items-center gap-1.5 rounded-md py-1 pr-1 pl-2 text-sm"
+												class:bg-accent={selectedArticle?.id === article.id}
 											>
 												<button
-													class="flex flex-1 items-center gap-2"
+													class="flex flex-1 items-center gap-1.5 text-left"
 													class:text-accent-foreground={selectedArticle?.id === article.id}
 													onclick={() => (selectedArticle = article)}
 												>
-													<FileText class="h-4 w-4" />
+													<FileText class="h-4 w-4 shrink-0 text-muted-foreground" />
+													{#if editingItem?.type === 'article' && editingItem.id === article.id}
+														<Input
+															class="h-6 w-full"
+															value={editingText}
+															onblur={handleRename}
+															onkeydown={(e) => e.key === 'Enter' && handleRename(e)}
+															autofocus
+														/>
+													{:else}
+														<span class="flex-1 truncate">{article.title}</span>
+													{/if}
 												</button>
-												{#if editingItem?.type === 'article' && editingItem.id === article.id}
-													<Input
-														class="h-6"
-														value={editingText}
-														onblur={handleRename}
-														onkeydown={(e) => e.key === 'Enter' && handleRename(e)}
-														autofocus
-													/>
-												{:else}
-													<span class="flex-1 truncate">{article.title}</span>
-												{/if}
 
 												<DropdownMenu.Root>
 													<DropdownMenu.Trigger
-														class="flex items-center justify-center h-6 w-6 rounded-md transition-colors opacity-0 group-hover:opacity-100 hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+														class="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-colors group-hover:opacity-100 hover:bg-accent-foreground/10"
 													>
 														<MoreVertical class="h-4 w-4" />
 													</DropdownMenu.Trigger>
@@ -353,11 +354,13 @@
 					<!-- Resources -->
 					<div class="mt-4">
 						<div class="mb-2 flex items-center justify-between px-2 py-1">
-							<h2 class="text-sm font-semibold">资源文件</h2>
+							<h2 class="text-sm font-semibold tracking-tight text-muted-foreground">
+								资源文件
+							</h2>
 							<Button
 								variant="ghost"
 								size="icon"
-								class="h-6 w-6"
+								class="h-7 w-7"
 								onclick={() => createNew('folder')}
 								title="新建文件夹"
 							>
@@ -368,32 +371,35 @@
 						{#each theme.resources as folder (folder.id)}
 							<div>
 								<div
-									class="group flex w-full items-center gap-1 rounded-md p-1 pr-0 text-sm hover:bg-accent"
+									class="group flex w-full items-center gap-1 rounded-md py-1 pr-1 text-sm hover:bg-accent"
 								>
 									<button
-										class="flex flex-1 items-center gap-1"
+										class="flex flex-1 items-center gap-1.5 pl-1 text-left"
 										onclick={() => (folder.expanded = !folder.expanded)}
 									>
 										{#if folder.expanded}
-											<ChevronDown class="h-4 w-4" /> <FolderOpen class="h-4 w-4 text-amber-500" />
+											<ChevronDown class="h-4 w-4 shrink-0" />
+											<FolderOpen class="h-4 w-4 text-amber-500" />
 										{:else}
-											<ChevronRight class="h-4 w-4" /> <FolderClosed class="h-4 w-4 text-amber-500" />
+											<ChevronRight class="h-4 w-4 shrink-0" />
+											<FolderClosed class="h-4 w-4 text-amber-500" />
+										{/if}
+
+										{#if editingItem?.type === 'folder' && editingItem.id === folder.id}
+											<Input
+												class="h-6 w-full"
+												value={editingText}
+												onblur={handleRename}
+												onkeydown={(e) => e.key === 'Enter' && handleRename(e)}
+												autofocus
+											/>
+										{:else}
+											<span class="flex-1 truncate">{folder.title}</span>
 										{/if}
 									</button>
-									{#if editingItem?.type === 'folder' && editingItem.id === folder.id}
-										<Input
-											class="h-6"
-											value={editingText}
-											onblur={handleRename}
-											onkeydown={(e) => e.key === 'Enter' && handleRename(e)}
-											autofocus
-										/>
-									{:else}
-										<span class="flex-1 truncate">{folder.title}</span>
-									{/if}
 									<DropdownMenu.Root>
 										<DropdownMenu.Trigger
-											class="flex items-center justify-center h-6 w-6 rounded-md transition-colors opacity-0 group-hover:opacity-100 hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+											class="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-colors group-hover:opacity-100 hover:bg-accent-foreground/10"
 										>
 											<MoreVertical class="h-4 w-4" />
 										</DropdownMenu.Trigger>
@@ -401,7 +407,9 @@
 											<DropdownMenu.Item onclick={() => triggerFileUpload(folder)}>
 												<UploadCloud class="mr-2 h-4 w-4" /> 上传文件
 											</DropdownMenu.Item>
-											<DropdownMenu.Item onclick={() => editItem('folder', folder.id, folder.title)}>
+											<DropdownMenu.Item
+												onclick={() => editItem('folder', folder.id, folder.title)}
+											>
 												<Edit class="mr-2 h-4 w-4" /> 重命名
 											</DropdownMenu.Item>
 											<DropdownMenu.Item
@@ -414,15 +422,15 @@
 									</DropdownMenu.Root>
 								</div>
 								{#if folder.expanded}
-									<div class="ml-5 border-l pl-2">
+									<div class="ml-5 border-l border-dashed pl-2.5">
 										{#each folder.files as file (file.id)}
 											<div
-												class="group flex w-full items-center gap-2 rounded-md p-1 pr-0 text-sm hover:bg-accent"
+												class="group flex w-full items-center gap-1.5 rounded-md py-1 pr-1 pl-2 text-sm hover:bg-accent"
 											>
-												<Image class="h-4 w-4" />
+												<Image class="h-4 w-4 shrink-0 text-muted-foreground" />
 												{#if editingItem?.type === 'file' && editingItem.id === file.id}
 													<Input
-														class="h-6 flex-1"
+														class="h-6 w-full flex-1"
 														value={editingText}
 														onblur={handleRename}
 														onkeydown={(e) => e.key === 'Enter' && handleRename(e)}
@@ -433,12 +441,14 @@
 												{/if}
 												<DropdownMenu.Root>
 													<DropdownMenu.Trigger
-														class="flex items-center justify-center h-6 w-6 rounded-md transition-colors opacity-0 group-hover:opacity-100 hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+														class="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-colors group-hover:opacity-100 hover:bg-accent-foreground/10"
 													>
 														<MoreVertical class="h-4 w-4" />
 													</DropdownMenu.Trigger>
 													<DropdownMenu.Content>
-														<DropdownMenu.Item onclick={() => editItem('file', file.id, file.title)}>
+														<DropdownMenu.Item
+															onclick={() => editItem('file', file.id, file.title)}
+														>
 															<Edit class="mr-2 h-4 w-4" /> 重命名
 														</DropdownMenu.Item>
 														<DropdownMenu.Item
@@ -468,8 +478,11 @@
 					{#if selectedArticle}
 						<Editor bind:article={selectedArticle} />
 					{:else}
-						<div class="flex h-full items-center justify-center text-muted-foreground">
-							请从左侧选择一篇文章进行编辑
+						<div
+							class="flex h-full flex-col items-center justify-center gap-2 text-muted-foreground"
+						>
+							<BookMarked class="h-10 w-10" />
+							<span class="text-lg">请选择一篇文章开始编辑</span>
 						</div>
 					{/if}
 				</Resizable.Pane>
@@ -478,8 +491,11 @@
 					{#if selectedArticle}
 						<Preview article={selectedArticle} />
 					{:else}
-						<div class="flex h-full items-center justify-center text-muted-foreground">
-							预览区域
+						<div
+							class="flex h-full flex-col items-center justify-center gap-2 text-muted-foreground"
+						>
+							<BookMarked class="h-10 w-10" />
+							<span class="text-lg">预览区域</span>
 						</div>
 					{/if}
 				</Resizable.Pane>
