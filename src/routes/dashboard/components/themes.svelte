@@ -19,25 +19,6 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
-	// // 模拟数据
-	// const themes = [
-	// 	{
-	// 		id: 1,
-	// 		title: 'Web开发基础',
-	// 		description: '涵盖HTML、CSS和JavaScript的基础知识',
-	// 		chapterCount: 5,
-	// 		articleCount: 15,
-	// 		lastUpdated: '2024-03-15',
-	// 	},
-	// 	{
-	// 		id: 2,
-	// 		title: 'Svelte框架教程',
-	// 		description: '从入门到精通的Svelte学习指南',
-	// 		chapterCount: 3,
-	// 		articleCount: 8,
-	// 		lastUpdated: '2024-03-14',
-	// 	}
-	// ];
 	let themes: ThemeWithStatSchema[] | null = $state(null);
 
 	onMount(async () => {
@@ -46,7 +27,7 @@
 		themes = themeSchemaResp.data ?? null;
 	});
 
-	function viewTheme(themeId: number) {
+	function viewTheme(themeId: string) {
 		goto(`/dashboard/theme/${themeId}`);
 	}
 </script>
@@ -67,7 +48,7 @@
 						<CardTitle>
 							<button
 								class="hover:underline"
-								on:click={() => viewTheme(theme.id)}
+								onclick={() => {viewTheme(theme.id)}}
 							>
 								{theme.name}
 							</button>
@@ -79,7 +60,7 @@
 								</Button>
 							</DropdownMenuTrigger>
 							<DropdownMenuContent align="end">
-								<DropdownMenuItem on:click={() => viewTheme(theme.id)}>
+								<DropdownMenuItem onclick={() => viewTheme(theme.id)}>
 									<Eye class="mr-2 h-4 w-4" />
 									查看
 								</DropdownMenuItem>

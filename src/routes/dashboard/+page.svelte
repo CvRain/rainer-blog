@@ -124,7 +124,7 @@
 						class="flex items-center space-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
 						onclick={(e) => handleTabChange(e, item.href.slice(1))}
 					>
-						<svelte:component this={item.icon} class="h-5 w-5" />
+						<item.icon class="h-5 w-5" />
 						<span>{item.label}</span>
 					</a>
 				{/each}
