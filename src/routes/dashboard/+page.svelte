@@ -19,12 +19,21 @@
 	import Overview from './components/overview.svelte';
 	import Themes from './components/themes.svelte';
 	import Resources from './components/resources.svelte';
+	import { getAllThemeWithStats, type ThemeWithStatSchema } from '@/api/theme_request';
 
 	let userInfo: UserInfo | null = $state(null);
 	let isSidebarOpen = $state(true);
 	let activeTab = $state('overview');
+	let themeData: ThemeWithStatSchema[] | null = $state(null);
+
+	async function refreshThemes(){
+		const themeSchemaResp = await getAllThemeWithStats();
+		themeData = themeSchemaResp.data ?? null;
+	}
 
 	onMount(async () => {
+		await refreshThemes();
+
 		const result = await getUserInfo();
 		if (result.code === 200) {
 			userInfo = result.data;
@@ -137,7 +146,7 @@
 				{#if activeTab === 'overview'}
 					<Overview />
 				{:else if activeTab === 'themes'}
-					<Themes />
+					<Themes themes={themeData} onRefresh={refreshThemes}/>
 				{:else if activeTab === 'resources'}
 					<Resources />
 				{/if}
