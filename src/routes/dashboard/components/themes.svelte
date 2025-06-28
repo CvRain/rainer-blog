@@ -14,7 +14,12 @@
 		DropdownMenuItem,
 		DropdownMenuTrigger
 	} from '$lib/components/ui/dropdown-menu';
-	import { createTheme, getAllThemeWithStats, removeTheme, type ThemeWithStatSchema } from '@/api/theme_request';
+	import {
+		createTheme,
+		getAllThemeWithStats,
+		removeTheme,
+		type ThemeWithStatSchema
+	} from '@/api/theme_request';
 	import { MoreHorizontal, Eye, Edit, Trash2 } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
@@ -40,15 +45,32 @@
 	let showDeleteSuccessAlert = $state(false);
 
 	async function handleCreateTheme() {
-		if (!themeName.trim()) return;
+		console.log('handleCreateTheme called');
+		
+		if (!themeName.trim()) {
+			console.log('themeName is empty');
+			return;
+		}
+		console.log('Creating theme:', themeName, themeDescription);
 		const response = await createTheme(themeName, themeDescription);
-		if (response.code === 200) {
-			await onRefresh();
+		console.log('Create theme response:', response);
+		if (response.code === 200 || response.code === 201) {
 			dialogOpen = false;
+			console.log('Theme created successfully, closing dialog');			
+			// 清空表单
 			themeName = '';
 			themeDescription = '';
+			console.log('Refreshing themes');
+			// 刷新数据
+			await onRefresh();
+			console.log('Showing success alert');
+			// 显示成功提示
 			showSuccessAlert = true;
-			setTimeout(() => { showSuccessAlert = false; }, 3000);
+			setTimeout(() => {
+				showSuccessAlert = false;
+			}, 5000);
+		} else {
+			console.log('Failed to create theme:', response.message);
 		}
 	}
 
@@ -60,7 +82,9 @@
 			deleteDialogOpen = false;
 			themeToDelete = '';
 			showDeleteSuccessAlert = true;
-			setTimeout(() => { showDeleteSuccessAlert = false; }, 3000);
+			setTimeout(() => {
+				showDeleteSuccessAlert = false;
+			}, 5000);
 		}
 	}
 
@@ -76,7 +100,7 @@
 
 <div class="z-50">
 	{#if showSuccessAlert}
-		<Alert.Root class="mb-4 animate-in fade-in slide-in-from-top-2 duration-300">
+		<Alert.Root class="fixed right-4 top-4 z-50 w-80 duration-300 animate-in slide-in-from-right-2">
 			<CheckCircle2Icon class="h-4 w-4" />
 			<Alert.Title>创建成功！</Alert.Title>
 			<Alert.Description>新主题已添加。</Alert.Description>
@@ -84,7 +108,7 @@
 	{/if}
 
 	{#if showDeleteSuccessAlert}
-		<Alert.Root class="mb-4 animate-in fade-in slide-in-from-top-2 duration-300">
+		<Alert.Root class="fixed right-4 top-4 z-50 w-80 duration-300 animate-in slide-in-from-right-2">
 			<CheckCircle2Icon class="h-4 w-4" />
 			<Alert.Title>删除成功！</Alert.Title>
 			<Alert.Description>主题已删除。</Alert.Description>
@@ -101,15 +125,20 @@
 				<AlertDialog.Header>
 					<AlertDialog.Title>开启一个新的篇章</AlertDialog.Title>
 					<p>
-						主题名 <Input type="text" placeholder="主题名" class="max-w-xs" bind:value={themeName} />
+						主题名 <Input
+							type="text"
+							placeholder="主题名"
+							class="max-w-xs"
+							bind:value={themeName}
+						/>
 					</p>
 					<p>
 						描述信息 <Input
-						type="text"
-						placeholder="描述信息"
-						class="max-w-xs"
-						bind:value={themeDescription}
-					/>
+							type="text"
+							placeholder="描述信息"
+							class="max-w-xs"
+							bind:value={themeDescription}
+						/>
 					</p>
 				</AlertDialog.Header>
 				<AlertDialog.Footer>
@@ -167,7 +196,10 @@
 										<Edit class="mr-2 h-4 w-4" />
 										编辑
 									</DropdownMenuItem>
-									<DropdownMenuItem class="text-destructive" onclick={() => openDeleteDialog(theme.id)}>
+									<DropdownMenuItem
+										class="text-destructive"
+										onclick={() => openDeleteDialog(theme.id)}
+									>
 										<Trash2 class="mr-2 h-4 w-4" />
 										删除
 									</DropdownMenuItem>
