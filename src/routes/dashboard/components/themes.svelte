@@ -14,7 +14,7 @@
 		DropdownMenuItem,
 		DropdownMenuTrigger
 	} from '$lib/components/ui/dropdown-menu';
-	import { createTheme, getAllThemeWithStats, type ThemeWithStatSchema } from '@/api/theme_request';
+	import { createTheme, getAllThemeWithStats, removeTheme, type ThemeWithStatSchema } from '@/api/theme_request';
 	import { MoreHorizontal, Eye, Edit, Trash2 } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
@@ -35,6 +35,9 @@
 	let themeDescription: string = $state('');
 	let dialogOpen: boolean = $state(false);
 	let showSuccessAlert = $state(false);
+	let deleteDialogOpen: boolean = $state(false);
+	let themeToDelete: string = $state('');
+	let showDeleteSuccessAlert = $state(false);
 
 	async function handleCreateTheme() {
 		if (!themeName.trim()) return;
@@ -49,6 +52,23 @@
 		}
 	}
 
+	async function handleDeleteTheme() {
+		if (!themeToDelete) return;
+		const response = await removeTheme(themeToDelete);
+		if (response.code === 200) {
+			await onRefresh();
+			deleteDialogOpen = false;
+			themeToDelete = '';
+			showDeleteSuccessAlert = true;
+			setTimeout(() => { showDeleteSuccessAlert = false; }, 3000);
+		}
+	}
+
+	function openDeleteDialog(themeId: string) {
+		themeToDelete = themeId;
+		deleteDialogOpen = true;
+	}
+
 	function viewTheme(themeId: string) {
 		goto(`/dashboard/theme/${themeId}`);
 	}
@@ -60,6 +80,14 @@
 			<CheckCircle2Icon class="h-4 w-4" />
 			<Alert.Title>创建成功！</Alert.Title>
 			<Alert.Description>新主题已添加。</Alert.Description>
+		</Alert.Root>
+	{/if}
+
+	{#if showDeleteSuccessAlert}
+		<Alert.Root class="mb-4 animate-in fade-in slide-in-from-top-2 duration-300">
+			<CheckCircle2Icon class="h-4 w-4" />
+			<Alert.Title>删除成功！</Alert.Title>
+			<Alert.Description>主题已删除。</Alert.Description>
 		</Alert.Root>
 	{/if}
 
@@ -91,6 +119,23 @@
 			</AlertDialog.Content>
 		</AlertDialog.Root>
 	</div>
+
+	<!-- 删除确认对话框 -->
+	<AlertDialog.Root bind:open={deleteDialogOpen}>
+		<AlertDialog.Content>
+			<AlertDialog.Header>
+				<AlertDialog.Title>确认删除</AlertDialog.Title>
+				<AlertDialog.Description>
+					此操作无法撤销。这将永久删除该主题及其所有相关数据。
+				</AlertDialog.Description>
+			</AlertDialog.Header>
+			<AlertDialog.Footer>
+				<AlertDialog.Cancel>取消</AlertDialog.Cancel>
+				<AlertDialog.Action onclick={handleDeleteTheme}>删除</AlertDialog.Action>
+			</AlertDialog.Footer>
+		</AlertDialog.Content>
+	</AlertDialog.Root>
+
 	<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
 		{#if themes !== null}
 			{#each themes as theme}
@@ -122,7 +167,7 @@
 										<Edit class="mr-2 h-4 w-4" />
 										编辑
 									</DropdownMenuItem>
-									<DropdownMenuItem class="text-destructive">
+									<DropdownMenuItem class="text-destructive" onclick={() => openDeleteDialog(theme.id)}>
 										<Trash2 class="mr-2 h-4 w-4" />
 										删除
 									</DropdownMenuItem>
