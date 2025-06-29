@@ -1,6 +1,5 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { API_BASE_URL, handleError, type BaseResponse } from './config';
-import { error } from '@sveltejs/kit';
 
 export interface UserInfo {
     user_name: string;
@@ -42,4 +41,4 @@ export async function getUserInfo(): Promise<BaseResponse<UserInfo>> {
     .then((response)=>{
         return response.data;
     }).catch(handleError)
-} 
+}  

@@ -14,12 +14,9 @@
 		DropdownMenuItem,
 		DropdownMenuTrigger
 	} from '$lib/components/ui/dropdown-menu';
-	import {
-		createTheme,
-		getAllThemeWithStats,
-		removeTheme,
-		type ThemeWithStatSchema
-	} from '@/api/theme_request';
+	import { createTheme, removeTheme, updateThemeInfo } from '@/api/theme_request';
+
+	import { type ThemeWithStatSchema } from '@/api/response_schema';
 	import { MoreHorizontal, Eye, Edit, Trash2 } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
@@ -27,6 +24,8 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	import * as Alert from '$lib/components/ui/alert/index.js';
 	import CheckCircle2Icon from '@lucide/svelte/icons/check-circle-2';
+	import type { UpdateThemeSchema } from '@/api/request_schema';
+	import { Switch } from '$lib/components/ui/switch/index.js';
 
 	let {
 		themes,
@@ -43,10 +42,18 @@
 	let deleteDialogOpen: boolean = $state(false);
 	let themeToDelete: string = $state('');
 	let showDeleteSuccessAlert = $state(false);
+	let editDialogOpen: boolean = $state(false);
+	let editingTheme: UpdateThemeSchema = $state({
+		id: '',
+		name: '',
+		description: '',
+		order: 0,
+		is_active: true
+	});
 
 	async function handleCreateTheme() {
 		console.log('handleCreateTheme called');
-		
+
 		if (!themeName.trim()) {
 			console.log('themeName is empty');
 			return;
@@ -56,7 +63,7 @@
 		console.log('Create theme response:', response);
 		if (response.code === 200 || response.code === 201) {
 			dialogOpen = false;
-			console.log('Theme created successfully, closing dialog');			
+			console.log('Theme created successfully, closing dialog');
 			// 清空表单
 			themeName = '';
 			themeDescription = '';
@@ -95,6 +102,29 @@
 
 	function viewTheme(themeId: string) {
 		goto(`/dashboard/theme/${themeId}`);
+	}
+
+	function openEditDialog(theme: ThemeWithStatSchema) {
+		editingTheme = {
+			id: theme.id,
+			name: theme.name,
+			description: theme.description,
+			order: theme.order,
+			is_active: theme.is_active
+		};
+		editDialogOpen = true;
+	}
+
+	async function handleEditTheme() {
+		const response = await updateThemeInfo(editingTheme);
+		if (response.code === 200) {
+			editDialogOpen = false;
+			await onRefresh();
+			showSuccessAlert = true;
+			setTimeout(() => {
+				showSuccessAlert = false;
+			}, 5000);
+		}
 	}
 </script>
 
@@ -165,9 +195,34 @@
 		</AlertDialog.Content>
 	</AlertDialog.Root>
 
+	<AlertDialog.Root bind:open={editDialogOpen}>
+		<AlertDialog.Content>
+			<AlertDialog.Header>
+				<AlertDialog.Title>编辑主题</AlertDialog.Title>
+				<p>
+					主题名 <Input type="text" class="max-w-xs" bind:value={editingTheme.name} />
+				</p>
+				<p>
+					描述信息 <Input type="text" class="max-w-xs" bind:value={editingTheme.description} />
+				</p>
+				<p>
+					排序 <Input type="number" class="max-w-xs" bind:value={editingTheme.order} />
+				</p>
+				<p>
+					是否激活
+					<input type="checkbox" bind:checked={editingTheme.is_active} />
+				</p>
+			</AlertDialog.Header>
+			<AlertDialog.Footer>
+				<AlertDialog.Cancel>取消</AlertDialog.Cancel>
+				<AlertDialog.Action onclick={handleEditTheme}>确定</AlertDialog.Action>
+			</AlertDialog.Footer>
+		</AlertDialog.Content>
+	</AlertDialog.Root>
+
 	<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
 		{#if themes !== null}
-			{#each themes as theme}
+			{#each [...themes].sort((a, b) => a.order - b.order || new Date(a.inserted_at).getTime() - new Date(b.inserted_at).getTime()) as theme}
 				<Card>
 					<CardHeader>
 						<div class="flex items-center justify-between">
@@ -192,7 +247,7 @@
 										<Eye class="mr-2 h-4 w-4" />
 										查看
 									</DropdownMenuItem>
-									<DropdownMenuItem>
+									<DropdownMenuItem onclick={() => openEditDialog(theme)}>
 										<Edit class="mr-2 h-4 w-4" />
 										编辑
 									</DropdownMenuItem>
@@ -222,10 +277,26 @@
 							</div>
 						</div>
 					</CardContent>
-					<CardFooter>
+					<CardFooter class="flex items-end justify-between">
 						<p class="text-sm text-muted-foreground">
-							<span>最后更新：{theme.updated_at}</span>
+							<span>创建时间 {theme.inserted_at}</span>
 						</p>
+						<div class="flex items-center gap-2">
+							<Switch
+								checked={theme.is_active}
+								onCheckedChange={async (e) => {
+									await updateThemeInfo({
+										id: theme.id,
+										is_active: e,
+										name: theme.name,
+										description: theme.description,
+										order: theme.order
+									});
+									await onRefresh();
+								}}
+								class="ml-2"
+							/>
+						</div>
 					</CardFooter>
 				</Card>
 			{/each}

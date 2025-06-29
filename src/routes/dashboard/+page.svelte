@@ -19,7 +19,8 @@
 	import Overview from './components/overview.svelte';
 	import Themes from './components/themes.svelte';
 	import Resources from './components/resources.svelte';
-	import { getAllThemeWithStats, type ThemeWithStatSchema } from '@/api/theme_request';
+	import { getAllThemeWithStats } from '@/api/theme_request';
+	import {type ThemeWithStatSchema } from '@/api/response_schema';
 
 	let userInfo: UserInfo | null = $state(null);
 	let isSidebarOpen = $state(true);

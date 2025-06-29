@@ -1,32 +1,8 @@
 import axios from "axios";
 import { API_BASE_URL, type BaseResponse, handleError } from "./config";
+import { type ThemeCountData, type ThemeWithSchema, type ThemeWithStatSchema } from "./response_schema";
+import type { UpdateThemeSchema } from "./request_schema";
 
-export interface ThemeCountData {
-    count: number;
-}
-
-export interface ThemeWithSchema {
-    description: string;
-    id: string;
-    inserted_at: string;
-    is_active: boolean;
-    name: string;
-    order: number;
-    updated_at: string;
-}
-
-
-export interface ThemeWithStatSchema {
-    article_count: number;
-    chapter_count: number;
-    description: string;
-    id: string;
-    inserted_at: string;
-    is_active: boolean;
-    name: string;
-    order: number;
-    updated_at: string;
-}
 
 export async function getThemeCount(): Promise<BaseResponse<ThemeCountData>> {
     const response = await axios.get(API_BASE_URL + '/theme/count')
@@ -94,6 +70,26 @@ export async function createTheme(name: string, description: string): Promise<Ba
         url: API_BASE_URL + '/theme/one',
         headers: headers,
         data: data
+    }
+
+    const response = await axios(config)
+        .then(function (response) {
+            return response.data;
+        })
+        .catch(handleError);
+    return response;
+}
+
+
+export async function updateThemeInfo(schema: UpdateThemeSchema) {
+    const config = {
+        method: 'patch',
+        url: API_BASE_URL + '/theme/one',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'Content-Type': 'application/json'
+        },
+        data: schema
     }
 
     const response = await axios(config)
