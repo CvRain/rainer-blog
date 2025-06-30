@@ -4,64 +4,135 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 72.2% 50.6%;
-    --destructive-foreground: 0 0% 98%;
-    --ring: 240 10% 3.9%;
-    --radius: 0.5rem;
-	--sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --radius: 0.625rem;
+    --background: 220 23.076923191547394% 94.90196108818054%;
+    /* base */
+    --foreground: 234 16.022099554538727% 35.49019694328308%;
+    /* text */
+    --card: 220 23.076923191547394% 94.90196108818054%;
+    /* base */
+    --card-foreground: 234 16.022099554538727% 35.49019694328308%;
+    /* text */
+    --popover: 220 23.076923191547394% 94.90196108818054%;
+    /* base */
+    --popover-foreground: 234 16.022099554538727% 35.49019694328308%;
+    /* text */
+    --primary: 11 58.82353186607361% 66.66666865348816%;
+    /* accent - Rosewater */
+    --primary-foreground: 220 23.076923191547394% 94.90196108818054%;
+    /* base */
+    --secondary: 223 15.909090638160706% 82.74509906768799%;
+    /* surface0 */
+    --secondary-foreground: 234 16.022099554538727% 35.49019694328308%;
+    /* text */
+    --muted: 223 15.909090638160706% 82.74509906768799%;
+    /* surface0 */
+    --muted-foreground: 233 12.796208262443542% 41.372549533843994%;
+    /* subtext1 */
+    --accent: 223 15.909090638160706% 82.74509906768799%;
+    /* surface0 */
+    --accent-foreground: 234 16.022099554538727% 35.49019694328308%;
+    /* text */
+    --destructive: 347 86.66666746139526% 44.11764740943909%;
+    /* red */
+    --border: 225 13.55932205915451% 76.86274647712708%;
+    /* surface1 */
+    --input: 225 13.55932205915451% 76.86274647712708%;
+    /* surface1 */
+    --ring: 234 16.022099554538727% 35.49019694328308%;
+    /* text */
+    --chart-1: 347 86.66666746139526% 44.11764740943909%;
+    /* red */
+    --chart-2: 183 73.86363744735718% 34.50980484485626%;
+    /* teal */
+    --chart-3: 220 91.4893627166748% 53.921568393707275%;
+    /* blue */
+    --chart-4: 35 76.98412537574768% 49.41176474094391%;
+    /* yellow */
+    --chart-5: 109 57.63546824455261% 39.803922176361084%;
+    /* green */
+    --sidebar: 220 21.95121943950653% 91.96078181266785%;
+    /* mantle */
+    --sidebar-foreground: 234 16.022099554538727% 35.49019694328308%;
+    /* text */
+    --sidebar-primary: 11 58.82353186607361% 66.66666865348816%;
+    /* accent - Rosewater */
+    --sidebar-primary-foreground: 220 23.076923191547394% 94.90196108818054%;
+    /* base */
+    --sidebar-accent: 223 15.909090638160706% 82.74509906768799%;
+    /* surface0 */
+    --sidebar-accent-foreground: 234 16.022099554538727% 35.49019694328308%;
+    /* text */
+    --sidebar-border: 225 13.55932205915451% 76.86274647712708%;
+    /* surface1 */
+    --sidebar-ring: 225 13.55932205915451% 76.86274647712708%;
+    /* surface1 */
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --ring: 240 4.9% 83.9%;
-	--sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --radius: 0.625rem;
+    --background: 229 18.644067645072937% 23.137255012989044%;
+    /* base */
+    --foreground: 227 70.14925479888916% 86.86274290084839%;
+    /* text */
+    --card: 229 18.644067645072937% 23.137255012989044%;
+    /* base */
+    --card-foreground: 227 70.14925479888916% 86.86274290084839%;
+    /* text */
+    --popover: 229 18.644067645072937% 23.137255012989044%;
+    /* base */
+    --popover-foreground: 227 70.14925479888916% 86.86274290084839%;
+    /* text */
+    --primary: 10 57.37704634666443% 88.03921341896057%;
+    /* accent - Rosewater */
+    --primary-foreground: 229 18.644067645072937% 23.137255012989044%;
+    /* base */
+    --secondary: 230 15.584415197372437% 30.19607961177826%;
+    /* surface0 */
+    --secondary-foreground: 227 70.14925479888916% 86.86274290084839%;
+    /* text */
+    --muted: 230 15.584415197372437% 30.19607961177826%;
+    /* surface0 */
+    --muted-foreground: 227 43.689319491386414% 79.8039197921753%;
+    /* subtext1 */
+    --accent: 230 15.584415197372437% 30.19607961177826%;
+    /* surface0 */
+    --accent-foreground: 227 70.14925479888916% 86.86274290084839%;
+    /* text */
+    --destructive: 359 67.78523325920105% 70.78431248664856%;
+    /* red */
+    --border: 227 14.73684161901474% 37.254902720451355%;
+    /* surface1 */
+    --input: 227 14.73684161901474% 37.254902720451355%;
+    /* surface1 */
+    --ring: 227 70.14925479888916% 86.86274290084839%;
+    /* text */
+    --chart-1: 359 67.78523325920105% 70.78431248664856%;
+    /* red */
+    --chart-2: 172 39.22652006149292% 64.50980305671692%;
+    /* teal */
+    --chart-3: 222 74.24242496490479% 74.11764860153198%;
+    /* blue */
+    --chart-4: 40 62.043797969818115% 73.13725352287292%;
+    /* yellow */
+    --chart-5: 96 43.90243887901306% 67.84313917160034%;
+    /* green */
+    --sidebar: 231 18.81188154220581% 19.80392187833786%;
+    /* mantle */
+    --sidebar-foreground: 227 70.14925479888916% 86.86274290084839%;
+    /* text */
+    --sidebar-primary: 10 57.37704634666443% 88.03921341896057%;
+    /* accent - Rosewater */
+    --sidebar-primary-foreground: 229 18.644067645072937% 23.137255012989044%;
+    /* base */
+    --sidebar-accent: 230 15.584415197372437% 30.19607961177826%;
+    /* surface0 */
+    --sidebar-accent-foreground: 227 70.14925479888916% 86.86274290084839%;
+    /* text */
+    --sidebar-border: 227 14.73684161901474% 37.254902720451355%;
+    /* surface1 */
+    --sidebar-ring: 227 14.73684161901474% 37.254902720451355%;
+    /* surface1 */
   }
 }
 
@@ -69,6 +140,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
