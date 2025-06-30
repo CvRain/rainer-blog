@@ -154,23 +154,17 @@
 			<AlertDialog.Content>
 				<AlertDialog.Header>
 					<AlertDialog.Title>开启一个新的篇章</AlertDialog.Title>
-					<p>
-						主题名 <Input
-							type="text"
-							placeholder="主题名"
-							class="max-w-xs"
-							bind:value={themeName}
-						/>
-					</p>
-					<p>
-						描述信息 <Input
-							type="text"
-							placeholder="描述信息"
-							class="max-w-xs"
-							bind:value={themeDescription}
-						/>
-					</p>
+					<AlertDialog.Description>
+						给你的新主题起一个名字和描述。描述是可选的。
+					</AlertDialog.Description>
 				</AlertDialog.Header>
+				<div class="grid grid-cols-[auto_1fr] items-center gap-4 py-4">
+					<label for="theme-name">主题名</label>
+					<Input id="theme-name" bind:value={themeName} />
+
+					<label for="theme-description">描述</label>
+					<Input id="theme-description" bind:value={themeDescription} />
+				</div>
 				<AlertDialog.Footer>
 					<AlertDialog.Cancel>算了</AlertDialog.Cancel>
 					<AlertDialog.Action onclick={handleCreateTheme}>确定</AlertDialog.Action>
@@ -199,20 +193,21 @@
 		<AlertDialog.Content>
 			<AlertDialog.Header>
 				<AlertDialog.Title>编辑主题</AlertDialog.Title>
-				<p>
-					主题名 <Input type="text" class="max-w-xs" bind:value={editingTheme.name} />
-				</p>
-				<p>
-					描述信息 <Input type="text" class="max-w-xs" bind:value={editingTheme.description} />
-				</p>
-				<p>
-					排序 <Input type="number" class="max-w-xs" bind:value={editingTheme.order} />
-				</p>
-				<p>
-					是否激活
-					<input type="checkbox" bind:checked={editingTheme.is_active} />
-				</p>
+				<AlertDialog.Description> 修改主题信息。点击"确定"保存更改。 </AlertDialog.Description>
 			</AlertDialog.Header>
+			<div class="grid grid-cols-[auto_1fr] items-center gap-4 py-4">
+				<label for="edit-theme-name">主题名</label>
+				<Input id="edit-theme-name" bind:value={editingTheme.name} />
+
+				<label for="edit-theme-description">描述</label>
+				<Input id="edit-theme-description" bind:value={editingTheme.description} />
+
+				<label for="edit-theme-order">排序</label>
+				<Input id="edit-theme-order" type="number" bind:value={editingTheme.order} />
+
+				<label for="edit-theme-active">激活状态</label>
+				<Switch id="edit-theme-active" bind:checked={editingTheme.is_active} />
+			</div>
 			<AlertDialog.Footer>
 				<AlertDialog.Cancel>取消</AlertDialog.Cancel>
 				<AlertDialog.Action onclick={handleEditTheme}>确定</AlertDialog.Action>
