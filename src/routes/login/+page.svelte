@@ -5,7 +5,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { cn } from '$lib/utils.js';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { login } from '$lib/api/user_request';
+	import { login, verifyToken } from '$lib/api/user_request';
 	import { goto } from '$app/navigation';
 	import * as Alert from '$lib/components/ui/alert/index.js';
 	import CheckCircle2Icon from '@lucide/svelte/icons/check-circle-2';
@@ -16,8 +16,10 @@
 	import GithubIcon from '@lucide/svelte/icons/github';
 	import Video from '@lucide/svelte/icons/video';
 	import Mail from '@lucide/svelte/icons/mail';
+	import { onMount } from 'svelte';
 
 	let { class: className, ...restProps }: HTMLAttributes<HTMLDivElement> = $props();
+
 	const id = $props.id();
 
 	let userName = $state('');
@@ -37,7 +39,7 @@
 			isLoading = true;
 			errorMessage = '';
 			hideAlerts();
-			
+
 			const response = await login(userName, userPassword);
 			if (response.code === 200) {
 				showSuccessAlert = true;
@@ -58,38 +60,24 @@
 			isLoading = false;
 		}
 	}
-</script>
 
-<!-- 
-<Alert.Root>
-    <CheckCircle2Icon />
-    <Alert.Title>Success! Your changes have been saved</Alert.Title>
-    <Alert.Description>This is an alert with icon, title and description.</Alert.Description>
-</Alert.Root>
-<Alert.Root>
-    <PopcornIcon />
-    <Alert.Title>This Alert has a title and an icon. No description.</Alert.Title>
-</Alert.Root>
-<Alert.Root variant="destructive">
-    <AlertCircleIcon />
-    <Alert.Title>Unable to process your payment.</Alert.Title>
-    <Alert.Description>
-        <p>Please verify your billing information and try again.</p>
-        <ul class="list-inside list-disc text-sm">
-            <li>Check your card details</li>
-            <li>Ensure sufficient funds</li>
-            <li>Verify billing address</li>
-        </ul>
-    </Alert.Description>
-</Alert.Root> -->
+	onMount(async () => {
+		const checkResult = await verifyToken();
+		if (checkResult.code === 200) {
+			goto('/dashboard');
+		}
+	});
+</script>
 
 <div class="flex min-h-screen flex-col">
 	<NavHeader />
 
-	<div class="relative -mt-16 flex flex-1 flex-col items-center justify-center bg-muted p-6 md:p-10">
+	<div
+		class="relative -mt-16 flex flex-1 flex-col items-center justify-center bg-muted p-6 md:p-10"
+	>
 		<div class="h-fit w-full max-w-sm md:max-w-3xl">
 			{#if showSuccessAlert}
-				<Alert.Root class="mb-4 animate-in fade-in slide-in-from-top-2 duration-300">
+				<Alert.Root class="mb-4 duration-300 animate-in fade-in slide-in-from-top-2">
 					<CheckCircle2Icon class="h-4 w-4" />
 					<Alert.Title>登录成功！</Alert.Title>
 					<Alert.Description>正在跳转到首页...</Alert.Description>
@@ -97,7 +85,10 @@
 			{/if}
 
 			{#if showErrorAlert}
-				<Alert.Root variant="destructive" class="mb-4 animate-in fade-in slide-in-from-top-2 duration-300">
+				<Alert.Root
+					variant="destructive"
+					class="mb-4 duration-300 animate-in fade-in slide-in-from-top-2"
+				>
 					<AlertCircleIcon class="h-4 w-4" />
 					<Alert.Title>登录失败</Alert.Title>
 					<Alert.Description>{errorMessage}</Alert.Description>
@@ -105,7 +96,9 @@
 			{/if}
 
 			<div class={cn('flex flex-col gap-6', className)} {...restProps}>
-				<Card.Root class="overflow-hidden p-0 shadow-lg transition-all duration-300 hover:shadow-xl">
+				<Card.Root
+					class="overflow-hidden p-0 shadow-lg transition-all duration-300 hover:shadow-xl"
+				>
 					<Card.Content class="grid min-h-[600px] p-0 md:grid-cols-2">
 						<form class="flex flex-col justify-center p-8 md:p-12" onsubmit={handleSubmit}>
 							<div class="flex flex-col gap-8">

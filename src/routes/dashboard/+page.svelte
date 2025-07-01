@@ -12,7 +12,8 @@
 		Moon,
 		Search,
 		MessageSquare,
-		HelpCircle
+		HelpCircle,
+		LogOut
 	} from 'lucide-svelte';
 	import { getUserInfo, type UserInfo } from '$lib/api/user_request';
 	import { onMount } from 'svelte';
@@ -20,14 +21,15 @@
 	import Themes from './components/themes.svelte';
 	import Resources from './components/resources.svelte';
 	import { getAllThemeWithStats } from '@/api/theme_request';
-	import {type ThemeWithStatSchema } from '@/api/response_schema';
+	import { type ThemeWithStatSchema } from '@/api/response_schema';
+	import { goto } from '$app/navigation';
 
 	let userInfo: UserInfo | null = $state(null);
 	let isSidebarOpen = $state(true);
 	let activeTab = $state('overview');
 	let themeData: ThemeWithStatSchema[] | null = $state(null);
 
-	async function refreshThemes(){
+	async function refreshThemes() {
 		const themeSchemaResp = await getAllThemeWithStats();
 		themeData = themeSchemaResp.data ?? null;
 	}
@@ -53,6 +55,11 @@
 		event.preventDefault();
 		activeTab = tab;
 	}
+
+	function logout() {
+		localStorage.removeItem('token');
+		goto('/');
+	}
 </script>
 
 <div class="flex min-h-screen flex-col">
@@ -70,6 +77,34 @@
 							<AvatarFallback>{userInfo?.user_name?.slice(0, 2).toUpperCase()}</AvatarFallback>
 						</Avatar>
 						<span class="font-bold">{userInfo?.user_name || '用户'}</span>
+						<!-- 用户下拉菜单 -->
+						<div class="group relative">
+							<Button variant="ghost" size="icon" class="ml-1">
+								<svg
+									class="h-4 w-4"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									viewBox="0 0 24 24"
+									><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg
+								>
+							</Button>
+							<ul
+								class="absolute right-0 top-10 z-10 hidden min-w-[120px] rounded-md border bg-background py-1 text-sm shadow-md group-hover:block"
+							>
+								<li>
+									<a href="/" class="block px-4 py-2 hover:bg-accent hover:text-accent-foreground"
+										>主页</a
+									>
+								</li>
+								<li>
+									<button
+										class="w-full px-4 py-2 text-left hover:bg-accent hover:text-accent-foreground"
+										onclick={logout}>登出</button
+									>
+								</li>
+							</ul>
+						</div>
 					</div>
 				</div>
 
@@ -98,6 +133,14 @@
 							<NavigationMenu.Link>
 								<Button variant="ghost" size="icon">
 									<HelpCircle class="h-5 w-5" />
+								</Button>
+							</NavigationMenu.Link>
+						</NavigationMenu.Item>
+						<NavigationMenu.Item>
+							<NavigationMenu.Link>
+								<!-- 返回主页按钮 -->
+								<Button variant="ghost" size="icon" onclick={() => goto('/')} title="返回主页">
+									<LogOut class="h-5 w-5" />
 								</Button>
 							</NavigationMenu.Link>
 						</NavigationMenu.Item>
@@ -147,7 +190,7 @@
 				{#if activeTab === 'overview'}
 					<Overview />
 				{:else if activeTab === 'themes'}
-					<Themes themes={themeData} onRefresh={refreshThemes}/>
+					<Themes themes={themeData} onRefresh={refreshThemes} />
 				{:else if activeTab === 'resources'}
 					<Resources />
 				{/if}
