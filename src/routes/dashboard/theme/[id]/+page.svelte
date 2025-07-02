@@ -24,8 +24,8 @@
 		BookMarked
 	} from 'lucide-svelte';
 	import { onMount } from 'svelte';
-	import Editor from './components/Editor.svelte';
-	import Preview from './components/Preview.svelte';
+	import Editor from './components/editor.svelte';
+	import Preview from './components/preview.svelte';
 
 	// --- Type Definitions ---
 	interface Article {

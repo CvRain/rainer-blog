@@ -50,6 +50,7 @@
     "@types/dompurify": "^3.0.5",
     "@types/marked": "^5.0.2",
     "axios": "^1.10.0",
+    "carta-md": "^4.11.1",
     "dompurify": "^3.2.6",
     "lucide-svelte": "^0.487.0",
     "marked": "^15.0.12",
