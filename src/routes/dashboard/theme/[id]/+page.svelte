@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { Button } from '$lib/components/ui/button';
-	import * as Resizable from '$lib/components/ui/resizable/index.js';
 	import { ScrollArea } from '$lib/components/ui/scroll-area';
 	import { Separator } from '$lib/components/ui/separator';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
@@ -25,7 +24,8 @@
 	} from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import Editor from './components/editor.svelte';
-	import Preview from './components/preview.svelte';
+	import { MarkdownEditor, Carta } from 'carta-md';
+	import 'carta-md/default.css';
 
 	// --- Type Definitions ---
 	interface Article {
@@ -89,16 +89,15 @@
 	// --- Component State ---
 	let selectedArticle: Article | null = $state(null);
 	let sidebarCollapsed = $state(false);
-	let splitDirection = $state<'horizontal' | 'vertical'>('vertical');
+	const fileUploadInput: { current: HTMLInputElement | null } = { current: null };
+	const cartaPreview = new Carta({
+		sanitizer: false
+	});
 	let editingItem: { type: string; id: number } | null = $state(null);
 	let editingText = $state('');
-	const fileUploadInput: { current: HTMLInputElement | null } = { current: null };
 
 	// --- Functions ---
-	function createNew(
-		type: 'chapter' | 'article' | 'folder',
-		parent?: Chapter | ResourceFolder
-	) {
+	function createNew(type: 'chapter' | 'article' | 'folder', parent?: Chapter | ResourceFolder) {
 		const newId = Date.now();
 		if (type === 'chapter') {
 			theme.chapters.push({ id: newId, title: '新章节', expanded: true, articles: [] });
@@ -194,10 +193,6 @@
 		sidebarCollapsed = !sidebarCollapsed;
 	}
 
-	function toggleSplitDirection() {
-		splitDirection = splitDirection === 'vertical' ? 'horizontal' : 'vertical';
-	}
-
 	onMount(() => {
 		if (theme.chapters[0]?.articles[0]) {
 			selectedArticle = theme.chapters[0].articles[0];
@@ -213,20 +208,11 @@
 			</Button>
 			<h1 class="text-lg font-semibold">{theme.title}</h1>
 		</div>
-		<div class="ml-auto flex items-center gap-2">
-			<Button variant="ghost" size="icon" onclick={toggleSplitDirection} title="切换分栏方向">
-				{#if splitDirection === 'vertical'}
-					<PanelRight class="h-5 w-5" />
-				{:else}
-					<PanelTop class="h-5 w-5" />
-				{/if}
-			</Button>
-		</div>
 	</header>
 
-	<Resizable.PaneGroup direction="horizontal" class="flex-1">
+	<div class="flex-1 flex flex-row"> 
 		{#if !sidebarCollapsed}
-			<Resizable.Pane defaultSize={20} minSize={15} class="min-w-[240px]">
+			<div class="min-w-[240px] max-w-xs w-1/5 border-r border-zinc-200 dark:border-zinc-800 bg-background">
 				<ScrollArea class="h-full p-2">
 					<!-- Chapters & Articles -->
 					<div class="mb-4">
@@ -273,7 +259,7 @@
 
 									<DropdownMenu.Root>
 										<DropdownMenu.Trigger
-											class="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-colors group-hover:opacity-100 hover:bg-accent-foreground/10"
+											class="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-colors hover:bg-accent-foreground/10 group-hover:opacity-100"
 										>
 											<MoreVertical class="h-4 w-4" />
 										</DropdownMenu.Trigger>
@@ -299,7 +285,7 @@
 									<div class="ml-5 border-l border-dashed pl-2.5">
 										{#each chapter.articles as article (article.id)}
 											<div
-												class="group flex w-full items-center gap-1.5 rounded-md py-1 pr-1 pl-2 text-sm"
+												class="group flex w-full items-center gap-1.5 rounded-md py-1 pl-2 pr-1 text-sm"
 												class:bg-accent={selectedArticle?.id === article.id}
 											>
 												<button
@@ -323,7 +309,7 @@
 
 												<DropdownMenu.Root>
 													<DropdownMenu.Trigger
-														class="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-colors group-hover:opacity-100 hover:bg-accent-foreground/10"
+														class="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-colors hover:bg-accent-foreground/10 group-hover:opacity-100"
 													>
 														<MoreVertical class="h-4 w-4" />
 													</DropdownMenu.Trigger>
@@ -354,9 +340,7 @@
 					<!-- Resources -->
 					<div class="mt-4">
 						<div class="mb-2 flex items-center justify-between px-2 py-1">
-							<h2 class="text-sm font-semibold tracking-tight text-muted-foreground">
-								资源文件
-							</h2>
+							<h2 class="text-sm font-semibold tracking-tight text-muted-foreground">资源文件</h2>
 							<Button
 								variant="ghost"
 								size="icon"
@@ -399,7 +383,7 @@
 									</button>
 									<DropdownMenu.Root>
 										<DropdownMenu.Trigger
-											class="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-colors group-hover:opacity-100 hover:bg-accent-foreground/10"
+											class="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-colors hover:bg-accent-foreground/10 group-hover:opacity-100"
 										>
 											<MoreVertical class="h-4 w-4" />
 										</DropdownMenu.Trigger>
@@ -425,7 +409,7 @@
 									<div class="ml-5 border-l border-dashed pl-2.5">
 										{#each folder.files as file (file.id)}
 											<div
-												class="group flex w-full items-center gap-1.5 rounded-md py-1 pr-1 pl-2 text-sm hover:bg-accent"
+												class="group flex w-full items-center gap-1.5 rounded-md py-1 pl-2 pr-1 text-sm hover:bg-accent"
 											>
 												<Image class="h-4 w-4 shrink-0 text-muted-foreground" />
 												{#if editingItem?.type === 'file' && editingItem.id === file.id}
@@ -441,7 +425,7 @@
 												{/if}
 												<DropdownMenu.Root>
 													<DropdownMenu.Trigger
-														class="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-colors group-hover:opacity-100 hover:bg-accent-foreground/10"
+														class="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-colors hover:bg-accent-foreground/10 group-hover:opacity-100"
 													>
 														<MoreVertical class="h-4 w-4" />
 													</DropdownMenu.Trigger>
@@ -467,39 +451,17 @@
 						{/each}
 					</div>
 				</ScrollArea>
-			</Resizable.Pane>
+			</div>
 		{/if}
-
-		<Resizable.Handle withHandle />
-
-		<Resizable.Pane defaultSize={80}>
-			<Resizable.PaneGroup direction={splitDirection} class="h-full w-full">
-				<Resizable.Pane defaultSize={50} minSize={20}>
-					{#if selectedArticle}
-						<Editor bind:article={selectedArticle} />
-					{:else}
-						<div
-							class="flex h-full flex-col items-center justify-center gap-2 text-muted-foreground"
-						>
-							<BookMarked class="h-10 w-10" />
-							<span class="text-lg">请选择一篇文章开始编辑</span>
-						</div>
-					{/if}
-				</Resizable.Pane>
-				<Resizable.Handle withHandle />
-				<Resizable.Pane defaultSize={50} minSize={20}>
-					{#if selectedArticle}
-						<Preview article={selectedArticle} />
-					{:else}
-						<div
-							class="flex h-full flex-col items-center justify-center gap-2 text-muted-foreground"
-						>
-							<BookMarked class="h-10 w-10" />
-							<span class="text-lg">预览区域</span>
-						</div>
-					{/if}
-				</Resizable.Pane>
-			</Resizable.PaneGroup>
-		</Resizable.Pane>
-	</Resizable.PaneGroup>
+		<div class="flex-1">
+			{#if selectedArticle}
+				<Editor bind:article={selectedArticle} />
+			{:else}
+				<div class="flex h-full flex-col items-center justify-center gap-2 text-muted-foreground">
+					<BookMarked class="h-10 w-10" />
+					<span class="text-lg">请选择一篇文章开始编辑</span>
+				</div>
+			{/if}
+		</div>
+	</div>
 </div>
