@@ -4,6 +4,7 @@
 	import { ScrollArea } from '$lib/components/ui/scroll-area';
 	import { Separator } from '$lib/components/ui/separator';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import * as Card from '$lib/components/ui/card/index.js';
 	import { Input } from '$lib/components/ui/input';
 	import {
 		ChevronDown,
@@ -200,20 +201,34 @@
 	});
 </script>
 
-<div class="flex h-screen flex-col bg-background text-foreground">
-	<header class="flex h-14 shrink-0 items-center border-b px-4">
+<div
+	class="editor-bg flex h-screen flex-col bg-gradient-to-br from-zinc-50 via-white to-zinc-100 font-sans text-foreground dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-900"
+>
+	<header
+		class="flex h-14 shrink-0 items-center border-b bg-white/80 px-4 shadow-sm backdrop-blur-md dark:bg-zinc-900/80"
+	>
 		<div class="flex items-center gap-2">
-			<Button variant="ghost" size="icon" onclick={toggleSidebar} title="Toggle sidebar">
+			<Button
+				variant="ghost"
+				size="icon"
+				onclick={toggleSidebar}
+				title="Toggle sidebar"
+				class="rounded-full transition hover:bg-zinc-200 dark:hover:bg-zinc-800"
+			>
 				<PanelLeft class="h-5 w-5" />
 			</Button>
-			<h1 class="text-lg font-semibold">{theme.title}</h1>
+			<h1 class="text-lg font-bold tracking-tight text-zinc-800 drop-shadow-sm dark:text-zinc-100">
+				{theme.title}
+			</h1>
 		</div>
 	</header>
 
-	<div class="flex-1 flex flex-row"> 
+	<div class="flex flex-1 flex-row gap-4 p-4">
 		{#if !sidebarCollapsed}
-			<div class="min-w-[240px] max-w-xs w-1/5 border-r border-zinc-200 dark:border-zinc-800 bg-background">
-				<ScrollArea class="h-full p-2">
+			<div
+				class="sidebar mr-2 flex w-1/5 min-w-[260px] max-w-xs flex-col gap-4 rounded-xl border-r border-zinc-200 bg-white/90 p-2 shadow-lg transition-all dark:border-zinc-800 dark:bg-zinc-900/90"
+			>
+				<ScrollArea class="h-full">
 					<!-- Chapters & Articles -->
 					<div class="mb-4">
 						<div class="mb-2 flex items-center justify-between px-2 py-1">
@@ -221,17 +236,17 @@
 							<Button
 								variant="ghost"
 								size="icon"
-								class="h-7 w-7"
+								class="h-7 w-7 rounded-full bg-gradient-to-tr from-blue-100 to-blue-300 transition hover:scale-105 dark:from-blue-900 dark:to-blue-700"
 								onclick={() => createNew('chapter')}
 								title="新建章节"
 							>
-								<Plus class="h-4 w-4" />
+								<Plus class="h-4 w-4 text-blue-700 dark:text-blue-200" />
 							</Button>
 						</div>
 						{#each theme.chapters as chapter (chapter.id)}
 							<div>
 								<div
-									class="group flex w-full items-center gap-1 rounded-md py-1 pr-1 text-sm hover:bg-accent"
+									class="group flex w-full cursor-pointer items-center gap-1 rounded-lg py-1 pr-1 text-sm shadow-sm transition hover:bg-blue-50 dark:hover:bg-blue-900/40"
 								>
 									<button
 										class="flex flex-1 items-center gap-1.5 pl-1 text-left"
@@ -246,24 +261,28 @@
 										{/if}
 										{#if editingItem?.type === 'chapter' && editingItem.id === chapter.id}
 											<Input
-												class="h-6 w-full"
+												class="h-6 w-full rounded border border-blue-300 focus:ring-2 focus:ring-blue-400"
 												value={editingText}
 												onblur={handleRename}
 												onkeydown={(e) => e.key === 'Enter' && handleRename(e)}
 												autofocus
 											/>
 										{:else}
-											<span class="flex-1 truncate">{chapter.title}</span>
+											<span class="flex-1 truncate font-medium text-zinc-800 dark:text-zinc-100"
+												>{chapter.title}</span
+											>
 										{/if}
 									</button>
 
 									<DropdownMenu.Root>
 										<DropdownMenu.Trigger
-											class="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-colors hover:bg-accent-foreground/10 group-hover:opacity-100"
+											class="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition hover:bg-blue-100 group-hover:opacity-100 dark:hover:bg-blue-800/40"
 										>
 											<MoreVertical class="h-4 w-4" />
 										</DropdownMenu.Trigger>
-										<DropdownMenu.Content>
+										<DropdownMenu.Content
+											class="rounded-lg border border-zinc-200 bg-white shadow-xl dark:border-zinc-800 dark:bg-zinc-900"
+										>
 											<DropdownMenu.Item onclick={() => createNew('article', chapter)}>
 												<Plus class="mr-2 h-4 w-4" /> 新建文章
 											</DropdownMenu.Item>
@@ -285,18 +304,17 @@
 									<div class="ml-5 border-l border-dashed pl-2.5">
 										{#each chapter.articles as article (article.id)}
 											<div
-												class="group flex w-full items-center gap-1.5 rounded-md py-1 pl-2 pr-1 text-sm"
-												class:bg-accent={selectedArticle?.id === article.id}
+												class="group flex w-full cursor-pointer items-center gap-1.5 rounded-md border-b border-zinc-100 py-1 pl-2 pr-1 text-sm transition last:border-b-0 hover:bg-blue-50 dark:border-zinc-800 dark:hover:bg-blue-900/30"
+												class:bg-blue-100={selectedArticle?.id === article.id}
 											>
 												<button
 													class="flex flex-1 items-center gap-1.5 text-left"
-													class:text-accent-foreground={selectedArticle?.id === article.id}
 													onclick={() => (selectedArticle = article)}
 												>
 													<FileText class="h-4 w-4 shrink-0 text-muted-foreground" />
 													{#if editingItem?.type === 'article' && editingItem.id === article.id}
 														<Input
-															class="h-6 w-full"
+															class="h-6 w-full rounded border border-blue-300 focus:ring-2 focus:ring-blue-400"
 															value={editingText}
 															onblur={handleRename}
 															onkeydown={(e) => e.key === 'Enter' && handleRename(e)}
@@ -306,21 +324,21 @@
 														<span class="flex-1 truncate">{article.title}</span>
 													{/if}
 												</button>
-
 												<DropdownMenu.Root>
 													<DropdownMenu.Trigger
-														class="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-colors hover:bg-accent-foreground/10 group-hover:opacity-100"
+														class="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition hover:bg-blue-100 group-hover:opacity-100 dark:hover:bg-blue-800/40"
 													>
 														<MoreVertical class="h-4 w-4" />
 													</DropdownMenu.Trigger>
-													<DropdownMenu.Content>
+													<DropdownMenu.Content
+														class="rounded-lg border border-zinc-200 bg-white shadow-xl dark:border-zinc-800 dark:bg-zinc-900"
+													>
 														<DropdownMenu.Item
 															onclick={() => editItem('article', article.id, article.title)}
 														>
 															<Edit class="mr-2 h-4 w-4" /> 重命名
 														</DropdownMenu.Item>
 														<DropdownMenu.Item
-															class="text-destructive"
 															onclick={() => deleteItem('article', article.id, chapter)}
 														>
 															<Trash2 class="mr-2 h-4 w-4" /> 删除
@@ -344,18 +362,18 @@
 							<Button
 								variant="ghost"
 								size="icon"
-								class="h-7 w-7"
+								class="h-7 w-7 rounded-full bg-gradient-to-tr from-amber-100 to-amber-300 transition hover:scale-105 dark:from-amber-900 dark:to-amber-700"
 								onclick={() => createNew('folder')}
 								title="新建文件夹"
 							>
-								<Plus class="h-4 w-4" />
+								<Plus class="h-4 w-4 text-amber-700 dark:text-amber-200" />
 							</Button>
 						</div>
 						<input type="file" bind:this={fileUploadInput.current} class="hidden" multiple />
 						{#each theme.resources as folder (folder.id)}
 							<div>
 								<div
-									class="group flex w-full items-center gap-1 rounded-md py-1 pr-1 text-sm hover:bg-accent"
+									class="group flex w-full cursor-pointer items-center gap-1 rounded-lg py-1 pr-1 text-sm shadow-sm transition hover:bg-amber-50 dark:hover:bg-amber-900/40"
 								>
 									<button
 										class="flex flex-1 items-center gap-1.5 pl-1 text-left"
@@ -368,29 +386,26 @@
 											<ChevronRight class="h-4 w-4 shrink-0" />
 											<FolderClosed class="h-4 w-4 text-amber-500" />
 										{/if}
-
 										{#if editingItem?.type === 'folder' && editingItem.id === folder.id}
 											<Input
-												class="h-6 w-full"
-												value={editingText}
-												onblur={handleRename}
-												onkeydown={(e) => e.key === 'Enter' && handleRename(e)}
+												class="h-6 w-full rounded border border-amber-300 focus:ring-2 focus:ring-amber-400"
 												autofocus
 											/>
 										{:else}
-											<span class="flex-1 truncate">{folder.title}</span>
+											<span class="flex-1 truncate font-medium text-zinc-800 dark:text-zinc-100"
+												>{folder.title}</span
+											>
 										{/if}
 									</button>
 									<DropdownMenu.Root>
 										<DropdownMenu.Trigger
-											class="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-colors hover:bg-accent-foreground/10 group-hover:opacity-100"
+											class="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition hover:bg-amber-100 group-hover:opacity-100 dark:hover:bg-amber-800/40"
 										>
 											<MoreVertical class="h-4 w-4" />
 										</DropdownMenu.Trigger>
-										<DropdownMenu.Content>
-											<DropdownMenu.Item onclick={() => triggerFileUpload(folder)}>
-												<UploadCloud class="mr-2 h-4 w-4" /> 上传文件
-											</DropdownMenu.Item>
+										<DropdownMenu.Content
+											class="rounded-lg border border-zinc-200 bg-white shadow-xl dark:border-zinc-800 dark:bg-zinc-900"
+										>
 											<DropdownMenu.Item
 												onclick={() => editItem('folder', folder.id, folder.title)}
 											>
@@ -409,40 +424,10 @@
 									<div class="ml-5 border-l border-dashed pl-2.5">
 										{#each folder.files as file (file.id)}
 											<div
-												class="group flex w-full items-center gap-1.5 rounded-md py-1 pl-2 pr-1 text-sm hover:bg-accent"
+												class="flex items-center gap-2 py-1 text-xs text-zinc-600 dark:text-zinc-300"
 											>
-												<Image class="h-4 w-4 shrink-0 text-muted-foreground" />
-												{#if editingItem?.type === 'file' && editingItem.id === file.id}
-													<Input
-														class="h-6 w-full flex-1"
-														value={editingText}
-														onblur={handleRename}
-														onkeydown={(e) => e.key === 'Enter' && handleRename(e)}
-														autofocus
-													/>
-												{:else}
-													<span class="flex-1 truncate">{file.title}</span>
-												{/if}
-												<DropdownMenu.Root>
-													<DropdownMenu.Trigger
-														class="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-colors hover:bg-accent-foreground/10 group-hover:opacity-100"
-													>
-														<MoreVertical class="h-4 w-4" />
-													</DropdownMenu.Trigger>
-													<DropdownMenu.Content>
-														<DropdownMenu.Item
-															onclick={() => editItem('file', file.id, file.title)}
-														>
-															<Edit class="mr-2 h-4 w-4" /> 重命名
-														</DropdownMenu.Item>
-														<DropdownMenu.Item
-															class="text-destructive"
-															onclick={() => deleteItem('file', file.id, folder)}
-														>
-															<Trash2 class="mr-2 h-4 w-4" /> 删除
-														</DropdownMenu.Item>
-													</DropdownMenu.Content>
-												</DropdownMenu.Root>
+												<Image class="h-4 w-4 text-amber-400" />
+												<span class="truncate">{file.title}</span>
 											</div>
 										{/each}
 									</div>
@@ -453,15 +438,49 @@
 				</ScrollArea>
 			</div>
 		{/if}
-		<div class="flex-1">
-			{#if selectedArticle}
-				<Editor bind:article={selectedArticle} />
-			{:else}
-				<div class="flex h-full flex-col items-center justify-center gap-2 text-muted-foreground">
-					<BookMarked class="h-10 w-10" />
-					<span class="text-lg">请选择一篇文章开始编辑</span>
-				</div>
-			{/if}
-		</div>
+		<Card.Root class="flex-1 h-full min-w-0">
+			<Card.Content class="h-full flex-1 min-h-0">
+				{#if selectedArticle}
+					<div
+						class="editor-content flex h-full min-h-0 w-full flex-1 flex-col rounded-2xl bg-white/90 p-0 shadow-2xl transition-all dark:bg-zinc-900/90"
+					>
+						<Editor bind:article={selectedArticle} />
+					</div>
+				{:else}
+					<div
+						class="flex h-full flex-col items-center justify-center gap-4 text-muted-foreground opacity-80"
+					>
+						<BookMarked class="mb-2 h-16 w-16 text-zinc-300 dark:text-zinc-700" />
+						<p class="text-lg font-semibold">请选择左侧文章进行编辑</p>
+						<p class="text-sm">点击“新建章节”或“新建文章”开始创作吧！</p>
+					</div>
+				{/if}
+			</Card.Content>
+		</Card.Root>
 	</div>
 </div>
+
+<style>
+	.editor-bg {
+		font-family: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+	}
+	.sidebar {
+		box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.04);
+	}
+	.editor-content {
+		box-shadow: 0 4px 32px 0 rgba(0, 0, 0, 0.08);
+		transition: box-shadow 0.2s;
+	}
+	.editor-content:focus-within {
+		box-shadow: 0 8px 40px 0 rgba(0, 0, 0, 0.12);
+	}
+	::-webkit-scrollbar {
+		height: 8px;
+		width: 8px;
+		background: transparent;
+	}
+	::-webkit-scrollbar-thumb {
+		background: #e5e7eb;
+		border-radius: 4px;
+	}
+</style>
