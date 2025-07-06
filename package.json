@@ -17,6 +17,7 @@
     "@eslint/compat": "^1.2.5",
     "@eslint/js": "^9.18.0",
     "@lucide/svelte": "^0.482.0",
+    "@shikijs/themes": "^3.7.0",
     "@sveltejs/adapter-node": "^5.2.11",
     "@sveltejs/kit": "^2.16.0",
     "@sveltejs/vite-plugin-svelte": "^5.0.0",
@@ -36,6 +37,7 @@
     "prettier": "^3.4.2",
     "prettier-plugin-svelte": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.10",
+    "shiki": "^3.7.0",
     "svelte": "^5.0.0",
     "svelte-check": "^4.0.0",
     "tailwind-merge": "^3.2.0",
@@ -48,6 +50,8 @@
   },
   "dependencies": {
     "@cartamd/plugin-code": "^4.2.0",
+    "@cartamd/plugin-emoji": "^4.3.0",
+    "@cartamd/plugin-slash": "^4.2.0",
     "@types/dompurify": "^3.0.5",
     "@types/marked": "^5.0.2",
     "axios": "^1.10.0",
@@ -56,6 +60,7 @@
     "isomorphic-dompurify": "^2.25.0",
     "lucide-svelte": "^0.487.0",
     "marked": "^15.0.12",
-    "mode-watcher": "^0.5.1"
+    "mode-watcher": "^0.5.1",
+    "tm-themes": "^1.10.6"
   }
 }

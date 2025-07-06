@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { code } from '@cartamd/plugin-code';
 	import { MarkdownEditor, Carta } from 'carta-md';
 	import 'carta-md/default.css';
-	import DOMPurify from 'isomorphic-dompurify';
+	import { emoji } from '@cartamd/plugin-emoji';
+	import { slash } from '@cartamd/plugin-slash';
+	import { code } from '@cartamd/plugin-code';
+	import '$lib/css/atom-dark.css'
+import { codeToHtml } from 'shiki'
 
 	export let article: {
 		id: number;
@@ -13,23 +16,53 @@
 
 	// 允许h1-h5标签，直接手动列出所有允许的标签
 	const allowedTags = [
-		'a', 'b', 'i', 'u', 'em', 'strong', 'p', 'ul', 'ol', 'li', 'pre', 'code', 'blockquote', 'hr', 'br', 'img',
-		'table', 'thead', 'tbody', 'tr', 'th', 'td', 'span', 'div',
-		'h1', 'h2', 'h3', 'h4', 'h5'
+		'a',
+		'b',
+		'i',
+		'u',
+		'em',
+		'strong',
+		'p',
+		'ul',
+		'ol',
+		'li',
+		'pre',
+		'code',
+		'blockquote',
+		'hr',
+		'br',
+		'img',
+		'table',
+		'thead',
+		'tbody',
+		'tr',
+		'th',
+		'td',
+		'span',
+		'div',
+		'h1',
+		'h2',
+		'h3',
+		'h4',
+		'h5'
 	];
 
 	let carta: Carta | null = null;
 	let value = article.content;
 	let mounted = false;
 
-	onMount(() => {
+	onMount(async() => {
 		carta = new Carta({
-			sanitizer: (html: string) => DOMPurify.sanitize(html, { ALLOWED_TAGS: allowedTags }),
+			sanitizer: false,
 			extensions: [
-				code({
-					theme: 'catppuccin-mocha'
-				})
-			]
+				emoji(),
+				slash(),
+				code(),
+			],
+
+			shikiOptions:{
+				themes: ['catppuccin-latte', 'catppuccin-mocha']
+			}
 		});
 		mounted = true;
 	});
@@ -40,7 +73,7 @@
 	}
 </script>
 
-<main class="h-full flex flex-col min-h-0">
+<main class="flex h-full min-h-0 flex-col">
 	<!-- 标题栏 -->
 	<div
 		class="flex items-center justify-between border-b border-zinc-200 bg-zinc-50 px-4 py-2 dark:border-zinc-800 dark:bg-zinc-900"
@@ -54,10 +87,10 @@
 		</div>
 	</div>
 	<!-- 编辑器主体 -->
-	<div class="flex min-h-0 flex-1 flex-col h-full">
+	<div class="flex h-full min-h-0 flex-1 flex-col">
 		<div class="h-full min-h-0 w-full flex-1">
 			{#if mounted && carta}
-				<MarkdownEditor bind:value={value} {carta} />
+				<MarkdownEditor bind:value {carta} mode="tabs" />
 			{:else}
 				<div>Loading editor...</div>
 			{/if}
