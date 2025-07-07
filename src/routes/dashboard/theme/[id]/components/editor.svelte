@@ -5,14 +5,11 @@
 	import { emoji } from '@cartamd/plugin-emoji';
 	import { slash } from '@cartamd/plugin-slash';
 	import { code } from '@cartamd/plugin-code';
-	import '$lib/css/atom-dark.css'
-import { codeToHtml } from 'shiki'
+	import '$lib/css/atom-dark.css';
+	import { codeToHtml } from 'shiki';
+	import { updateArticleContent } from '@/api/article_request';
 
-	export let article: {
-		id: number;
-		title: string;
-		content: string;
-	};
+	let { article } = $props();
 
 	// 允许h1-h5标签，直接手动列出所有允许的标签
 	const allowedTags = [
@@ -47,29 +44,31 @@ import { codeToHtml } from 'shiki'
 		'h5'
 	];
 
-	let carta: Carta | null = null;
-	let value = article.content;
-	let mounted = false;
+	let carta: Carta | null = $state(null);
+	let mounted = $state(false);
+	let value = $derived(article.content);
 
-	onMount(async() => {
+	onMount(async () => {
 		carta = new Carta({
 			sanitizer: false,
-			extensions: [
-				emoji(),
-				slash(),
-				code(),
-			],
+			extensions: [emoji(), slash(), code()],
 
-			shikiOptions:{
+			shikiOptions: {
 				themes: ['catppuccin-latte', 'catppuccin-mocha']
 			}
 		});
 		mounted = true;
 	});
-	$: article.content = value;
 
-	function handleSave() {
-		alert('保存成功（示例）');
+	async function handleSave() {
+		if (!article?.id) return;
+		const resp = await updateArticleContent(article.id, value);
+		if (resp.code === 200 && resp.data) {
+			alert('保存成功');
+			article.content = resp.data.content;
+		} else {
+			alert('保存失败');
+		}
 	}
 </script>
 
@@ -82,7 +81,7 @@ import { codeToHtml } from 'shiki'
 		<div class="flex gap-2">
 			<button
 				class="rounded bg-blue-600 px-3 py-1 text-sm text-white transition hover:bg-blue-700"
-				on:click={handleSave}>保存</button
+				onclick={handleSave}>保存</button
 			>
 		</div>
 	</div>

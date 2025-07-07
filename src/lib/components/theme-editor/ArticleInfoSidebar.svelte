@@ -15,7 +15,7 @@ export let selectedArticle: any;
           <Info class="h-5 w-5 text-blue-500" />
           <h2 class="text-lg font-semibold text-zinc-800 dark:text-zinc-100">文章详情</h2>
         </div>
-        <!-- 基本信息 -->
+        <!-- 基本信息 -->zz
         <div class="space-y-4">
           <div>
             <label class="text-sm font-medium text-zinc-600 dark:text-zinc-400">标题</label>

@@ -37,94 +37,72 @@
 	import ThemeEditorHeader from '$lib/components/theme-editor/ThemeEditorHeader.svelte';
 	import ThemeEditorSidebar from '$lib/components/theme-editor/ThemeEditorSidebar.svelte';
 	import ArticleInfoSidebar from '$lib/components/theme-editor/ArticleInfoSidebar.svelte';
+	import type { ApiTheme, ApiChapter, ApiArticle } from '@/api/response_schema';
+	import { getOneThemeWithDetails } from '@/api/theme_request';
+	import { getArticleDetail } from '@/api/article_request';
 
-	// --- Type Definitions ---
-	interface Article {
-		id: number;
-		title: string;
-		content: string;
-	}
-	interface Chapter {
-		id: number;
-		title: string;
-		expanded: boolean;
-		articles: Article[];
-	}
-	interface ResourceFile {
-		id: number;
-		title: string;
-		type: string;
-		url: string;
-	}
-	interface ResourceFolder {
-		id: number;
-		title: string;
-		expanded: boolean;
-		files: ResourceFile[];
-	}
-
-	// --- Mock Data ---
-	let theme: {
-		id: string;
-		title: string;
-		description: string;
-		chapters: Chapter[];
-		resources: ResourceFolder[];
-	} = $state({
-		id: $page.params.id,
-		title: 'Web开发基础',
-		description: '涵盖HTML、CSS和JavaScript的基础知识',
-		chapters: [
-			{
-				id: 1,
-				title: 'HTML基础',
-				expanded: true,
-				articles: [
-					{ id: 101, title: 'HTML简介', content: '# HTML简介...' },
-					{ id: 102, title: 'HTML标签', content: '# HTML标签...' }
-				]
-			},
-			{ id: 2, title: 'CSS样式', expanded: false, articles: [] }
-		],
-		resources: [
-			{
-				id: 1,
-				title: '图片资源',
-				expanded: true,
-				files: [{ id: 1001, title: 'logo.png', type: 'image', url: '/images/logo.png' }]
-			},
-			{ id: 2, title: '文档', expanded: false, files: [] }
-		]
+	// theme 直接用 ApiTheme 类型
+	let theme: ApiTheme = $state({
+		id: '',
+		name: '',
+		description: '',
+		order: 0,
+		is_active: false,
+		inserted_at: '',
+		updated_at: '',
+		chapters: []
 	});
 
-	// --- Component State ---
-	let selectedArticle: Article | null = $state(null);
+	let selectedArticle: ApiArticle | null = $state(null);
 	let sidebarCollapsed = $state(false);
 	let rightSidebarCollapsed = $state(false);
 	const fileUploadInput: { current: HTMLInputElement | null } = { current: null };
-	const cartaPreview = new Carta({
-		sanitizer: false
-	});
-	let editingItem: { type: string; id: number } | null = $state(null);
+
+	let editingItem: { type: string; id: string } | null = $state(null);
 	let editingText = $state('');
 
+	let expandedChapters = $derived(
+		theme ? Object.fromEntries(theme.chapters.map((ch) => [ch.id, false])) : {}
+	);
+	function setExpandedChapters(v: Record<string, boolean>) { expandedChapters = v; }
+
 	// --- Functions ---
-	function createNew(type: 'chapter' | 'article' | 'folder', parent?: Chapter | ResourceFolder) {
-		const newId = Date.now();
+	function createNew(type: 'chapter' | 'article', parent?: ApiChapter) {
+		const newId = Date.now().toString();
+		if (!theme) return;
 		if (type === 'chapter') {
-			theme.chapters.push({ id: newId, title: '新章节', expanded: true, articles: [] });
+			const newChapter: ApiChapter = {
+				id: newId,
+				name: '新章节',
+				description: '',
+				order: theme.chapters.length + 1,
+				is_active: true,
+				inserted_at: new Date().toISOString(),
+				updated_at: new Date().toISOString(),
+				theme_id: theme.id,
+				articles: []
+			};
+			theme.chapters.push(newChapter);
 			editItem('chapter', newId, '新章节');
 		} else if (type === 'article' && parent) {
-			(parent as Chapter).articles.push({ id: newId, title: '新文章', content: `# 新文章` });
-			(parent as Chapter).expanded = true;
+			const newArticle: ApiArticle = {
+				id: newId,
+				title: '新文章',
+				content: '# 新文章',
+				aws_key: '',
+				order: parent.articles.length + 1,
+				is_active: true,
+				chapter_id: parent.id,
+				inserted_at: new Date().toISOString(),
+				updated_at: new Date().toISOString()
+			};
+			parent.articles.push(newArticle);
 			editItem('article', newId, '新文章');
-		} else if (type === 'folder') {
-			theme.resources.push({ id: newId, title: '新文件夹', expanded: true, files: [] });
-			editItem('folder', newId, '新文件夹');
 		}
 	}
 
-	function deleteItem(type: string, id: number, parent?: Chapter | ResourceFolder) {
+	function deleteItem(type: string, id: string, parent?: ApiChapter) {
+		if (!theme) return;
 		const confirmation = confirm(
 			`您确定要删除这个${type === 'chapter' ? '章节' : '文章'}吗？此操作无法撤销。`
 		);
@@ -133,30 +111,24 @@
 		if (type === 'chapter') {
 			theme.chapters = theme.chapters.filter((c) => c.id !== id);
 		} else if (type === 'article' && parent) {
-			(parent as Chapter).articles = (parent as Chapter).articles.filter((a) => a.id !== id);
-		} else if (type === 'folder') {
-			theme.resources = theme.resources.filter((f) => f.id !== id);
-		} else if (type === 'file' && parent) {
-			(parent as ResourceFolder).files = (parent as ResourceFolder).files.filter(
-				(f) => f.id !== id
-			);
+			parent.articles = parent.articles.filter((a) => a.id !== id);
 		}
 	}
 
-	function editItem(type: string, id: number, currentTitle: string) {
+	function editItem(type: string, id: string, currentTitle: string) {
 		editingItem = { type, id };
 		editingText = currentTitle;
 	}
 
 	function handleRename(e: Event) {
-		if (!editingItem) return;
+		if (!editingItem || !theme) return;
 		const { type, id } = editingItem;
 		const target = e.target as HTMLInputElement;
 		const newTitle = target.value;
 
 		if (type === 'chapter') {
 			const chapter = theme.chapters.find((c) => c.id === id);
-			if (chapter) chapter.title = newTitle;
+			if (chapter) chapter.name = newTitle;
 		} else if (type === 'article') {
 			for (const chapter of theme.chapters) {
 				const article = chapter.articles.find((a) => a.id === id);
@@ -165,36 +137,30 @@
 					break;
 				}
 			}
-		} else if (type === 'folder') {
-			const folder = theme.resources.find((f) => f.id === id);
-			if (folder) folder.title = newTitle;
-		} else if (type === 'file') {
-			for (const folder of theme.resources) {
-				const file = folder.files.find((f) => f.id === id);
-				if (file) {
-					file.title = newTitle;
-					break;
-				}
-			}
 		}
 		editingItem = null;
 	}
 
-	function handleFileUpload(e: Event, folder: ResourceFolder) {
+	function handleFileUpload(e: Event, folder: ApiChapter) {
 		const target = e.target as HTMLInputElement;
 		if (target.files) {
 			for (const file of Array.from(target.files)) {
-				folder.files.push({
-					id: Date.now(),
+				folder.articles.push({
+					id: Date.now().toString(),
 					title: file.name,
-					type: file.type.split('/')[0] || 'file',
-					url: URL.createObjectURL(file) // 模拟上传后返回的URL
+					content: '',
+					aws_key: '',
+					order: folder.articles.length + 1,
+					is_active: true,
+					chapter_id: folder.id,
+					inserted_at: new Date().toISOString(),
+					updated_at: new Date().toISOString()
 				});
 			}
 		}
 	}
 
-	function triggerFileUpload(folder: ResourceFolder) {
+	function triggerFileUpload(folder: ApiChapter) {
 		if (fileUploadInput.current) {
 			fileUploadInput.current.onchange = (e) => handleFileUpload(e, folder);
 			fileUploadInput.current.click();
@@ -213,9 +179,25 @@
 		history.back();
 	}
 
-	onMount(() => {
-		if (theme.chapters[0]?.articles[0]) {
-			selectedArticle = theme.chapters[0].articles[0];
+	async function handleSelectArticle(article: ApiArticle) {
+		const resp = await getArticleDetail(article.id);
+		if (resp.code === 200 && resp.data) {
+			selectedArticle = {
+				...article,
+				content: resp.data.s3_content ?? article.content
+			};
+		} else {
+			selectedArticle = article;
+		}
+	}
+
+	onMount(async () => {
+		const resp = await getOneThemeWithDetails($page.params.id);
+		if (resp.code === 200 && resp.data) {
+			theme = resp.data;
+			if (theme.chapters[0]?.articles[0]) {
+				selectedArticle = theme.chapters[0].articles[0];
+			}
 		}
 	});
 </script>
@@ -224,7 +206,7 @@
 	class="editor-bg flex h-screen flex-col bg-gradient-to-br from-zinc-50 via-white to-zinc-100 font-sans text-foreground dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-900"
 >
 	<ThemeEditorHeader
-		title={theme.title}
+		title={theme ? theme.name : ''}
 		onToggleSidebar={toggleSidebar}
 		onToggleRightSidebar={toggleRightSidebar}
 		onBack={handleBack}
@@ -240,17 +222,17 @@
 				onEditItem={editItem}
 				onDeleteItem={deleteItem}
 				onHandleRename={handleRename}
-				onSelectArticle={(article:any) => (selectedArticle = article)}
-				{fileUploadInput}
-				onTriggerFileUpload={triggerFileUpload}
+				onSelectArticle={handleSelectArticle}
+				{expandedChapters}
+				{setExpandedChapters}
 			/>
 		{/if}
-		<div class="flex-1 h-full min-w-0">
+		<div class="h-full min-w-0 flex-1">
 			{#if selectedArticle}
 				<div
 					class="editor-content flex h-full min-h-0 w-full flex-1 flex-col rounded-2xl bg-white/90 p-0 shadow-2xl transition-all dark:bg-zinc-900/90"
 				>
-					<Editor bind:article={selectedArticle} />
+					<Editor article={selectedArticle} />
 				</div>
 			{:else}
 				<div

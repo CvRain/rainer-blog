@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API_BASE_URL, type BaseResponse, handleError } from "./config";
-import { type ThemeCountData, type ThemeWithSchema, type ThemeWithStatSchema } from "./response_schema";
+import { type ApiTheme, type ThemeCountData, type ThemeWithSchema, type ThemeWithStatSchema } from "./response_schema";
 import type { UpdateThemeSchema } from "./request_schema";
 
 
@@ -97,5 +97,23 @@ export async function updateThemeInfo(schema: UpdateThemeSchema) {
             return response.data;
         })
         .catch(handleError);
+    return response;
+}
+
+export async function getThemeWithDetails(): Promise<BaseResponse<ApiTheme[]>> {
+    const response = await axios.get(API_BASE_URL + "/theme/all/with_details")
+    .then(function (response) {
+        return response.data;
+    })
+    .catch(handleError);
+    return response;
+}
+
+export async function getOneThemeWithDetails(themeId: string): Promise<BaseResponse<ApiTheme>> {
+    const response = await axios.get(`${API_BASE_URL}/theme/one/${themeId}/with_details`)
+    .then(function (response) {
+        return response.data;
+    })
+    .catch(handleError);
     return response;
 }

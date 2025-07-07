@@ -2,6 +2,7 @@ import { API_BASE_URL, type BaseResponse } from "./config";
 
 import axios from "axios";
 import { handleError } from "./config";
+import type { ApiArticle, ApiArticleDetail } from "./response_schema";
 
 export interface ArticleCountData {
     count: number
@@ -20,4 +21,75 @@ export async function getArticleCountThisWeek(): Promise<BaseResponse<ArticleCou
             return response.data;
         }).catch(handleError);
     return response;
+}
+
+export async function createArticle(title: string, content: string | null, chapter_id: string): Promise<BaseResponse<ApiArticle>> {
+    const data = {
+        title: title,
+        content: content,
+        chapter_id: chapter_id,
+    };
+
+    const config = {
+        method: 'post',
+        url: API_BASE_URL + "/article/one",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        data: data
+    };
+
+    return axios(config)
+        .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            return response.data;
+        })
+        .catch(function (error) {
+            console.log(error);
+            return handleError(error);
+        });
+}
+
+export async function removeArticle(article_id: string): Promise<BaseResponse<null>> {
+    const config = {
+        method: 'delete',
+        url: API_BASE_URL + "/article/one/" + article_id,
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    };
+    const response = await axios(config)
+        .then(function (response) {
+            return response.data;
+        }).catch(handleError);
+    return response;
+}
+
+export async function getArticleDetail(id: string): Promise<BaseResponse<ApiArticleDetail>> {
+    const config = {
+        method: 'get',
+        url: `${API_BASE_URL}/article/one/${id}`
+    }
+    return await axios(config)
+        .then(function (response) {
+            return response.data;
+        }).catch(handleError);
+}
+
+export async function updateArticleContent(id: string, content: string): Promise<BaseResponse<ApiArticle>> {
+    const config = {
+        method: 'patch',
+        url: `${API_BASE_URL}/article/one/`,
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'Content-Type': 'application/json'
+        },
+        data: { id, content }
+    };
+    return axios(config)
+        .then(function (response) {
+            return response.data;
+        })
+        .catch(handleError);
 }
