@@ -8,6 +8,8 @@
 	import { NavigationMenu } from 'bits-ui';
 	import NavHeader from '$lib/components/nav-header.svelte';
 	import NavFooter from '$lib/components/nav-footer.svelte';
+	import { getPublicArticleList } from '$lib/api/article_request';
+	import { goto } from '$app/navigation';
 
 	import {
 		BookOpen,
@@ -23,22 +25,18 @@
 	} from 'lucide-svelte';
 
 	import type { PageServerData } from './$types';
+	import type { ApiArticle } from '$lib/api/response_schema';
 
 	const { data: pageServerData } = $props();
 	let userInfo: UserInfo | null = pageServerData.userinfo;
+	let articles: ApiArticle[] = $state([]);
 
-	const articles = [
-		{
-			id: 1,
-			title: 'SvelteKit深度实践指南',
-			excerpt: '从项目搭建到部署的全流程解析...',
-			date: '2024-03-20',
-			cover: '/covers/sveltekit.jpg',
-			views: 1234,
-			tags: ['前端', '教程']
+	onMount(async () => {
+		const resp = await getPublicArticleList(1, 10);
+		if (resp.code === 200 && resp.data) {
+			articles = resp.data;
 		}
-		// 更多文章...
-	];
+	});
 </script>
 
 <div class="flex min-h-screen flex-col">
@@ -110,23 +108,16 @@
 			<!-- 右侧文章列表 -->
 			<div class="space-y-6 md:col-span-2">
 				{#each articles as article}
-					<Card class="transition-shadow hover:shadow-lg">
+					<Card class="transition-shadow hover:shadow-lg cursor-pointer" onclick={() => goto(`/article/${article.id}`)}>
 						<div class="flex">
-							<img src={article.cover} alt="Cover" class="h-32 w-32 rounded-l-lg object-cover" />
+							<img src={'/covers/sveltekit.jpg'} alt="Cover" class="h-32 w-32 rounded-l-lg object-cover" />
 							<div class="flex-1 p-6">
 								<div class="mb-2 flex items-center justify-between">
 									<CardTitle>{article.title}</CardTitle>
-									<div class="flex space-x-2">
-										{#each article.tags as tag}
-											<span class="rounded-full bg-accent px-2 py-1 text-xs">{tag}</span>
-										{/each}
-									</div>
 								</div>
-								<p class="mb-4 text-muted-foreground">{article.excerpt}</p>
+								<p class="mb-4 text-muted-foreground">{article.content?.slice(0, 40) || ''}</p>
 								<div class="flex items-center space-x-4 text-sm text-muted-foreground">
-									<span>{article.date}</span>
-									<span>·</span>
-									<span>{article.views} 阅读</span>
+									<span>{article.inserted_at?.slice(0, 10) || ''}</span>
 								</div>
 							</div>
 						</div>

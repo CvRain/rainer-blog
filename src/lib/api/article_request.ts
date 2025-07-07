@@ -93,3 +93,15 @@ export async function updateArticleContent(id: string, content: string): Promise
         })
         .catch(handleError);
 }
+
+export async function getPublicArticleList(page?: number, page_size?: number): Promise<BaseResponse<ApiArticle[]>> {
+    const params = new URLSearchParams();
+    if (page !== undefined) params.append('page', String(page));
+    if (page_size !== undefined) params.append('page_size', String(page_size));
+    const url = `${API_BASE_URL}/article/public_list` + (params.toString() ? `?${params.toString()}` : '');
+    return axios.get(url)
+        .then(function (response) {
+            return response.data;
+        })
+        .catch(handleError);
+}
