@@ -2,15 +2,22 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { getArticleDetail } from '$lib/api/article_request';
-	import { marked } from 'marked';
-	import DOMPurify from 'dompurify';
+	import MarkdownIt from 'markdown-it';
+	import Shiki from '@shikijs/markdown-it';
 	import NavHeader from '$lib/components/nav-header.svelte';
+	import * as Card from '$lib/components/ui/card';
+	import { Header } from '@/components/ui/alert-dialog';
+	import type { ApiArticle, ApiArticleDetail } from '@/api/response_schema';
+	import { Car } from 'lucide-svelte';
+	import 'carta-md/default.css';
+	import '$lib/css/atom-dark.css';
 
 	let articleId = $page.params.id;
-	let articleDetail: any = null;
-	let loading = true;
-	let error = '';
-	let html = '';
+	let articleDetail: ApiArticleDetail | null = $state(null);
+	let loading: boolean = $state(false);
+	let error: string = $state('');
+	let renderedHtml: string = $state('');
+	let markdownIt: MarkdownIt | null = null;
 
 	onMount(async () => {
 		loading = true;
@@ -18,43 +25,77 @@
 		const resp = await getArticleDetail(articleId);
 		if (resp.code === 200 && resp.data) {
 			articleDetail = resp.data;
-			html = DOMPurify.sanitize(marked(String(articleDetail.s3_content || '')));
+			if (!markdownIt) {
+				markdownIt = new MarkdownIt({ html: true, linkify: true, breaks: true });
+				await markdownIt.use(
+					await Shiki({
+						themes: {
+							light: 'vitesse-light',
+							dark: 'vitesse-dark'
+						}
+					})
+				);
+			}
+			if (articleDetail.title) {
+				document.title = articleDetail.title;
+			}
+			if (markdownIt) renderedHtml = markdownIt.render(articleDetail.s3_content || '');
 		} else {
 			error = resp.message || '加载失败';
 		}
 		loading = false;
 	});
+
+	// Svelte action
+	export function html(node: HTMLElement, html: string) {
+		node.innerHTML = html;
+		return {
+			update(newHtml: string) {
+				node.innerHTML = newHtml;
+			}
+		};
+	}
 </script>
 
-<div class="article-bg min-h-screen flex flex-col items-center justify-center py-8 px-2 relative">
+<div class="article-bg relative flex min-h-screen flex-col items-center justify-center px-2 py-8">
 	<!-- 顶栏 -->
 	<NavHeader />
 	<!-- 背景图和毛玻璃 -->
-	<img src={articleDetail?.user_background || '/images/placeholder.jpg'} alt="Banner" class="article-bg-img" />
+	<!-- todo 未来添加文章背景图-->
+	<img src={'/images/placeholder.jpg'} alt="Banner" class="article-bg-img" />
 	<div class="article-bg-blur"></div>
 	<!-- 内容卡片 -->
-	<div class="article-container bg-white/80 dark:bg-zinc-900/80 rounded-xl shadow-lg p-8 relative z-10">
-		{#if loading}
-			<div class="text-center text-muted-foreground">加载中...</div>
-		{:else if error}
-			<div class="text-center text-red-500">{error}</div>
-		{:else if articleDetail}
-			<h1 class="text-3xl font-bold mb-4">{articleDetail.title}</h1>
-			<div class="prose max-w-none dark:prose-invert">
-				{@html html}
-			</div>
-		{/if}
-	</div>
+	<Card.Root class="article-card">
+		<Card.Header class="relative">
+			<Card.Title class="article-title">{articleDetail?.title}</Card.Title>
+		</Card.Header>
+		<div class="my-2 h-px w-full bg-muted"></div>
+		<Card.Content class="article-content-scroll">
+			{#if loading}
+				<div class="text-center text-muted-foreground">加载中...</div>
+			{:else if error}
+				<div class="text-center text-red-500">{error}</div>
+			{:else if articleDetail}
+				<div class="prose prose-lg max-w-none dark:prose-invert" use:html={renderedHtml}></div>
+			{/if}
+		</Card.Content>
+		<Card.Footer>
+			<Card.Description>上次更新于：{articleDetail?.updated_at}</Card.Description>
+		</Card.Footer>
+	</Card.Root>
 </div>
 
 <style>
-	.article-bg {
+	:global(.article-bg) {
 		min-height: 100vh;
 		background: transparent;
 		position: relative;
 		overflow: hidden;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
-	.article-bg-img {
+	:global(.article-bg-img) {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -64,31 +105,63 @@
 		opacity: 0.7;
 		z-index: 0;
 	}
-	.article-bg-blur {
+	:global(.article-bg-blur) {
 		position: absolute;
 		top: 0;
 		left: 0;
 		width: 100vw;
 		height: 100vh;
 		backdrop-filter: blur(16px) saturate(1.2);
-		background: rgba(255,255,255,0.2);
+		background: rgba(255, 255, 255, 0.2);
 		z-index: 1;
 	}
-	.article-container {
-		width: 794px; /* A4纸宽度 px */
-		min-height: 80vh;
+	:global(.article-card) {
+		width: 794px;
+		height: 90vh;
 		max-width: 100vw;
-		margin: 48px auto;
+		margin: 32px auto 0 auto;
 		box-sizing: border-box;
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
 		z-index: 10;
+		backdrop-filter: blur(2px);
+		border-radius: 1rem;
+		box-shadow: 0 4px 32px 0 rgba(0, 0, 0, 0.08);
+		position: relative;
+		align-items: stretch;
 	}
-	.prose :global(pre) {
+	:global(.article-title) {
+		font-size: 2rem;
+		font-weight: bold;
+		padding: 2rem 2rem 1rem 2rem;
+		background: transparent;
+		flex-shrink: 0;
+	}
+	:global(.article-desc-right) {
+		position: absolute;
+		right: 2rem;
+		top: 2.2rem;
+		font-size: 1rem;
+		color: #888;
+		text-align: right;
+	}
+	:global(.article-content-scroll) {
+		flex: 1 1 0;
+		overflow-y: auto;
+		padding: 0 2rem 2rem 2rem;
+		min-height: 0;
+	}
+	:global(.prose) :global(pre) {
 		background: #282c34;
 		color: #fff;
 		border-radius: 0.5rem;
 		padding: 1em;
+	}
+	:global(.carta-readonly .carta-input-wrapper) {
+		display: none !important;
+	}
+	:global(.carta-readonly .carta-renderer) {
+		display: block !important;
 	}
 </style>
