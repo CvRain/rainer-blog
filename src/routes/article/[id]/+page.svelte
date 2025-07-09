@@ -2,22 +2,19 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { getArticleDetail } from '$lib/api/article_request';
-	import MarkdownIt from 'markdown-it';
 	import Shiki from '@shikijs/markdown-it';
 	import NavHeader from '$lib/components/nav-header.svelte';
 	import * as Card from '$lib/components/ui/card';
-	import { Header } from '@/components/ui/alert-dialog';
-	import type { ApiArticle, ApiArticleDetail } from '@/api/response_schema';
-	import { Car } from 'lucide-svelte';
+	import type {ApiArticleDetail } from '@/api/response_schema';
 	import 'carta-md/default.css';
-	import '$lib/css/atom-dark.css';
+	import markdownit from 'markdown-it';
+	import MarkdownPreview from '@/components/theme-editor/markdown-preview.svelte';
 
 	let articleId = $page.params.id;
 	let articleDetail: ApiArticleDetail | null = $state(null);
 	let loading: boolean = $state(false);
 	let error: string = $state('');
-	let renderedHtml: string = $state('');
-	let markdownIt: MarkdownIt | null = null;
+
 
 	onMount(async () => {
 		loading = true;
@@ -25,21 +22,9 @@
 		const resp = await getArticleDetail(articleId);
 		if (resp.code === 200 && resp.data) {
 			articleDetail = resp.data;
-			if (!markdownIt) {
-				markdownIt = new MarkdownIt({ html: true, linkify: true, breaks: true });
-				await markdownIt.use(
-					await Shiki({
-						themes: {
-							light: 'vitesse-light',
-							dark: 'vitesse-dark'
-						}
-					})
-				);
-			}
 			if (articleDetail.title) {
 				document.title = articleDetail.title;
 			}
-			if (markdownIt) renderedHtml = markdownIt.render(articleDetail.s3_content || '');
 		} else {
 			error = resp.message || '加载失败';
 		}
@@ -65,7 +50,7 @@
 	<img src={'/images/placeholder.jpg'} alt="Banner" class="article-bg-img" />
 	<div class="article-bg-blur"></div>
 	<!-- 内容卡片 -->
-	<Card.Root class="article-card">
+	<Card.Root class="article-card w-dvh h-full">
 		<Card.Header class="relative">
 			<Card.Title class="article-title">{articleDetail?.title}</Card.Title>
 		</Card.Header>
@@ -76,7 +61,7 @@
 			{:else if error}
 				<div class="text-center text-red-500">{error}</div>
 			{:else if articleDetail}
-				<div class="prose prose-lg max-w-none dark:prose-invert" use:html={renderedHtml}></div>
+				<MarkdownPreview markdownText={articleDetail.s3_content}/>
 			{/if}
 		</Card.Content>
 		<Card.Footer>
@@ -87,7 +72,6 @@
 
 <style>
 	:global(.article-bg) {
-		min-height: 100vh;
 		background: transparent;
 		position: relative;
 		overflow: hidden;
@@ -116,7 +100,6 @@
 		z-index: 1;
 	}
 	:global(.article-card) {
-		width: 794px;
 		height: 90vh;
 		max-width: 100vw;
 		margin: 32px auto 0 auto;
