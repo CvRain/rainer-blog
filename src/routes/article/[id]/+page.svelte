@@ -40,17 +40,19 @@
 			}
 		};
 	}
+
+
 </script>
 
 <div class="article-bg relative flex min-h-screen flex-col items-center justify-center px-2 py-8">
 	<!-- 顶栏 -->
-	<NavHeader />
+	<NavHeader/>
 	<!-- 背景图和毛玻璃 -->
 	<!-- todo 未来添加文章背景图-->
 	<img src={'/images/placeholder.jpg'} alt="Banner" class="article-bg-img" />
 	<div class="article-bg-blur"></div>
 	<!-- 内容卡片 -->
-	<Card.Root class="article-card w-dvh h-full">
+	<Card.Root class="article-card w-1/2 h-full">
 		<Card.Header class="relative">
 			<Card.Title class="article-title">{articleDetail?.title}</Card.Title>
 		</Card.Header>

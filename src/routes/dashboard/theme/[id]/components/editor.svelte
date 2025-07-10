@@ -5,7 +5,6 @@
 	import { emoji } from '@cartamd/plugin-emoji';
 	import { slash } from '@cartamd/plugin-slash';
 	import { code } from '@cartamd/plugin-code';
-	import '$lib/css/atom-dark.css';
 	import { codeToHtml } from 'shiki';
 	import { updateArticleContent } from '@/api/article_request';
 

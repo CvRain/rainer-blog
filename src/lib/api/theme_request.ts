@@ -23,7 +23,17 @@ export async function getCountThisWeek(): Promise<BaseResponse<ThemeCountData>> 
 }
 
 export async function getAllThemeWithStats(): Promise<BaseResponse<ThemeWithStatSchema[]>> {
-    const response = await axios.get(API_BASE_URL + "/theme/all/with_stats")
+    const headers = {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+
+    const config = {
+        headers: headers,
+        method: 'get',
+        url: API_BASE_URL + "/theme/all/with_stats"
+    }
+
+    const response = await axios(config)
         .then(function (response) {
             return response.data;
         })
@@ -101,19 +111,33 @@ export async function updateThemeInfo(schema: UpdateThemeSchema) {
 }
 
 export async function getThemeWithDetails(): Promise<BaseResponse<ApiTheme[]>> {
-    const response = await axios.get(API_BASE_URL + "/theme/all/with_details")
+    const header = {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+    const config = {
+        headers: header,
+        method: 'get',
+        url: API_BASE_URL + "/theme/all/with_details"
+    }
+    return await axios(config)
     .then(function (response) {
         return response.data;
     })
     .catch(handleError);
-    return response;
 }
 
 export async function getOneThemeWithDetails(themeId: string): Promise<BaseResponse<ApiTheme>> {
-    const response = await axios.get(`${API_BASE_URL}/theme/one/${themeId}/with_details`)
+    const header = {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+    const config = {
+        headers: header,
+        method: 'get',
+        url: API_BASE_URL + `/theme/one/${themeId}/with_details`
+    }
+    return await axios(config)
     .then(function (response) {
         return response.data;
     })
     .catch(handleError);
-    return response;
 }

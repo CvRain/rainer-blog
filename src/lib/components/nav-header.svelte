@@ -14,7 +14,8 @@
 		Moon
 	} from 'lucide-svelte';
 
-	let userInfo: UserInfo | null = null;
+	let userInfo: UserInfo | null = $state(null);
+
 	onMount(async () => {
 		const result = await getUserInfo();
 		if (result.code === 200) {
@@ -72,7 +73,7 @@
 					</NavigationMenu.Item>
 					<NavigationMenu.Item>
 						<NavigationMenu.Link>
-							<Button onclick={toggleMode} variant="outline" size="icon">
+							<Button onclick={() =>{toggleMode();}} variant="outline" size="icon">
 								<Sun
 									class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
 								/>

@@ -10,45 +10,29 @@
 	import markdownit from 'markdown-it';
 	import DOMPurify from 'dompurify';
 
-	// let markdownText: string = $props();
 	let { markdownText }: {
 		markdownText: string;
 	} = $props();
 
-	const md = markdownit({
-		html: true,
-		xhtmlOut: true,
-		breaks: true,
-		langPrefix: 'language-',
-		linkify: true,
-		typographer: true
-	});
+	let currentTheme = $state(browser ?
+		(document.documentElement.classList.contains('dark') ? 'dark' : 'light') :
+		'light'
+	);
 
-	let html: string = $derived(DOMPurify.sanitize(md.render(markdownText)));
+
+	let html: string = $state('');
 
 	let styleLink: HTMLLinkElement | null = null;
 	let observer: MutationObserver | null = null;
 
-	function updateThemeCss() {
-		const isDark = document.documentElement.classList.contains('dark');
-		if (styleLink) {
-			styleLink.href = isDark
-				? '$lib/styles/catppuccin-mocha.css'
-				: '$lib/styles/catppuccin-latte.css';
-		}
-	}
-
-	onMount(async () => {
-		await import('highlight.js/lib/languages/javascript');
-		await import('highlight.js/lib/languages/typescript');
-		await import('highlight.js/lib/languages/css');
-
-		await Promise.all([
-			import('highlight.js/lib/languages/javascript'),
-			import('highlight.js/lib/languages/typescript')
-		]).then(([jsLang, tsLang]) => {
-			hljs.registerLanguage('javascript', jsLang.default);
-			hljs.registerLanguage('typescript', tsLang.default);
+	async function renderMarkdown() {
+		const md = markdownit({
+			html: true,
+			xhtmlOut: true,
+			breaks: true,
+			langPrefix: 'language-',
+			linkify: true,
+			typographer: true
 		});
 
 		md.use(emoji)
@@ -79,9 +63,49 @@
 					themes: {
 						light: 'catppuccin-latte',
 						dark: 'catppuccin-mocha'
-					}
+					},
+					theme: currentTheme
 				})
 			);
+
+		return DOMPurify.sanitize(md.render(markdownText));
+	}
+
+	$effect(() => {
+		if (browser && markdownText) {
+			// 启动异步渲染但不阻塞
+			renderMarkdown().then(result => {
+				html = result;
+			}).catch(error => {
+				console.error("Markdown渲染失败:", error);
+			});
+		}
+	});
+
+	function updateThemeCss() {
+		const isDark = document.documentElement.classList.contains('dark');
+		currentTheme = isDark ? 'dark' : 'light'; // 更新主题状态
+
+		if (styleLink) {
+			styleLink.href = isDark
+				? '/src/lib/styles/catppuccin-mocha.css'
+				: '/src/lib/styles/catppuccin-latte.css';
+		}
+	}
+
+	onMount(async () => {
+		await import('highlight.js/lib/languages/javascript');
+		await import('highlight.js/lib/languages/typescript');
+		await import('highlight.js/lib/languages/css');
+
+		await Promise.all([
+			import('highlight.js/lib/languages/javascript'),
+			import('highlight.js/lib/languages/typescript')
+		]).then(([jsLang, tsLang]) => {
+			hljs.registerLanguage('javascript', jsLang.default);
+			hljs.registerLanguage('typescript', tsLang.default);
+		});
+
 
 		if (browser) {
 			styleLink = document.createElement('link');
@@ -91,6 +115,9 @@
 				? '/src/lib/styles/catppuccin-mocha.css'
 				: '/src/lib/styles/catppuccin-latte.css';
 			document.head.appendChild(styleLink);
+
+			// 初始化渲染
+			html = await renderMarkdown();
 
 			observer = new MutationObserver(updateThemeCss);
 			observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
@@ -107,10 +134,6 @@
 			observer = null;
 		}
 	});
-
-	// $: if (initialized && markdownText !== undefined) {
-	// 	html = md.render(markdownText || '');
-	// }
 </script>
 
 
