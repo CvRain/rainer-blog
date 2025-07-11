@@ -10,15 +10,15 @@
 	import markdownit from 'markdown-it';
 	import DOMPurify from 'dompurify';
 
-	let { markdownText }: {
+	let {
+		markdownText
+	}: {
 		markdownText: string;
 	} = $props();
 
-	let currentTheme = $state(browser ?
-		(document.documentElement.classList.contains('dark') ? 'dark' : 'light') :
-		'light'
+	let currentTheme = $state(
+		browser ? (document.documentElement.classList.contains('dark') ? 'dark' : 'light') : 'light'
 	);
-
 
 	let html: string = $state('');
 
@@ -74,11 +74,13 @@
 	$effect(() => {
 		if (browser && markdownText) {
 			// 启动异步渲染但不阻塞
-			renderMarkdown().then(result => {
-				html = result;
-			}).catch(error => {
-				console.error("Markdown渲染失败:", error);
-			});
+			renderMarkdown()
+				.then((result) => {
+					html = result;
+				})
+				.catch((error) => {
+					console.error('Markdown渲染失败:', error);
+				});
 		}
 	});
 
@@ -105,7 +107,6 @@
 			hljs.registerLanguage('javascript', jsLang.default);
 			hljs.registerLanguage('typescript', tsLang.default);
 		});
-
 
 		if (browser) {
 			styleLink = document.createElement('link');
@@ -135,7 +136,6 @@
 		}
 	});
 </script>
-
 
 <main class="markdown-previewer">
 	<div class="preview markdown-body">
