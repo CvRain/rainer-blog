@@ -1,3 +1,7 @@
+export interface ResponseErrors{
+    name: string[];
+}
+
 export interface ThemeCountData {
     count: number;
 }

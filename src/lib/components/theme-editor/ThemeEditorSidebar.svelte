@@ -52,6 +52,7 @@
 		<div class="mb-4">
 			<div class="mb-2 flex items-center justify-between px-2 py-1">
 				<h2 class="text-sm font-semibold tracking-tight text-muted-foreground">大纲</h2>
+				<!-- New Chapter Button -->
 				<Button
 					variant="ghost"
 					size="icon"
