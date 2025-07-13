@@ -5,3 +5,8 @@ export interface UpdateThemeSchema {
     order?: number;
     is_active?: boolean
 }
+
+export interface UpdateChapterSchema {
+    id: string;
+    name: string |null ;
+}

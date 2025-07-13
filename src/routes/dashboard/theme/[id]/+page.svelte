@@ -40,6 +40,9 @@
 	import type { ApiTheme, ApiChapter, ApiArticle } from '@/api/response_schema';
 	import { getOneThemeWithDetails } from '@/api/theme_request';
 	import { getArticleDetail } from '@/api/article_request';
+	import { createChapter, removeChapter } from '@/api/chapter_request';
+	import { Alert, AlertTitle, AlertDescription } from '$lib/components/ui/alert';
+	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 
 	// theme 直接用 ApiTheme 类型
 	let theme: ApiTheme = $state({
@@ -66,14 +69,51 @@
 	);
 	function setExpandedChapters(v: Record<string, boolean>) { expandedChapters = v; }
 
+	let alertMessage = $state('');
+	let alertShow = $state(false);
+	let alertTimeout: any = null;
+
+	function showAlert(msg: string) {
+		alertMessage = msg;
+		alertShow = true;
+		if (alertTimeout) clearTimeout(alertTimeout);
+		alertTimeout = setTimeout(() => {
+			alertShow = false;
+		}, 4000);
+	}
+
+	let chapterToDelete: { id: string; parent?: ApiChapter } | null = $state(null);
+	let isDeleteDialogOpen = $state(false);
+	let isDeleting = $state(false);
+
+	function confirmDeleteChapter(id: string, parent?: ApiChapter) {
+		chapterToDelete = { id, parent };
+		isDeleteDialogOpen = true;
+	}
+
+	async function handleDeleteChapter() {
+		if (!chapterToDelete || isDeleting) return;
+		isDeleting = true;
+		const { id } = chapterToDelete;
+		const resp = await removeChapter(id);
+		if (resp.code === 204) {
+			theme.chapters = theme.chapters.filter((c) => c.id !== id);
+		} else {
+			showAlert(resp.message || '删除章节失败');
+		}
+		isDeleteDialogOpen = false;
+		chapterToDelete = null;
+		isDeleting = false;
+	}
+
 	// --- Functions ---
 	function createNew(type: 'chapter' | 'article', parent?: ApiChapter) {
-		const newId = Date.now().toString();
 		if (!theme) return;
 		if (type === 'chapter') {
+			const tempId = 'temp-' + Date.now();
 			const newChapter: ApiChapter = {
-				id: newId,
-				name: '新章节',
+				id: tempId,
+				name: '',
 				description: '',
 				order: theme.chapters.length + 1,
 				is_active: true,
@@ -83,8 +123,9 @@
 				articles: []
 			};
 			theme.chapters.push(newChapter);
-			editItem('chapter', newId, '新章节');
+			editItem('chapter', tempId, '');
 		} else if (type === 'article' && parent) {
+			const newId = Date.now().toString();
 			const newArticle: ApiArticle = {
 				id: newId,
 				title: '新文章',
@@ -103,13 +144,8 @@
 
 	function deleteItem(type: string, id: string, parent?: ApiChapter) {
 		if (!theme) return;
-		const confirmation = confirm(
-			`您确定要删除这个${type === 'chapter' ? '章节' : '文章'}吗？此操作无法撤销。`
-		);
-		if (!confirmation) return;
-
 		if (type === 'chapter') {
-			theme.chapters = theme.chapters.filter((c) => c.id !== id);
+			confirmDeleteChapter(id, parent);
 		} else if (type === 'article' && parent) {
 			parent.articles = parent.articles.filter((a) => a.id !== id);
 		}
@@ -120,15 +156,32 @@
 		editingText = currentTitle;
 	}
 
-	function handleRename(e: Event) {
+	async function handleRename(e: Event) {
 		if (!editingItem || !theme) return;
 		const { type, id } = editingItem;
 		const target = e.target as HTMLInputElement;
-		const newTitle = target.value;
+		const newTitle = target.value.trim();
 
 		if (type === 'chapter') {
-			const chapter = theme.chapters.find((c) => c.id === id);
-			if (chapter) chapter.name = newTitle;
+			const chapterIdx = theme.chapters.findIndex((c) => c.id === id);
+			if (chapterIdx === -1) return;
+
+			if (id.startsWith('temp-')) {
+				if (!newTitle) {
+					theme.chapters.splice(chapterIdx, 1);
+				} else {
+					const resp = await createChapter(newTitle, theme.id);
+					if (resp.code === 201 && resp.data) {
+						theme.chapters[chapterIdx] = resp.data as ApiChapter;
+					} else {
+						const msg = resp.message || '新建章节失败';
+						theme.chapters.splice(chapterIdx, 1);
+						showAlert(msg);
+					}
+				}
+			} else {
+				theme.chapters[chapterIdx].name = newTitle;
+			}
 		} else if (type === 'article') {
 			for (const chapter of theme.chapters) {
 				const article = chapter.articles.find((a) => a.id === id);
@@ -202,6 +255,24 @@
 	});
 </script>
 
+{#if alertShow}
+	<div class="fixed top-4 left-1/2 z-50 -translate-x-1/2 w-full max-w-md">
+		<Alert variant="destructive">
+			<AlertTitle>操作失败</AlertTitle>
+			<AlertDescription>{alertMessage}</AlertDescription>
+		</Alert>
+	</div>
+{/if}
+<AlertDialog.Root bind:open={isDeleteDialogOpen}>
+	<AlertDialog.Content>
+		<AlertDialog.Title>确认删除章节</AlertDialog.Title>
+		<AlertDialog.Description>此操作不可撤销，确定要删除该章节吗？</AlertDialog.Description>
+		<AlertDialog.Footer>
+			<AlertDialog.Cancel>取消</AlertDialog.Cancel>
+			<button class="w-full btn btn-destructive" on:click|preventDefault={handleDeleteChapter} disabled={isDeleting}>确认删除</button>
+		</AlertDialog.Footer>
+	</AlertDialog.Content>
+</AlertDialog.Root>
 <div
 	class="editor-bg flex h-screen flex-col bg-gradient-to-br from-zinc-50 via-white to-zinc-100 font-sans text-foreground dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-900"
 >
