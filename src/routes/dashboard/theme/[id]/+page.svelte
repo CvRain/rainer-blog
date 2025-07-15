@@ -34,15 +34,16 @@
 	import { MarkdownEditor, Carta } from 'carta-md';
 	import 'carta-md/default.css';
 	import { toggleMode } from 'mode-watcher';
-	import ThemeEditorHeader from '$lib/components/theme-editor/ThemeEditorHeader.svelte';
-	import ThemeEditorSidebar from '$lib/components/theme-editor/ThemeEditorSidebar.svelte';
-	import ArticleInfoSidebar from '$lib/components/theme-editor/ArticleInfoSidebar.svelte';
+	import ThemeEditorHeader from '@/components/theme-editor/theme-editor-header.svelte';
+	import ThemeEditorSidebar from '@/components/theme-editor/theme-editor-sidebar.svelte';
+	import ArticleInfoSidebar from '@/components/theme-editor/article-info-sidebar.svelte';
 	import type { ApiTheme, ApiChapter, ApiArticle } from '@/api/response_schema';
 	import { getOneThemeWithDetails } from '@/api/theme_request';
 	import { getArticleDetail } from '@/api/article_request';
 	import { createChapter, removeChapter } from '@/api/chapter_request';
 	import { Alert, AlertTitle, AlertDescription } from '$lib/components/ui/alert';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
+	import { createArticle, removeArticle } from '@/api/article_request';
 
 	// theme 直接用 ApiTheme 类型
 	let theme: ApiTheme = $state({
@@ -106,6 +107,27 @@
 		isDeleting = false;
 	}
 
+	let articleToDelete: { id: string; parent: ApiChapter } | null = $state(null);
+	let isDeleteArticleDialogOpen = $state(false);
+
+	function confirmDeleteArticle(id: string, parent: ApiChapter) {
+		articleToDelete = { id, parent };
+		isDeleteArticleDialogOpen = true;
+	}
+
+	async function handleDeleteArticle() {
+		if (!articleToDelete) return;
+		const { id, parent } = articleToDelete;
+		const resp = await removeArticle(id);
+		if (resp.code === 204) {
+			parent.articles = parent.articles.filter((a) => a.id !== id);
+		} else {
+			showAlert(resp.message || '删除文章失败');
+		}
+		isDeleteArticleDialogOpen = false;
+		articleToDelete = null;
+	}
+
 	// --- Functions ---
 	function createNew(type: 'chapter' | 'article', parent?: ApiChapter) {
 		if (!theme) return;
@@ -125,11 +147,11 @@
 			theme.chapters.push(newChapter);
 			editItem('chapter', tempId, '');
 		} else if (type === 'article' && parent) {
-			const newId = Date.now().toString();
+			const tempId = 'temp-' + Date.now();
 			const newArticle: ApiArticle = {
-				id: newId,
-				title: '新文章',
-				content: '# 新文章',
+				id: tempId,
+				title: '',
+				content: '',
 				aws_key: '',
 				order: parent.articles.length + 1,
 				is_active: true,
@@ -138,7 +160,7 @@
 				updated_at: new Date().toISOString()
 			};
 			parent.articles.push(newArticle);
-			editItem('article', newId, '新文章');
+			editItem('article', tempId, '');
 		}
 	}
 
@@ -184,9 +206,25 @@
 			}
 		} else if (type === 'article') {
 			for (const chapter of theme.chapters) {
-				const article = chapter.articles.find((a) => a.id === id);
-				if (article) {
-					article.title = newTitle;
+				const articleIdx = chapter.articles.findIndex((a) => a.id === id);
+				if (articleIdx !== -1) {
+					if (id.startsWith('temp-')) {
+						if (!newTitle) {
+							chapter.articles.splice(articleIdx, 1);
+						} else {
+							console.debug('create new article', newTitle, chapter.id);
+							const resp = await createArticle(newTitle, '', chapter.id);
+							if (resp.code === 201 && resp.data) {
+								chapter.articles[articleIdx] = resp.data as ApiArticle;
+							} else {
+								const msg = resp.message || '新建文章失败';
+								chapter.articles.splice(articleIdx, 1);
+								showAlert(msg);
+							}
+						}
+					} else {
+						chapter.articles[articleIdx].title = newTitle;
+					}
 					break;
 				}
 			}
@@ -237,7 +275,7 @@
 		if (resp.code === 200 && resp.data) {
 			selectedArticle = {
 				...article,
-				content: resp.data.s3_content ?? article.content
+				content: resp.data.s3_content ?? "加载成功,但是没有获得文章内容,请检查s3是否正常"
 			};
 		} else {
 			selectedArticle = article;
@@ -269,7 +307,17 @@
 		<AlertDialog.Description>此操作不可撤销，确定要删除该章节吗？</AlertDialog.Description>
 		<AlertDialog.Footer>
 			<AlertDialog.Cancel>取消</AlertDialog.Cancel>
-			<button class="w-full btn btn-destructive" on:click|preventDefault={handleDeleteChapter} disabled={isDeleting}>确认删除</button>
+			<button class="w-full btn btn-destructive" onclick={handleDeleteChapter} disabled={isDeleting}>确认删除</button>
+		</AlertDialog.Footer>
+	</AlertDialog.Content>
+</AlertDialog.Root>
+<AlertDialog.Root bind:open={isDeleteArticleDialogOpen}>
+	<AlertDialog.Content>
+		<AlertDialog.Title>确认删除文章</AlertDialog.Title>
+		<AlertDialog.Description>此操作不可撤销，确定要删除该文章吗？</AlertDialog.Description>
+		<AlertDialog.Footer>
+			<AlertDialog.Cancel>取消</AlertDialog.Cancel>
+			<button class="w-full btn btn-destructive" onclick={handleDeleteArticle}>确认删除</button>
 		</AlertDialog.Footer>
 	</AlertDialog.Content>
 </AlertDialog.Root>

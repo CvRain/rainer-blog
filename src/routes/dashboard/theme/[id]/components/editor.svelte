@@ -7,8 +7,7 @@
 	import { code } from '@cartamd/plugin-code';
 	import { codeToHtml } from 'shiki';
 	import { updateArticleContent } from '@/api/article_request';
-
-	let { article } = $props();
+	import type { ApiArticle } from '@/api/response_schema';
 
 	// 允许h1-h5标签，直接手动列出所有允许的标签
 	const allowedTags = [
@@ -43,9 +42,15 @@
 		'h5'
 	];
 
+	let {
+		article
+	}: {
+		article: ApiArticle
+	} = $props();
+
 	let carta: Carta | null = $state(null);
 	let mounted = $state(false);
-	let value = $derived(article.content);
+	let value: string = $derived(article.content);
 
 	onMount(async () => {
 		carta = new Carta({
@@ -61,7 +66,16 @@
 
 	async function handleSave() {
 		if (!article?.id) return;
-		const resp = await updateArticleContent(article.id, value);
+		const resp = await updateArticleContent({
+			id: article.id,
+			title: article.title,
+			content: article.content,
+			s3_content: value,
+			chapter_id: article.chapter_id,
+			order: article.order,
+			is_active: article.is_active
+		});
+		console.debug("handleSave", resp);
 		if (resp.code === 200 && resp.data) {
 			alert('保存成功');
 			article.content = resp.data.content;
