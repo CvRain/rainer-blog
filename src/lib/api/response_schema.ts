@@ -73,4 +73,6 @@ export interface ApiArticleDetail {
     inserted_at: string;
     updated_at: string;
     s3_content: string;
+    order: number;
+    is_active: boolean;
 }

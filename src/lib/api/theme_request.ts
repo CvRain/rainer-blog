@@ -137,6 +137,7 @@ export async function getOneThemeWithDetails(themeId: string): Promise<BaseRespo
     }
     return await axios(config)
     .then(function (response) {
+        console.debug(response.data);
         return response.data;
     })
     .catch(handleError);

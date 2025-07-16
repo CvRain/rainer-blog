@@ -101,6 +101,7 @@
 	}
 
 	function viewTheme(themeId: string) {
+		console.debug(`Viewing theme ${themeId}`);
 		goto(`/dashboard/theme/${themeId}`);
 	}
 

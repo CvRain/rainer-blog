@@ -1,34 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { Button } from '$lib/components/ui/button';
-	import { ScrollArea } from '$lib/components/ui/scroll-area';
-	import { Separator } from '$lib/components/ui/separator';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import * as Card from '$lib/components/ui/card/index.js';
-	import { Input } from '$lib/components/ui/input';
-	import {
-		ChevronDown,
-		ChevronRight,
-		FileText,
-		FolderClosed,
-		FolderOpen,
-		Image,
-		PanelLeft,
-		PanelRight,
-		Plus,
-		MoreVertical,
-		Edit,
-		Trash2,
-		BookMarked,
-		ArrowLeftToLine,
-		Info,
-		Calendar,
-		User,
-		Tag,
-		Clock,
-		Sun,
-		Moon
-	} from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import Editor from './components/editor.svelte';
 	import { MarkdownEditor, Carta } from 'carta-md';
@@ -37,13 +7,15 @@
 	import ThemeEditorHeader from '@/components/theme-editor/theme-editor-header.svelte';
 	import ThemeEditorSidebar from '@/components/theme-editor/theme-editor-sidebar.svelte';
 	import ArticleInfoSidebar from '@/components/theme-editor/article-info-sidebar.svelte';
-	import type { ApiTheme, ApiChapter, ApiArticle } from '@/api/response_schema';
+	import type { ApiTheme, ApiChapter, ApiArticle, ApiArticleDetail } from '@/api/response_schema';
 	import { getOneThemeWithDetails } from '@/api/theme_request';
-	import { getArticleDetail } from '@/api/article_request';
+	import { getArticleDetail, updateArticleContent } from '@/api/article_request';
 	import { createChapter, removeChapter } from '@/api/chapter_request';
 	import { Alert, AlertTitle, AlertDescription } from '$lib/components/ui/alert';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { createArticle, removeArticle } from '@/api/article_request';
+	import { ApiArticleToApiArticleDetail } from '@/api/config';
+	import { page } from '$app/stores';
 
 	// theme 直接用 ApiTheme 类型
 	let theme: ApiTheme = $state({
@@ -58,6 +30,7 @@
 	});
 
 	let selectedArticle: ApiArticle | null = $state(null);
+	let selectedArticleDetail: ApiArticleDetail | null = $state(null);
 	let sidebarCollapsed = $state(false);
 	let rightSidebarCollapsed = $state(false);
 	const fileUploadInput: { current: HTMLInputElement | null } = { current: null };
@@ -271,25 +244,40 @@
 	}
 
 	async function handleSelectArticle(article: ApiArticle) {
+		selectedArticle = article;
 		const resp = await getArticleDetail(article.id);
 		if (resp.code === 200 && resp.data) {
-			selectedArticle = {
-				...article,
-				content: resp.data.s3_content ?? "加载成功,但是没有获得文章内容,请检查s3是否正常"
-			};
+			selectedArticleDetail = resp.data;
 		} else {
-			selectedArticle = article;
+			selectedArticleDetail = null;
+		}
+	}
+
+	async function handleSaveArticleDetail(updated: ApiArticleDetail) {
+		// 保存正文内容
+		const resp = await updateArticleContent({
+			id: updated.id,
+			title: updated.title,
+			content: updated.content,
+			s3_content: updated.s3_content,
+			chapter_id: updated.chapter_id,
+			order: updated.order,
+			is_active: updated.is_active
+		});
+		if (resp.code === 200 && resp.data) {
+			// 保存成功后刷新详情
+			await handleSelectArticle(updated);
 		}
 	}
 
 	onMount(async () => {
-		const resp = await getOneThemeWithDetails($page.params.id);
-		if (resp.code === 200 && resp.data) {
-			theme = resp.data;
-			if (theme.chapters[0]?.articles[0]) {
-				selectedArticle = theme.chapters[0].articles[0];
-			}
+		const getOneThemeDetailResp = await getOneThemeWithDetails($page.params.id)
+		if(getOneThemeDetailResp.code !== 200 || getOneThemeDetailResp.data == null){
+			alert(getOneThemeDetailResp.message);
+			return;
 		}
+		theme = getOneThemeDetailResp.data;
+		selectedArticle = theme.chapters[0].articles[0];
 	});
 </script>
 
@@ -347,11 +335,11 @@
 			/>
 		{/if}
 		<div class="h-full min-w-0 flex-1">
-			{#if selectedArticle}
+			{#if selectedArticleDetail}
 				<div
 					class="editor-content flex h-full min-h-0 w-full flex-1 flex-col rounded-2xl bg-white/90 p-0 shadow-2xl transition-all dark:bg-zinc-900/90"
 				>
-					<Editor article={selectedArticle} />
+					<Editor articleDetail={selectedArticleDetail} on:save={e => handleSaveArticleDetail(e.detail)} />
 				</div>
 			{:else}
 				<div
@@ -363,8 +351,8 @@
 				</div>
 			{/if}
 		</div>
-		{#if !rightSidebarCollapsed}
-			<ArticleInfoSidebar {selectedArticle} />
+		{#if !rightSidebarCollapsed && selectedArticleDetail}
+			<ArticleInfoSidebar articleDetail={selectedArticleDetail} />
 		{/if}
 	</div>
 </div>

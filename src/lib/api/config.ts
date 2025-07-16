@@ -1,4 +1,5 @@
 import { AxiosError } from "axios";
+import type { ApiArticle, ApiArticleDetail } from "./response_schema";
 
 export const API_BASE_URL = 'http://localhost:4000/api';
 
@@ -28,4 +29,20 @@ export function handleError(error: AxiosError): BaseResponse<ErrorMessage> {
         message: `请求失败: ${errorMessage}`,
         data: null
     };
+}
+
+
+export function ApiArticleToApiArticleDetail(article: ApiArticle): ApiArticleDetail {
+    return {
+        id: article.id,
+        title: article.title,
+        content: article.content,
+        aws_key: article.aws_key,
+        chapter_id: article.chapter_id,
+        inserted_at: article.inserted_at,
+        updated_at: article.updated_at,
+        s3_content: "",
+        order: article.order,
+        is_active: article.is_active
+    }
 }
