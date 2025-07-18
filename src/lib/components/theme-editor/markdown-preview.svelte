@@ -138,7 +138,7 @@
 </script>
 
 <main class="markdown-previewer">
-	<div class="preview markdown-body">
+	<div class="markdown-body">
 		{@html html}
 	</div>
 </main>

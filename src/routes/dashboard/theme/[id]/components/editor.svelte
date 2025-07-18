@@ -87,11 +87,11 @@
 	</div>
 
 	<!-- 编辑器主体 -->
-	<div class="flex h-full min-h-0 flex-1 flex-col p-4 bg-background dark:bg-zinc-900 rounded-b-2xl">
+	<div class="flex-1 min-h-0 flex flex-col bg-background dark:bg-zinc-900 rounded-b-2xl" style="height:calc(100vh-56px-64px);">
 		{#if mode === 'edit'}
-			<Textarea bind:value class="h-full w-full min-h-[300px] resize-y rounded-md border border-input bg-white dark:bg-zinc-900 p-4 text-base shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition" placeholder="请输入Markdown内容..." />
+			<Textarea bind:value class="h-full w-full min-h-[200px] max-h-full rounded-md border border-input bg-white dark:bg-zinc-900 p-4 shadow-sm" placeholder="请输入Markdown内容..." />
 		{:else}
-			<ScrollArea class="h-full w-full min-h-[300px] max-h-screen rounded-md border border-input bg-white dark:bg-zinc-900 p-4 shadow-sm">
+			<ScrollArea class="h-full w-full min-h-[200px] max-h-full rounded-md border border-input bg-white dark:bg-zinc-900 p-4 shadow-sm overflow-y-auto isolation-isolate">
 				<MarkdownPreview markdownText={value} />
 			</ScrollArea>
 		{/if}
