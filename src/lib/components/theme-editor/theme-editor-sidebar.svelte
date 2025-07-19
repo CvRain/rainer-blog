@@ -28,7 +28,8 @@
 		onHandleRename,
 		onSelectArticle,
 		expandedChapters,
-		setExpandedChapters
+		setExpandedChapters,
+		readonly = false
 	}: {
 		theme: ApiTheme | null;
 		editingItem: any;
@@ -41,6 +42,7 @@
 		onSelectArticle: any;
 		expandedChapters: any;
 		setExpandedChapters: (v: Record<string, boolean>) => void;
+		readonly: boolean;
 	} = $props();
 </script>
 
@@ -53,6 +55,7 @@
 			<div class="mb-2 flex items-center justify-between px-2 py-1">
 				<h2 class="text-sm font-semibold tracking-tight text-muted-foreground">大纲</h2>
 				<!-- New Chapter Button -->
+				{#if !readonly}
 				<Button
 					variant="ghost"
 					size="icon"
@@ -62,6 +65,7 @@
 				>
 					<Plus class="h-4 w-4 text-blue-700 dark:text-blue-200" />
 				</Button>
+				{/if}
 			</div>
 			{#if theme}
 				{#each theme.chapters as chapter (chapter.id)}
@@ -95,6 +99,7 @@
 									<span class="flex-1 truncate font-medium text-zinc-800 dark:text-zinc-100">{chapter.name}</span>
 								{/if}
 							</button>
+							{#if !readonly}
 							<DropdownMenu.Root>
 								<DropdownMenu.Trigger
 									class="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition hover:bg-blue-100 group-hover:opacity-100 dark:hover:bg-blue-800/40"
@@ -115,6 +120,7 @@
 									</DropdownMenu.Item>
 								</DropdownMenu.Content>
 							</DropdownMenu.Root>
+							{/if}
 						</div>
 						{#if expandedChapters[chapter.id]}
 							<div class="ml-5 border-l border-dashed pl-2.5">
@@ -140,6 +146,7 @@
 												<span class="flex-1 truncate">{article.title}</span>
 											{/if}
 										</button>
+										{#if !readonly}
 										<DropdownMenu.Root>
 											<DropdownMenu.Trigger
 												class="flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition hover:bg-blue-100 group-hover:opacity-100 dark:hover:bg-blue-800/40"
@@ -157,6 +164,7 @@
 												</DropdownMenu.Item>
 											</DropdownMenu.Content>
 										</DropdownMenu.Root>
+										{/if}
 									</div>
 								{/each}
 							</div>

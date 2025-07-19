@@ -154,3 +154,15 @@ export async function getActiveThemeInfo(): Promise<BaseResponse<ThemeWithSchema
     })
     .catch(handleError);
 }
+
+export async function getActiveThemeDetails(themeId: string) {
+    const config = {
+        method: 'get',
+        url: `${API_BASE_URL}/theme/active_details/${themeId}`
+    };
+    return await axios(config)
+        .then(function (response) {
+            return response.data;
+        })
+        .catch(handleError);
+}
