@@ -26,8 +26,16 @@ onMount(async () => {
 
 <div class="flex min-h-screen flex-col bg-background">
   <NavHeader />
-  <main class="flex-1 w-full max-w-7xl mx-auto px-4 py-12 flex flex-col items-center">
-    <h1 class="mb-10 text-4xl font-bold tracking-tight text-foreground text-center">主题归档</h1>
+  <!-- 毛玻璃大背景图 -->
+  <div class="relative w-full h-[48vh] bg-gray-900">
+    <img src={'/images/login-background.jpg'} alt="Banner" class="w-full h-full object-cover" />
+    <div class="absolute inset-0 h-full bg-gradient-to-b from-black/60 via-black/30 to-transparent backdrop-blur-md"></div>
+    <div class="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center px-4 text-center z-10">
+      <h1 class="mb-4 text-4xl font-bold text-white drop-shadow-lg">主题归档</h1>
+      <p class="text-lg text-white/80 max-w-2xl mx-auto">发现所有公共可访问的主题，点击卡片进入阅读</p>
+    </div>
+  </div>
+  <main class="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col items-center px-6 py-12" style="margin-top:-80px;">
     {#if loading}
       <div class="text-muted-foreground">加载中...</div>
     {:else if error}
