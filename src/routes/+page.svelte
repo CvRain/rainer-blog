@@ -173,7 +173,7 @@
 										<CardTitle>
 											<button
 												class="hover:underline"
-												onclick={() => {alert('还没写这个功能呢')}}
+												onclick={() => {goto(`/theme/${theme.id}`)}}
 											>
 												{theme.name}
 											</button>

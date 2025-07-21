@@ -17,7 +17,7 @@
 	import { createTheme, removeTheme, updateThemeInfo } from '@/api/theme_request';
 
 	import { type ThemeWithStatSchema } from '@/api/response_schema';
-	import { MoreHorizontal, Eye, Edit, Trash2 } from 'lucide-svelte';
+	import { MoreHorizontal, Eye, Edit, Trash2, Settings } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
 	import { buttonVariants } from '$lib/components/ui/button/index.js';
@@ -103,6 +103,10 @@
 	function viewTheme(themeId: string) {
 		console.debug(`Viewing theme ${themeId}`);
 		goto(`/dashboard/theme/${themeId}`);
+	}
+
+	function manageTheme(themeId: string) {
+		goto(`/dashboard/theme/${themeId}/manage`);
 	}
 
 	function openEditDialog(theme: ThemeWithStatSchema) {
@@ -278,6 +282,10 @@
 							<span>创建时间 {theme.inserted_at}</span>
 						</p>
 						<div class="flex items-center gap-2">
+							<Button variant="outline" size="sm" on:click={() => manageTheme(theme.id)}>
+								<Settings class="mr-2 h-4 w-4" />
+								管理
+							</Button>
 							<Switch
 								checked={theme.is_active}
 								onCheckedChange={async (e) => {

@@ -2,6 +2,7 @@ import { API_BASE_URL, type BaseResponse } from "./config"
 import { type ApiChapter, type ResponseErrors } from "./response_schema"
 import axios from "axios"
 import { handleError } from "./config"
+import type { UpdateChapterSchema } from './request_schema';
 
 export async function createChapter(name: string, themeId: string): Promise<BaseResponse<ApiChapter | ResponseErrors>> {
     const request = {
@@ -48,6 +49,19 @@ export async function removeChapter(id: string): Promise<BaseResponse<null>> {
     return response;
 }
 
-// export async function updateChapter(request: UpdateChapterSchema): Promise<BaseResponse<ApiChapter>> { 
-
-// }
+export async function updateChapter(request: UpdateChapterSchema): Promise<BaseResponse<ApiChapter>> {
+    const config = {
+        method: 'patch',
+        url: `${API_BASE_URL}/chapter/one`,
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'Content-Type': 'application/json'
+        },
+        data: request
+    };
+    const response = await axios(config)
+        .then(function (response) {
+            return response.data;
+        }).catch(handleError);
+    return response;
+}

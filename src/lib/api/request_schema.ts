@@ -9,6 +9,7 @@ export interface UpdateThemeSchema {
 export interface UpdateChapterSchema {
     id: string;
     name: string | null;
+    is_active?: boolean;
 }
 
 export interface UpdateArticleSchema {
