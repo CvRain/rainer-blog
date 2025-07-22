@@ -251,6 +251,10 @@
 										<Edit class="mr-2 h-4 w-4" />
 										编辑
 									</DropdownMenuItem>
+									<DropdownMenuItem onclick={() => manageTheme(theme.id)}>
+										<Settings class="mr-2 h-4 w-4" />
+										配置
+									</DropdownMenuItem>
 									<DropdownMenuItem
 										class="text-destructive"
 										onclick={() => openDeleteDialog(theme.id)}
@@ -282,10 +286,10 @@
 							<span>创建时间 {theme.inserted_at}</span>
 						</p>
 						<div class="flex items-center gap-2">
-							<Button variant="outline" size="sm" on:click={() => manageTheme(theme.id)}>
+							<!-- <Button variant="outline" size="sm" onclick={() => manageTheme(theme.id)}>
 								<Settings class="mr-2 h-4 w-4" />
 								管理
-							</Button>
+							</Button> -->
 							<Switch
 								checked={theme.is_active}
 								onCheckedChange={async (e) => {
