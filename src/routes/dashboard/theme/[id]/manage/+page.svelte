@@ -5,7 +5,7 @@ import { Switch } from '$lib/components/ui/switch';
 import { Button } from '$lib/components/ui/button';
 import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 import * as AlertDialog from '$lib/components/ui/alert-dialog';
-import { getActiveThemeDetails } from '@/api/theme_request';
+import { getActiveThemeDetails, getOneThemeWithDetails } from '@/api/theme_request';
 import { updateChapter, removeChapter } from '@/api/chapter_request';
 import { updateArticleContent, removeArticle } from '@/api/article_request';
 import type { ApiTheme, ApiChapter, ApiArticle } from '@/api/response_schema';
@@ -24,7 +24,7 @@ onMount(async () => {
 	loading = true;
 	error = '';
 	const themeId = $page.params.id;
-	const resp = await getActiveThemeDetails(themeId);
+	const resp = await getOneThemeWithDetails(themeId);
 	if (resp.code === 200 && resp.data) {
 		theme = resp.data;
 	} else {

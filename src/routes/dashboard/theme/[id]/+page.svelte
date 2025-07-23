@@ -277,6 +277,7 @@
 			return;
 		}
 		theme = getOneThemeDetailResp.data;
+		console.debug('theme loaded', theme);
 		selectedArticle = theme.chapters[0].articles[0];
 	});
 </script>
