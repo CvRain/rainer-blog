@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import type { ApiArticle, ApiArticleDetail } from "./response_schema";
 
-export const API_BASE_URL = 'http://localhost:4000/api';
+export const API_BASE_URL = import.meta.env.DEV ? 'http://localhost:4000/api' : import.meta.env.VITE_API_BASE_URL;
 
 export interface BaseResponse<T> {
     code: number;
