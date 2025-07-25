@@ -90,8 +90,8 @@
 
 		if (styleLink) {
 			styleLink.href = isDark
-				? '/src/lib/styles/catppuccin-mocha.css'
-				: '/src/lib/styles/catppuccin-latte.css';
+				? '/styles/catppuccin-mocha.css'
+				: '/styles/catppuccin-latte.css';
 		}
 	}
 
@@ -113,8 +113,8 @@
 			styleLink.rel = 'stylesheet';
 			styleLink.type = 'text/css';
 			styleLink.href = document.documentElement.classList.contains('dark')
-				? '/src/lib/styles/catppuccin-mocha.css'
-				: '/src/lib/styles/catppuccin-latte.css';
+				? '/styles/catppuccin-mocha.css'
+				: '/styles/catppuccin-latte.css';
 			document.head.appendChild(styleLink);
 
 			// 初始化渲染

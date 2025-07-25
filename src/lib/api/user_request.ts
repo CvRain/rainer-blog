@@ -19,7 +19,7 @@ export interface LoginResponse {
 }
 
 export async function login(userName: string, userPassword: string): Promise<LoginResponse> {
-    const response = await axios.post('http://localhost:4000/api/user/login', {
+    const response = await axios.post(`${API_BASE_URL}/user/login`, {
         user_name: userName,
         user_password: userPassword
     }, {
