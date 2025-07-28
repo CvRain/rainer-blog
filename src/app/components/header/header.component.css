@@ -1,0 +1,40 @@
+/* 毛玻璃效果和基本样式已经在HTML中定义，这里可以添加额外的自定义样式 */
+
+header {
+  transition: all 0.3s ease;
+}
+
+header:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+a, button {
+  outline: none;
+}
+
+a:focus, button:focus {
+  outline: 2px solid rgba(59, 130, 246, 0.5);
+  outline-offset: 2px;
+}
+
+/* 为导航项添加更流畅的动画效果 */
+a {
+  position: relative;
+}
+
+/* 添加底部滑动效果 */
+a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #3b82f6; /* 蓝色下划线 */
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+a:hover::after {
+  width: 80%;
+}

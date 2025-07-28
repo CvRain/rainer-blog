@@ -1,0 +1,43 @@
+<header
+  class="fixed top-4 left-4 right-4 z-50 bg-white/30 dark:bg-gray-800/30 backdrop-blur-lg rounded-2xl shadow-lg px-6 py-4">
+  <div class="flex justify-between items-center">
+    <!-- 左侧内容：用户头像和用户名 -->
+    <div class="flex items-center space-x-3">
+      <div
+        class="w-10 h-10 rounded-full bg-gray-200 border-2 border-white dark:border-gray-700 flex items-center justify-center">
+        <i class="pi pi-user text-gray-600 dark:text-gray-300"></i>
+      </div>
+      <span class="font-medium text-gray-800 dark:text-white">用户名</span>
+    </div>
+
+    <!-- 右侧内容：导航链接和主题切换 -->
+    <div class="flex items-center space-x-1">
+      <a pRipple class="flex items-center px-4 py-2 rounded-lg text-gray-700 hover:bg-white/50 dark:text-white dark:hover:bg-gray-700/50 transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer">
+        <i class="pi pi-home mr-2"></i>
+        <span>首页</span>
+      </a>
+      <a pRipple class="flex items-center px-4 py-2 rounded-lg text-gray-700 hover:bg-white/50 dark:text-white dark:hover:bg-gray-700/50 transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer">
+        <i class="pi pi-calendar mr-2"></i>
+        <span>归档</span>
+      </a>
+      <a pRipple class="flex items-center px-4 py-2 rounded-lg text-gray-700 hover:bg-white/50 dark:text-white dark:hover:bg-gray-700/50 transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer">
+        <i class="pi pi-tags mr-2"></i>
+        <span>分类</span>
+      </a>
+      <a pRipple class="flex items-center px-4 py-2 rounded-lg text-gray-700 hover:bg-white/50 dark:text-white dark:hover:bg-gray-700/50 transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer">
+        <i class="pi pi-desktop mr-2"></i>
+        <span>控制台</span>
+      </a>
+
+      <!-- 深色浅色模式切换图标 -->
+      <button pRipple
+              class="p-2 rounded-full bg-white/50 dark:bg-gray-700/50 hover:bg-white/80 dark:hover:bg-gray-600/50 ml-2 transition-colors"
+              aria-label="切换主题">
+        <i class="pi pi-moon dark:pi-sun text-gray-700 dark:text-yellow-400"></i>
+      </button>
+    </div>
+  </div>
+
+</header>
+
+<router-outlet></router-outlet>
