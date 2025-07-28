@@ -14,5 +14,17 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+  isMobileMenuOpen = false;
 
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenu) {
+      if (this.isMobileMenuOpen) {
+        mobileMenu.classList.remove('hidden');
+      } else {
+        mobileMenu.classList.add('hidden');
+      }
+    }
+  }
 }

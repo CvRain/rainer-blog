@@ -1,0 +1,45 @@
+/* 页脚组件样式 */
+footer {
+  transition: all 0.3s ease;
+}
+
+footer:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* 链接悬停效果 */
+a {
+  outline: none;
+  position: relative;
+}
+
+a:focus {
+  outline: 2px solid rgba(59, 130, 246, 0.5);
+  outline-offset: 2px;
+}
+
+/* 添加底部滑动效果 */
+a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 1px;
+  background-color: #3b82f6;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+a:hover::after {
+  width: 100%;
+}
+
+/* ICP备案号链接样式 */
+.icp-link {
+  transition: color 0.3s ease;
+}
+
+.icp-link:hover {
+  color: #3b82f6;
+}
