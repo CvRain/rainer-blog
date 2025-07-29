@@ -1,1 +1,34 @@
-<div class="w-full h-full bg-blue-500">home-content works!</div>
+<div class="w-full h-full p-4">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- 左侧：个人介绍 -->
+      <div class="lg:col-span-1">
+        <app-self-intro-card></app-self-intro-card>
+      </div>
+      
+      <!-- 右侧：文章和主题 -->
+      <div class="lg:col-span-2">
+        <!-- 最近发布的文章 -->
+        <div class="mb-6">
+          <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">最近文章</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <app-article-card></app-article-card>
+            <app-article-card></app-article-card>
+            <app-article-card></app-article-card>
+          </div>
+        </div>
+        
+        <!-- 主题和画廊 -->
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">主题与画廊</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <app-theme-card></app-theme-card>
+            <app-theme-card></app-theme-card>
+            <app-theme-card></app-theme-card>
+            <app-friend-link-card></app-friend-link-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
