@@ -4,7 +4,7 @@ import { TestPageComponent } from './pages/test-page/test-page.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, TestPageComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
