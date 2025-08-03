@@ -1,1 +1,87 @@
-<p>login works!</p>
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-800 dark:to-gray-900 p-4">
+  <div class="w-full max-w-md">
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">欢迎回来</h1>
+      <p class="text-gray-600 dark:text-gray-300">请输入您的账号信息登录</p>
+    </div>
+
+    <p-card styleClass="shadow-xl rounded-2xl overflow-hidden border-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg">
+      <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+        <div class="mb-6">
+          <span class="p-float-label">
+            <input 
+              id="username" 
+              type="text" 
+              pInputText 
+              [(ngModel)]="username" 
+              name="username" 
+              required
+              class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500">
+            <label for="username" class="dark:text-gray-300">用户名或邮箱</label>
+          </span>
+        </div>
+
+        <div class="mb-6">
+          <span class="p-float-label">
+            <p-password 
+              id="password" 
+              [(ngModel)]="password" 
+              name="password" 
+              required
+              [feedback]="false"
+              [toggleMask]="true"
+              styleClass="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500">
+            </p-password>
+            <label for="password" class="dark:text-gray-300">密码</label>
+          </span>
+        </div>
+
+        <div class="flex justify-between items-center mb-6">
+          <div class="flex items-center">
+            <p-checkbox 
+              [(ngModel)]="rememberMe" 
+              name="rememberMe"
+              inputId="rememberMe"
+              [binary]="true">
+            </p-checkbox>
+            <label for="rememberMe" class="ml-2 text-gray-700 dark:text-gray-300">记住我</label>
+          </div>
+          
+          <a routerLink="/forgot-password" class="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium">
+            忘记密码？
+          </a>
+        </div>
+
+        <p-button 
+          label="登录" 
+          icon="pi pi-sign-in" 
+          styleClass="w-full py-3 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 font-medium"
+          [disabled]="!username || !password">
+        </p-button>
+      </form>
+
+      <p-divider align="center" type="solid" class="my-6">
+        <span class="text-gray-500 dark:text-gray-400 text-sm">或者</span>
+      </p-divider>
+
+      <div class="flex justify-center space-x-4 mb-6">
+        <button pButton pRipple type="button" icon="pi pi-github" class="p-button-rounded p-button-text p-button-secondary"></button>
+        <button pButton pRipple type="button" icon="pi pi-google" class="p-button-rounded p-button-text p-button-danger"></button>
+        <button pButton pRipple type="button" icon="pi pi-microsoft" class="p-button-rounded p-button-text p-button-info"></button>
+      </div>
+
+      <div class="text-center mt-6">
+        <span class="text-gray-600 dark:text-gray-300">还没有账号？</span>
+        <a routerLink="/register" class="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium ml-1">
+          立即注册
+        </a>
+      </div>
+    </p-card>
+
+    <div class="mt-8 text-center">
+      <p class="text-gray-500 dark:text-gray-400 text-sm">
+        © {{ getCurrentYear() }} 博客平台. 保留所有权利.
+      </p>
+    </div>
+  </div>
+</div>

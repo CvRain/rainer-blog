@@ -1,0 +1,40 @@
+/* src/app/pages/login/login.component.css */
+:host ::ng-deep .p-card .p-password input {
+  width: 100%;
+}
+
+:host ::ng-deep .p-card .p-password-panel {
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+:host ::ng-deep .p-card .p-password-panel .p-password-meter {
+  margin-top: 0.5rem;
+}
+
+:host ::ng-deep .p-card .p-password-panel .p-password-info {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+}
+
+:host ::ng-deep .p-card .p-divider .p-divider-content {
+  background: transparent;
+}
+
+:host ::ng-deep .p-card .p-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* 暗色主题适配 */
+:host ::ng-deep .p-card.p-component.p-card-dark .p-password-panel {
+  background: #374151;
+  border: 1px solid #4b5563;
+  color: #fff;
+}
+
+:host ::ng-deep .p-card.p-component.p-card-dark .p-password-info {
+  color: #d1d5db;
+}
