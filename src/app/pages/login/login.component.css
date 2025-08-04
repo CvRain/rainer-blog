@@ -38,3 +38,14 @@
 :host ::ng-deep .p-card.p-component.p-card-dark .p-password-info {
   color: #d1d5db;
 }
+
+/* 响应式调整 */
+@media (max-width: 640px) {
+  :host ::ng-deep .p-card {
+    margin: 0 1rem;
+  }
+  
+  .text-3xl {
+    font-size: 1.875rem;
+  }
+}

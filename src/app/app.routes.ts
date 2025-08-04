@@ -11,6 +11,6 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-    title: "用户登录"
+    title: "用户登录 - ClaudeRainer的博客"
   }
 ];

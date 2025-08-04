@@ -7,6 +7,10 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DividerModule } from 'primeng/divider';
 import { RouterLink } from '@angular/router';
+import { MessageModule } from 'primeng/message';
+import { HeaderComponent } from '../../components/header/header.component';
+import { FooterComponent } from '../../components/footer/footer.component';
+import { RippleModule } from 'primeng/ripple';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +22,11 @@ import { RouterLink } from '@angular/router';
     ButtonModule,
     CheckboxModule,
     DividerModule,
-    RouterLink
+    RouterLink,
+    MessageModule,
+    HeaderComponent,
+    FooterComponent,
+    RippleModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -27,6 +35,7 @@ export class LoginComponent {
   username: string = '';
   password: string = '';
   rememberMe: boolean = false;
+  loginError: boolean = false;
 
   onSubmit() {
     console.log('Login attempt with:', {
@@ -34,9 +43,18 @@ export class LoginComponent {
       password: this.password,
       rememberMe: this.rememberMe
     });
-    // 这里可以添加实际的登录逻辑
+    
+    // 模拟登录验证
+    if (this.username && this.password) {
+      // 这里可以添加实际的登录逻辑
+      // 模拟登录失败的情况
+      this.loginError = true;
+      setTimeout(() => {
+        this.loginError = false;
+      }, 3000);
+    }
   }
-  
+
   getCurrentYear(): number {
     return new Date().getFullYear();
   }
