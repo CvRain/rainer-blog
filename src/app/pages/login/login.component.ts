@@ -9,7 +9,7 @@ import { DividerModule } from 'primeng/divider';
 import { RouterLink } from '@angular/router';
 import { MessageModule } from 'primeng/message';
 import { HeaderComponent } from '../../components/header/header.component';
-import { FooterComponent } from '../../components/footer/footer.component';
+import { SimpleFooter } from '../../components/simple-footer/simple-footer';
 import { RippleModule } from 'primeng/ripple';
 
 @Component({
@@ -25,8 +25,9 @@ import { RippleModule } from 'primeng/ripple';
     RouterLink,
     MessageModule,
     HeaderComponent,
-    FooterComponent,
-    RippleModule
+    SimpleFooter,
+    RippleModule,
+
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -43,7 +44,7 @@ export class LoginComponent {
       password: this.password,
       rememberMe: this.rememberMe
     });
-    
+
     // 模拟登录验证
     if (this.username && this.password) {
       // 这里可以添加实际的登录逻辑
@@ -53,9 +54,5 @@ export class LoginComponent {
         this.loginError = false;
       }, 3000);
     }
-  }
-
-  getCurrentYear(): number {
-    return new Date().getFullYear();
   }
 }
