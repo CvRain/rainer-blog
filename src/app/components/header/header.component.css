@@ -1,6 +1,12 @@
 /* 毛玻璃效果和基本样式已经在HTML中定义，这里可以添加额外的自定义样式 */
 
 header {
+  /* 默认样式（亮色主题） */
+  background-color: rgba(255, 255, 255, 0.3);
+  color: #333;
+  /* 使用CSS变量的主题样式（如果可用） */
+  background-color: color-mix(in srgb, var(--p-surface-0, #ffffff), transparent 30%);
+  color: var(--p-text-color, #333);
   transition: all 0.3s ease;
 }
 
@@ -10,11 +16,23 @@ header:hover {
 
 a, button {
   outline: none;
+  color: var(--p-text-color, #333);
 }
 
 a:focus, button:focus {
-  outline: 2px solid rgba(59, 130, 246, 0.5);
+  outline: 2px solid var(--p-focus-ring-color, rgba(59, 130, 246, 0.5));
   outline-offset: 2px;
+}
+
+/* 用户头像容器样式 */
+.rounded-full {
+  background-color: var(--p-surface-200, #eee);
+  border-color: var(--p-content-border-color, #ddd);
+}
+
+/* 图标样式 */
+.pi {
+  color: var(--p-text-color, #333);
 }
 
 /* 为导航项添加更流畅的动画效果 */
@@ -30,11 +48,19 @@ a::after {
   left: 50%;
   width: 0;
   height: 2px;
-  background-color: #3b82f6; /* 蓝色下划线 */
+  /* 默认样式 */
+  background-color: #3b82f6;
+  /* 使用CSS变量的主题样式（如果可用） */
+  background-color: var(--p-primary-color, #3b82f6);
   transition: all 0.3s ease;
   transform: translateX(-50%);
 }
 
 a:hover::after {
   width: 80%;
+}
+
+/* 按钮悬停效果 */
+button:hover {
+  background-color: color-mix(in srgb, var(--p-surface-200, #eee), transparent 50%);
 }

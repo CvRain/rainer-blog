@@ -15,6 +15,14 @@ import { RouterOutlet } from '@angular/router';
 })
 export class HeaderComponent {
   isMobileMenuOpen = false;
+  isDarkMode = false;
+
+  constructor() {
+    // 初始化时检查当前主题
+    if (typeof document !== 'undefined') {
+      this.isDarkMode = document.documentElement.classList.contains('app-dark');
+    }
+  }
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
@@ -26,5 +34,14 @@ export class HeaderComponent {
         mobileMenu.classList.add('hidden');
       }
     }
+  }
+
+  toggleTheme() {
+    // 切换暗色/亮色主题
+    this.isDarkMode = !this.isDarkMode;
+    document.documentElement.classList.toggle('app-dark', this.isDarkMode);
+    
+    // 保存用户选择到 localStorage
+    localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
   }
 }

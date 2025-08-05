@@ -1,35 +1,35 @@
-<footer class="bg-white/30 dark:bg-gray-800/30 backdrop-blur-lg rounded-none px-6 py-6 mt-8">
+<footer class="backdrop-blur-lg rounded-none px-6 py-6 mt-8">
   <div class="container mx-auto">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <!-- 关于我们 -->
       <div>
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">关于博客</h3>
-        <p class="text-gray-600 dark:text-gray-300">
+        <h3 class="text-lg font-semibold mb-4">关于博客</h3>
+        <p>
           这是一个现代化的博客平台，专注于分享技术知识和经验。我们致力于提供优质的阅读体验。
         </p>
       </div>
 
       <!-- 快速链接 -->
       <div>
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">快速链接</h3>
+        <h3 class="text-lg font-semibold mb-4">快速链接</h3>
         <ul class="space-y-2">
           <li>
             <a href="#"
-               class="text-gray-600 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400 transition-colors flex items-center">
+               class="transition-colors flex items-center">
               <i class="pi pi-home mr-2"></i>
               首页
             </a>
           </li>
           <li>
             <a href="#"
-               class="text-gray-600 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400 transition-colors flex items-center">
+               class="transition-colors flex items-center">
               <i class="pi pi-calendar mr-2"></i>
               归档
             </a>
           </li>
           <li>
             <a href="#"
-               class="text-gray-600 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400 transition-colors flex items-center">
+               class="transition-colors flex items-center">
               <i class="pi pi-tags mr-2"></i>
               分类
             </a>
@@ -39,8 +39,8 @@
 
       <!-- 联系信息和ICP备案 -->
       <div>
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">联系我们</h3>
-        <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+        <h3 class="text-lg font-semibold mb-4">联系我们</h3>
+        <ul class="space-y-2">
           <li class="flex items-center">
             <i class="pi pi-envelope mr-2"></i>
             example&commat;email.com
@@ -52,8 +52,8 @@
         </ul>
 
         <!-- ICP备案号位置 -->
-        <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
-          <p class="text-center text-gray-500 dark:text-gray-400 text-sm">
+        <div class="mt-6 pt-4 border-t">
+          <p class="text-center text-sm">
             <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" class="icp-link">
               <i class="pi pi-shield mr-1"></i>
               ICP备案号：{{ icp }}
@@ -65,7 +65,7 @@
 
     <!-- 版权信息 -->
     <div
-      class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 text-center text-gray-500 dark:text-gray-400 text-sm">
+      class="mt-8 pt-6 border-t text-center text-sm">
       <p>© {{ currentYear }} {{ copyright }}</p>
     </div>
   </div>

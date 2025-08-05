@@ -1,5 +1,11 @@
 /* 页脚组件样式 */
 footer {
+  /* 默认样式（亮色主题） */
+  background-color: rgba(255, 255, 255, 0.3);
+  color: #333;
+  /* 使用CSS变量的主题样式（如果可用） */
+  background-color: color-mix(in srgb, var(--p-surface-0, #ffffff), transparent 30%);
+  color: var(--p-text-color, #333);
   transition: all 0.3s ease;
 }
 
@@ -7,14 +13,25 @@ footer:hover {
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-/* 链接悬停效果 */
+/* 标题样式 */
+h3 {
+  color: var(--p-text-color, #333);
+}
+
+/* 段落和列表文字样式 */
+p, ul, li {
+  color: var(--p-text-muted-color, #666);
+}
+
+/* 链接样式 */
 a {
   outline: none;
   position: relative;
+  color: var(--p-text-color, #333);
 }
 
 a:focus {
-  outline: 2px solid rgba(59, 130, 246, 0.5);
+  outline: 2px solid var(--p-focus-ring-color, rgba(59, 130, 246, 0.5));
   outline-offset: 2px;
 }
 
@@ -26,7 +43,10 @@ a::after {
   left: 50%;
   width: 0;
   height: 1px;
+  /* 默认样式 */
   background-color: #3b82f6;
+  /* 使用CSS变量的主题样式（如果可用） */
+  background-color: var(--p-primary-color, #3b82f6);
   transition: all 0.3s ease;
   transform: translateX(-50%);
 }
@@ -41,5 +61,10 @@ a:hover::after {
 }
 
 .icp-link:hover {
-  color: #3b82f6;
+  color: var(--p-primary-color, #3b82f6);
+}
+
+/* 边框样式 */
+.border-t {
+  border-top-color: var(--p-content-border-color, #ddd);
 }
