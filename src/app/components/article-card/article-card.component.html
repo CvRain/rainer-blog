@@ -1,4 +1,4 @@
-<p-card>
+<p-card class="cursor-pointer hover:shadow-lg transition-shadow duration-300" (click)="onCardClick()">
   <div class="flex flex-col h-full">
     <div class="relative">
       <p-image src="images/article-default-cover.jpg" alt="文章封面" width="100%" height="192px" [imageStyle]="{'object-fit': 'cover'}" styleClass="rounded-t-lg"></p-image>
@@ -7,13 +7,13 @@
       </div>
     </div>
     <div class="p-4 flex-grow">
-      <h3 class="text-lg font-bold mb-2">文章标题</h3>
+      <h3 class="text-lg font-bold mb-2">{{ article()?.title || '文章标题' }}</h3>
       <p class="text-sm mb-4">
-        这里是文章的简短摘要，用于介绍文章的主要内容...
+        {{ article()?.content || '这里还没有摘要内容...' }}
       </p>
       <div class="flex items-center text-sm">
-        <span class="mr-4"><i class="pi pi-calendar mr-1"></i> 2024-01-01</span>
-        <span><i class="pi pi-eye mr-1"></i> 123</span>
+        <span class="mr-4"><i class="pi pi-calendar mr-1"></i> {{ article()?.inserted_at ? (article()?.inserted_at | date: 'yyyy-MM-dd') : '未知时间' }}</span>
+        <span><i class="pi pi-eye mr-1"></i> {{ article()?.order || 0 }}</span>
       </div>
     </div>
   </div>

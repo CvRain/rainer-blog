@@ -1,30 +1,31 @@
 <p-card>
   <div class="flex flex-col items-center text-center">
     <div class="w-24 h-24 rounded-full overflow-hidden mb-4">
-      <img src="https://placehold.co/200x200" alt="用户头像" class="w-full h-full object-cover">
+      <img src="/images/avatar.png" alt="用户头像" class="w-full h-full object-cover">
     </div>
-    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Claude Rainer</h3>
+    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">{{userName()}}</h3>
     <p class="text-gray-600 dark:text-gray-300 mb-4">
-      全栈开发工程师，热爱技术分享和开源项目贡献。专注于Web技术和移动应用开发。
+      {{userSignature()}}
     </p>
-    <div class="flex space-x-4 mb-6">
-      <a href="https://github.com" target="_blank" class="text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">
-        <i class="pi pi-github text-xl"></i>
-      </a>
-      <a href="https://twitter.com" target="_blank" class="text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">
-        <i class="pi pi-twitter text-xl"></i>
-      </a>
-      <a href="mailto:example@email.com" class="text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">
-        <i class="pi pi-envelope text-xl"></i>
-      </a>
-    </div>
+    <!-- todo 社交图标 -->
+<!--    <div class="flex space-x-4 mb-6">-->
+<!--      <a href="https://github.com" target="_blank" class="text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">-->
+<!--        <i class="pi pi-github text-xl"></i>-->
+<!--      </a>-->
+<!--      <a href="https://twitter.com" target="_blank" class="text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">-->
+<!--        <i class="pi pi-twitter text-xl"></i>-->
+<!--      </a>-->
+<!--      <a href="mailto:example@email.com" class="text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">-->
+<!--        <i class="pi pi-envelope text-xl"></i>-->
+<!--      </a>-->
+<!--    </div>-->
   </div>
-  
+
   <!-- 友情链接部分 -->
   <div class="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
     <h4 class="text-lg font-semibold text-gray-800 dark:text-white mb-3 text-center">友情链接</h4>
     <div class="flex flex-col space-y-2">
-      <a href="https://angular.io" target="_blank" 
+      <a href="https://angular.io" target="_blank"
          class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer transition-colors">
         <div class="w-8 h-8 rounded-full overflow-hidden mr-3">
           <img src="https://placehold.co/50x50/000000/FFFFFF?text=A" alt="Angular" class="w-full h-full object-cover">

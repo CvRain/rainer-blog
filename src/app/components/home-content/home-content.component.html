@@ -3,7 +3,8 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <!-- 左侧：个人介绍 -->
       <div class="lg:col-span-1">
-        <app-self-intro-card></app-self-intro-card>
+        <app-self-intro-card [userName]="userInfo().user_name"
+                             [userSignature]="userInfo().user_signature"></app-self-intro-card>
       </div>
 
       <!-- 右侧：文章和主题 -->
@@ -12,26 +13,30 @@
         <div class="mb-6">
           <h2 class="text-2xl font-bold mb-4">最近文章</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <app-article-card></app-article-card>
-            <app-article-card></app-article-card>
-            <app-article-card></app-article-card>
+            @for (article of articles; track article.id) {
+              <app-article-card [article]="article"></app-article-card>
+            } @empty {
+              <p>暂无文章</p>
+            }
           </div>
         </div>
 
-        <!-- 主题 -->
-        <div class="mb-6">
-          <h2 class="text-2xl font-bold mb-4">主题</h2>
-          <div class="space-y-6">
-            <app-theme-card></app-theme-card>
-            <app-theme-card></app-theme-card>
-            <app-theme-card></app-theme-card>
-          </div>
-        </div>
+        <!-- todo 主题 -->
+<!--        <div class="mb-6">-->
+<!--          <h2 class="text-2xl font-bold mb-4">主题</h2>-->
+<!--          <div class="space-y-6">-->
+<!--            <app-theme-card></app-theme-card>-->
+<!--            <app-theme-card></app-theme-card>-->
+<!--            <app-theme-card></app-theme-card>-->
+<!--          </div>-->
+<!--        </div>-->
 
-        <!-- 图库展示 -->
-        <div>
-          <app-gallery-card></app-gallery-card>
-        </div>
+        <!-- todo 图库展示 -->
+<!--        <div>-->
+<!--          <app-gallery-card></app-gallery-card>-->
+<!--        </div>-->
+
+
       </div>
     </div>
   </div>

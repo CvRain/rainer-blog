@@ -23,13 +23,19 @@ import { User } from '../../services/user';
 export class HomeComponent {
   userService = inject(User);
 
-  userInfo: UserInfo | undefined;
+  userInfo: UserInfo = {} as UserInfo;
 
   constructor() {
     const result = this.userService.getUserInfo();
     result.subscribe(res => {
-      this.userInfo = res.data;
+      this.userInfo = res.data || {
+        user_avatar: '',
+        user_background: '',
+        user_email: '',
+        user_name: 'unknown',
+        user_signature: 'unknown'
+      };
       console.log(this.userInfo);
-    })
+    });
   }
 }
