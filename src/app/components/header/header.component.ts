@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
-import { File, Home, Menu, LucideAngularModule } from 'lucide-angular';
+import { LucideAngularModule } from 'lucide-angular';
 import { RippleModule } from 'primeng/ripple';
 import { RouterOutlet } from '@angular/router';
+import { Card } from 'primeng/card';
 
 @Component({
   selector: 'app-header',
   imports: [
     LucideAngularModule,
     RippleModule,
-    RouterOutlet
+    RouterOutlet,
+    Card
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
@@ -40,7 +42,7 @@ export class HeaderComponent {
     // 切换暗色/亮色主题
     this.isDarkMode = !this.isDarkMode;
     document.documentElement.classList.toggle('app-dark', this.isDarkMode);
-    
+
     // 保存用户选择到 localStorage
     localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
   }
