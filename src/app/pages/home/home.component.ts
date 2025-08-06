@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { BlurCoverComponent } from '../../components/blur-cover/blur-cover.component';
 import { HomeContentComponent } from '../../components/home-content/home-content.component';
+import { UserInfo } from '../../services/types';
+import { User } from '../../services/user';
 
 @Component({
   selector: 'app-home',
@@ -19,5 +21,15 @@ import { HomeContentComponent } from '../../components/home-content/home-content
 })
 
 export class HomeComponent {
+  userService = inject(User);
 
+  userInfo: UserInfo | undefined;
+
+  constructor() {
+    const result = this.userService.getUserInfo();
+    result.subscribe(res => {
+      this.userInfo = res.data;
+      console.log(this.userInfo);
+    })
+  }
 }

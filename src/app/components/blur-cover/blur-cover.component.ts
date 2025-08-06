@@ -1,50 +1,36 @@
-import { Component, input, Input, OnInit } from '@angular/core';
+import { Component, input, OnInit } from '@angular/core';
 import { ImageModule } from 'primeng/image';
-import { BingImageService } from '../../services/image';
+import { LucideAngularModule, GitPullRequest, LucideIconData, TvIcon } from 'lucide-angular';
 
 export interface SocialLink {
   url: string;
-  icon: string;
+  icon: LucideIconData;
   label: string;
 }
 
 @Component({
   selector: 'app-blur-cover',
   imports: [
-    ImageModule
+    ImageModule, LucideAngularModule
   ],
   templateUrl: './blur-cover.component.html',
   styleUrl: './blur-cover.component.css'
 })
 export class BlurCoverComponent implements OnInit {
+  ngOnInit(): void {
+
+  }
+  readonly Code = GitPullRequest;
+  readonly TvIcon = TvIcon;
+
   imageUrl = input('images/placeholder.jpg');
-  title = input('欢迎来到我的博客');
-  description = input('这里是展示技术分享和思考的地方');
-  socialLinks = input([
-    { url: 'https://github.com', icon: 'pi-github', label: 'GitHub' },
-    { url: 'https://gitlab.com', icon: 'pi-code', label: 'GitLab' },
-    { url: 'https://bilibili.com', icon: 'pi-video', label: 'Bilibili' }
+  title = input('笨拙的探索这个世界');
+  description = input('std::find(world.beg(),world.end())');
+  socialLinks = input<SocialLink[]>([
+    { url: 'https://github.com', icon: this.Code, label: 'GitHub' },
+    { url: 'https://bilibili.com', icon: this.TvIcon, label: 'Bilibili' }
   ]);
   showScrollIndicator = input(true);
-  
+
   currentImageUrl: string = 'images/placeholder.jpg';
-
-  constructor(private bingImageService: BingImageService) {}
-
-  ngOnInit() {
-    this.loadBingDailyImage();
-  }
-
-  loadBingDailyImage() {
-    this.bingImageService.getBingDailyImageUrl().subscribe({
-      next: (imageUrl) => {
-        this.currentImageUrl = imageUrl;
-      },
-      error: (error) => {
-        console.error('获取必应每日一图失败:', error);
-        // 如果获取失败，使用默认图片
-        this.currentImageUrl = this.imageUrl();
-      }
-    });
-  }
 }

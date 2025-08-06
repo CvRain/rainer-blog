@@ -6,7 +6,7 @@ export interface BaseResponse<T> {
 
 export interface UserInfo {
   user_avatar: string;
-  user_backend: string;
+  user_background: string;
   user_email: string;
   user_name: string;
   user_signature: string;

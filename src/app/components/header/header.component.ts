@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { LucideAngularModule } from 'lucide-angular';
 import { RippleModule } from 'primeng/ripple';
 import { RouterOutlet } from '@angular/router';
@@ -18,6 +18,8 @@ import { Card } from 'primeng/card';
 export class HeaderComponent {
   isMobileMenuOpen = false;
   isDarkMode = false;
+
+  userName = input<string>('用户名');
 
   constructor() {
     // 初始化时检查当前主题
