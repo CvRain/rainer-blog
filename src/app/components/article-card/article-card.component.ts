@@ -13,9 +13,9 @@ import { ApiArticle } from '../../services/types';
 })
 export class ArticleCardComponent {
   article = input<ApiArticle | null>(null);
-  
+
   constructor(private router: Router) {}
-  
+
   onCardClick() {
     if (this.article()) {
       this.router.navigate(['/article', this.article()?.id]);

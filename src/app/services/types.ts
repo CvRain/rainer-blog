@@ -22,4 +22,21 @@ export interface ApiArticle {
   chapter_id: string;
   inserted_at: string;
   updated_at: string;
+
+  [property: string]: any;
+}
+
+export interface ApiArticleContent {
+  id: string;
+  title: string;
+  order: number;
+  content: string;
+  aws_key: string;
+  chapter_id: string;
+  is_active: boolean;
+  s3_content: string;
+  inserted_at: string;
+  updated_at: string;
+
+  [property: string]: any;
 }

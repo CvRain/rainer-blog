@@ -29,7 +29,6 @@
           <h1 class="text-3xl md:text-4xl font-bold mb-4">{{ article.title }}</h1>
           <div class="flex flex-wrap items-center text-sm text-gray-600 dark:text-gray-400 gap-4">
             <span><i class="pi pi-calendar mr-2"></i>{{ article.inserted_at | date: 'yyyy-MM-dd HH:mm' }}</span>
-            <span><i class="pi pi-eye mr-2"></i>{{ article.order }} 次阅读</span>
             <span><i class="pi pi-folder mr-2"></i>默认分类</span>
           </div>
         </div>
@@ -38,7 +37,10 @@
 
         <!-- 文章内容 -->
         <div class="prose max-w-none dark:prose-invert">
-          <p>{{ article.content }}</p>
+          <app-markdown-viewer 
+            [markdownText]="article.s3_content" 
+            theme="auto">
+          </app-markdown-viewer>
         </div>
 
         <p-divider></p-divider>

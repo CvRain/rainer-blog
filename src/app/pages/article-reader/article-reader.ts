@@ -1,29 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Article } from '../../services/article';
-import { ApiArticle, BaseResponse } from '../../services/types';
+import { ApiArticleContent, BaseResponse } from '../../services/types';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { DatePipe } from '@angular/common';
 import { FooterComponent } from '../../components/footer/footer.component';
+import { HeaderComponent } from '../../components/header/header.component';
+import { MarkdownViewer } from '../../components/markdown-viewer/markdown-viewer';
 
 @Component({
   selector: 'app-article-reader',
-  imports: [CardModule, ButtonModule, DividerModule, DatePipe, RouterOutlet, FooterComponent],
+  imports: [CardModule, ButtonModule, DividerModule, DatePipe, RouterOutlet, FooterComponent, MarkdownViewer],
   templateUrl: './article-reader.html',
   styleUrl: './article-reader.css'
 })
+
 export class ArticleReader implements OnInit {
-  article: ApiArticle | null = null;
+  article: ApiArticleContent | undefined = undefined;
   loading = true;
-  error: string | null = null;
+  error: string | undefined = undefined;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private articleService: Article
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     const articleId = this.route.snapshot.paramMap.get('id');
@@ -36,8 +40,13 @@ export class ArticleReader implements OnInit {
   }
 
   loadArticle(id: string) {
-    this.articleService.getPublicArticleById(id).subscribe({
-      next: (response: BaseResponse<ApiArticle>) => {
+    this.articleService.getArticleS3ContentById(id).subscribe({
+      next: (response: BaseResponse<ApiArticleContent>) => {
+        if(response.code !== 200){
+          this.error = response.message;
+          this.loading = false;
+          return;
+        }
         if (response.data) {
           this.article = response.data;
         } else {

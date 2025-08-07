@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiArticle, BaseResponse } from './types';
+import { ApiArticle, ApiArticleContent, BaseResponse } from './types';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
@@ -19,8 +19,8 @@ export class Article {
     return this.http.get<BaseResponse<ApiArticle[]>>(url, { params });
   }
 
-  getPublicArticleById(id: string): Observable<BaseResponse<ApiArticle>> {
-    const url = `${environment.apiUrl}/article/public/${id}`;
-    return this.http.get<BaseResponse<ApiArticle>>(url);
+  getArticleS3ContentById(id: string): Observable<BaseResponse<ApiArticleContent>> {
+    const url = `${environment.apiUrl}/article/one/${id}`;
+    return this.http.get<BaseResponse<ApiArticleContent>>(url);
   }
 }
