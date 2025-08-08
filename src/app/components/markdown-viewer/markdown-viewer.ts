@@ -13,9 +13,10 @@ import DOMPurify from 'dompurify';
   templateUrl: './markdown-viewer.html',
   styleUrls: ['./markdown-viewer.css'],
 })
+
 export class MarkdownViewer implements OnInit, OnChanges, OnDestroy {
   @Input() markdownText: string = '# Hello world!';
-  @Input() theme: 'light' | 'dark' | 'auto' = 'light';
+  @Input() theme: 'light' | 'dark' | 'auto' = 'auto';
   htmlText: string = '';
   private styleLink: HTMLLinkElement | null = null;
 
@@ -25,11 +26,8 @@ export class MarkdownViewer implements OnInit, OnChanges, OnDestroy {
   }
 
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
-    if (changes['markdownText'] && !changes['markdownText'].firstChange) {
-      await this.renderMarkdown();
-    }
-
-    if (changes['theme'] && !changes['theme'].firstChange) {
+    if ((changes['markdownText'] && !changes['markdownText'].firstChange) ||
+        (changes['theme'] && !changes['theme'].firstChange)) {
       this.loadMarkdownStyles();
       await this.renderMarkdown();
     }
@@ -49,11 +47,16 @@ export class MarkdownViewer implements OnInit, OnChanges, OnDestroy {
     }
 
     // 根据主题选择合适的 CSS 文件
-    let cssFile = 'github-markdown.css';
+    let cssFile = 'github-markdown-light.css'; // 默认使用自动模式
     if (this.theme === 'dark') {
       cssFile = 'github-markdown-dark.css';
     } else if (this.theme === 'light') {
       cssFile = 'github-markdown-light.css';
+    } else if (this.theme === 'auto') {
+      // 检查系统主题偏好
+      const isDark = typeof window !== 'undefined' &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches;
+      cssFile = isDark ? 'github-markdown-dark.css' : 'github-markdown-light.css';
     }
 
     // 创建新的样式链接
@@ -98,7 +101,10 @@ export class MarkdownViewer implements OnInit, OnChanges, OnDestroy {
       })
       .use(
         await Shiki({
-          theme: 'github-light'
+          themes: {
+            light: 'catppuccin-latte',
+            dark: 'catppuccin-frappe',
+          }
         })
       );
 

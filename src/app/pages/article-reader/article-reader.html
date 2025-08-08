@@ -1,14 +1,16 @@
 <div class="flex flex-col min-h-screen">
+  <app-header class="mb-12" [userName]="userInfo.user_name"></app-header>
+
   <!-- 页面加载状态 -->
   @if (loading) {
-    <div class="flex justify-center items-center h-64">
+    <div class="flex justify-center items-center h-64 pt-20">
       <i class="pi pi-spin pi-spinner text-3xl"></i>
     </div>
   }
 
   <!-- 错误状态 -->
   @if (error && !loading) {
-    <div class="max-w-4xl mx-auto p-4">
+    <div class="max-w-4xl mx-auto p-4 pt-20">
       <p-card>
         <div class="text-center py-8">
           <i class="pi pi-exclamation-triangle text-5xl text-red-500 mb-4 block"></i>
@@ -22,7 +24,7 @@
 
   <!-- 文章内容 -->
   @if (article && !loading && !error) {
-    <div class="max-w-4xl mx-auto p-4 w-full">
+    <div class="max-w-4xl mx-auto p-4 w-full pt-20">
       <p-card>
         <!-- 文章标题 -->
         <div class="mb-6">
@@ -37,8 +39,8 @@
 
         <!-- 文章内容 -->
         <div class="prose max-w-none dark:prose-invert">
-          <app-markdown-viewer 
-            [markdownText]="article.s3_content" 
+          <app-markdown-viewer
+            [markdownText]="article.s3_content"
             theme="auto">
           </app-markdown-viewer>
         </div>

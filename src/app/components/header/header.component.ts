@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
 import { LucideAngularModule } from 'lucide-angular';
 import { RippleModule } from 'primeng/ripple';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, Router } from '@angular/router';
 import { Card } from 'primeng/card';
 
 @Component({
@@ -21,7 +21,7 @@ export class HeaderComponent {
 
   userName = input<string>('用户名');
 
-  constructor() {
+  constructor(private router: Router) {
     // 初始化时检查当前主题
     if (typeof document !== 'undefined') {
       this.isDarkMode = document.documentElement.classList.contains('app-dark');
@@ -47,5 +47,17 @@ export class HeaderComponent {
 
     // 保存用户选择到 localStorage
     localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
+  }
+
+  navigateToHome() {
+    this.router.navigate(['/']);
+  }
+
+  navigateToLogin() {
+    this.router.navigate(['/login']);
+  }
+
+  showComingSoon() {
+    alert('暂未完成');
   }
 }

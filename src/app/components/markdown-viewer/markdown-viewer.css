@@ -23,6 +23,12 @@
   margin-bottom: 0 !important;
 }
 
+/* 基础样式定义，实际样式将由加载的 CSS 文件提供 */
+.markdown-body {
+  color: inherit;
+  background-color: inherit;
+}
+
 /* 滚动条样式优化 */
 .markdown-body pre {
   overflow: auto;
@@ -36,7 +42,7 @@
   overflow-wrap: break-word;
 }
 
-/* 链接样式优化 */
+/* 链接样式 */
 .markdown-body a {
   text-decoration: none;
 }
@@ -52,66 +58,8 @@
   display: block;
 }
 
-.markdown-body table th,
-.markdown-body table td {
-  padding: 6px 13px;
-  border: 1px solid #e0e0e0;
-}
-
-.markdown-body table tr {
-  background-color: #ffffff;
-  border-top: 1px solid #f0f0f0;
-}
-
-.markdown-body table tr:nth-child(2n) {
-  background-color: #f8f8f8;
-}
-
 /* 代码块样式优化 */
 .markdown-body pre code {
   background-color: transparent;
   border: 0;
-}
-
-/* 引用块样式优化 */
-.markdown-body blockquote {
-  margin: 0;
-  padding: 0 1em;
-  color: #666666;
-  border-left: 0.25em solid #e0e0e0;
-}
-
-/* 分隔线样式优化 */
-.markdown-body hr {
-  height: 0.25em;
-  padding: 0;
-  margin: 24px 0;
-  background-color: #e0e0e0;
-  border: 0;
-}
-
-/* 暗色主题支持 */
-@media (prefers-color-scheme: dark) {
-  .markdown-body h1,
-  .markdown-body h2 {
-    border-bottom-color: #30363d;
-  }
-  
-  .markdown-body blockquote {
-    color: #8b949e;
-    border-left-color: #30363d;
-  }
-  
-  .markdown-body code,
-  .markdown-body tt {
-    background-color: rgba(110, 118, 129, 0.4);
-  }
-  
-  .markdown-body pre {
-    background-color: #161b22;
-  }
-  
-  .markdown-body a {
-    color: #58a6ff;
-  }
 }
