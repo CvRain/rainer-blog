@@ -22,11 +22,11 @@ p-image ::ng-deep img {
   .text-4xl {
     font-size: 2.25rem;
   }
-  
+
   .text-xl {
     font-size: 1.25rem;
   }
-  
+
   .max-w-2xl {
     max-width: 100%;
   }

@@ -9,7 +9,7 @@
     <div class="p-4 flex-grow">
       <h3 class="text-lg font-bold mb-2">{{ article()?.title || '文章标题' }}</h3>
       <p class="text-sm mb-4">
-        {{ article()?.content || '这里还没有摘要内容...' }}
+        {{ article()?.subtitle || '这里还没有摘要内容...' }}
       </p>
       <div class="flex items-center text-sm">
         <span class="mr-4"><i class="pi pi-calendar mr-1"></i> {{ article()?.inserted_at ? (article()?.inserted_at | date: 'yyyy-MM-dd') : '未知时间' }}</span>

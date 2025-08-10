@@ -15,7 +15,7 @@ export interface UserInfo {
 export interface ApiArticle {
   id: string;
   title: string;
-  content: string;
+  subtitle: string;
   aws_key: string;
   order: number;
   is_active: boolean;
@@ -30,7 +30,7 @@ export interface ApiArticleContent {
   id: string;
   title: string;
   order: number;
-  content: string;
+  subtitle: string;
   aws_key: string;
   chapter_id: string;
   is_active: boolean;

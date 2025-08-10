@@ -1,5 +1,4 @@
 import { Component, input } from '@angular/core';
-import { LucideAngularModule } from 'lucide-angular';
 import { RippleModule } from 'primeng/ripple';
 import { RouterOutlet, Router } from '@angular/router';
 import { Card } from 'primeng/card';
@@ -7,7 +6,6 @@ import { Card } from 'primeng/card';
 @Component({
   selector: 'app-header',
   imports: [
-    LucideAngularModule,
     RippleModule,
     RouterOutlet,
     Card

@@ -5,20 +5,21 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideHttpClient } from '@angular/common/http';
 import Aura from '@primeuix/themes/aura';
 import { routes } from './app.routes';
+import { provideMarkdown } from 'ngx-markdown';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideAnimationsAsync(),
     providePrimeNG({
       theme: {
         preset: Aura,
         options: {
-          darkModeSelector: '.app-dark'
-        }
-      }
+          darkModeSelector: '.app-dark',
+        },
+      },
     }),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient()
-  ]
+    provideHttpClient(),
+    provideMarkdown(),
+  ],
 };
