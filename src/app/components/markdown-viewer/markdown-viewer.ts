@@ -8,7 +8,6 @@ import { MarkdownComponent, MarkdownModule } from 'ngx-markdown';
   templateUrl: './markdown-viewer.html',
   styleUrls: [
     './markdown-viewer.css',
-    '../../../styles.css'
   ],
 })
 export class MarkdownViewer {

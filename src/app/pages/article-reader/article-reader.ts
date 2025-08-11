@@ -6,15 +6,15 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { DatePipe } from '@angular/common';
-import { FooterComponent } from '../../components/footer/footer.component';
-import { HeaderComponent } from '../../components/header/header.component';
 import { MarkdownViewer } from '../../components/markdown-viewer/markdown-viewer';
 import { User } from '../../services/user';
 import {Title} from '@angular/platform-browser';
+import {MiniHeader} from '../../components/mini-header/mini-header';
+import {SimpleFooter} from '../../components/simple-footer/simple-footer';
 
 @Component({
   selector: 'app-article-reader',
-  imports: [CardModule, ButtonModule, DividerModule, DatePipe, RouterOutlet, FooterComponent, HeaderComponent, MarkdownViewer],
+  imports: [CardModule, ButtonModule, DividerModule, DatePipe, RouterOutlet, MarkdownViewer, MiniHeader, SimpleFooter],
   templateUrl: './article-reader.html',
   styleUrl: './article-reader.css'
 })
