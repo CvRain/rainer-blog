@@ -1,0 +1,47 @@
+/* 文章卡片组件样式 */
+p-card {
+  display: block;
+  height: 100%;
+}
+
+/* 卡片内容区域 */
+.flex-grow {
+  flex-grow: 1;
+}
+
+/* 标题样式 */
+h3 {
+  color: var(--p-text-color, #333);
+}
+
+/* 摘要文字样式 */
+p.text-sm {
+  color: var(--p-text-muted-color, #666);
+}
+
+/* 信息文字样式 */
+.text-sm {
+  color: var(--p-text-muted-color, #666);
+}
+
+/* 图标样式 */
+.pi {
+  color: var(--p-text-color, #333);
+}
+
+/* 标签样式 */
+span.bg-blue-500 {
+  background-color: var(--p-primary-color, #3b82f6);
+  color: var(--p-primary-contrast-color, #ffffff);
+}
+
+/* 链接悬停效果 */
+a {
+  outline: none;
+  position: relative;
+}
+
+a:focus {
+  outline: 2px solid var(--p-focus-ring-color, rgba(59, 130, 246, 0.5));
+  outline-offset: 2px;
+}

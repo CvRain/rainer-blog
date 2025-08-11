@@ -1,0 +1,20 @@
+/* 图库项基础样式 */
+.gallery-item {
+  perspective: 1000px;
+}
+
+/* 图片覆盖层默认样式 */
+.gallery-overlay {
+  opacity: 0.5;
+  backdrop-filter: blur(4px);
+}
+
+/* 悬停时的效果 */
+.gallery-item:hover .gallery-overlay {
+  opacity: 0;
+  backdrop-filter: blur(0px);
+}
+
+.gallery-item:hover .gallery-overlay .text-center {
+  opacity: 0;
+}

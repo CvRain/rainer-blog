@@ -1,0 +1,16 @@
+<p-card header="图库展示">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    @for (image of images; track image.id) {
+      <div class="gallery-item relative h-64 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl">
+        <img [src]="image.full" [alt]="image.title" 
+             class="w-full h-full object-cover transition-all duration-500">
+        <div class="gallery-overlay absolute inset-0 bg-black flex items-center justify-center transition-all duration-500">
+          <div class="text-center px-4 transition-opacity duration-300">
+            <h3 class="text-xl font-bold text-white mb-2">{{ image.title }}</h3>
+            <p class="text-gray-200">{{ image.description }}</p>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</p-card>

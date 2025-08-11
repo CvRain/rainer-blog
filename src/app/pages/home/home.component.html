@@ -1,0 +1,13 @@
+<div class="flex flex-col min-h-screen">
+  <app-header [userName]="userInfo.user_name || '未知用户'"></app-header>
+  <main class="flex-grow pt-20">
+    <app-blur-cover
+      [imageUrl]="userInfo.user_background || 'images/placeholder.jpg'"
+      [title]="userInfo.user_signature|| '未知用户'"></app-blur-cover>
+    <app-home-content [userInfo]="userInfo"></app-home-content>
+  </main>
+  <app-footer></app-footer>
+</div>
+
+
+<router-outlet></router-outlet>

@@ -1,0 +1,37 @@
+<div class="relative h-screen w-full overflow-hidden">
+  <div class="absolute inset-0">
+    <p-image
+      [src]="currentImageUrl"
+      alt="Cover Image"
+      loading="lazy"
+      [preview]="false" />
+  </div>
+
+  <div class="absolute inset-0 bg-black opacity-40"></div>
+
+  <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+    <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 drop-shadow-lg">
+      {{ title() }}
+    </h1>
+
+    <p class="text-xl text-white mb-8 drop-shadow-md max-w-2xl">
+      {{ description() }}
+    </p>
+
+    <div class="flex space-x-6">
+      @for (link of socialLinks(); track link.url) {
+        <a [href]="link.url" target="_blank" rel="noopener noreferrer"
+           class="text-white hover:text-gray-300 transition-colors duration-300"
+           [attr.aria-label]="link.label">
+          <i-lucide [img]="link.icon"></i-lucide>
+        </a>
+      }
+    </div>
+
+    @if (showScrollIndicator()) {
+      <div class="absolute bottom-8 animate-bounce">
+        <i class="pi pi-angle-down text-white text-3xl"></i>
+      </div>
+    }
+  </div>
+</div>

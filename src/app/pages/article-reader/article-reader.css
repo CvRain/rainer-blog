@@ -1,0 +1,32 @@
+/* 文章阅读器组件样式 */
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+  .article-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .article-meta {
+    flex-wrap: wrap;
+  }
+}
+
+/* 加载动画 */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.pi-spinner {
+  animation: spin 1s linear infinite;
+}

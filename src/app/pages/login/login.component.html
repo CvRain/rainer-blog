@@ -1,0 +1,86 @@
+<div class="min-h-screen flex flex-col">
+  <!-- 复用主页的header组件 -->
+  <app-header></app-header>
+
+  <main
+    class="flex-grow flex items-center justify-center bg-gradient-to-br  p-4 pt-20">
+    <div class="w-full max-w-md">
+
+      <p-card class="shadow-xl rounded-2xl overflow-hidden border-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg">
+        <div class="text-center mb-8">
+          <div class="flex justify-center mb-4">
+            <div class="w-16 h-16 rounded-full bg-indigo-100 dark:bg-gray-700 flex items-center justify-center">
+              <i class="pi pi-user text-2xl text-indigo-600 dark:text-indigo-400"></i>
+            </div>
+          </div>
+          <h1 class="text-3xl font-bold mb-2">欢迎回来</h1>
+          <p>请输入您的账号信息登录</p>
+        </div>
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+          <div class="mb-6">
+            <span class="p-float-label">
+              <input
+                id="username"
+                type="text"
+                pInputText
+                [(ngModel)]="username"
+                name="username"
+                required
+                class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500">
+              <label for="username" class="dark:text-gray-300">用户名或邮箱</label>
+            </span>
+          </div>
+
+          <div class="mb-6">
+            <span class="p-float-label">
+              <p-password
+                id="password"
+                [(ngModel)]="password"
+                name="password"
+                required
+                [feedback]="false"
+                [toggleMask]="true"
+                class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500">
+              </p-password>
+              <label for="password" class="dark:text-gray-300">密码</label>
+            </span>
+          </div>
+
+          <div class="flex justify-between items-center mb-6">
+            <div class="flex items-center">
+              <p-checkbox
+                [(ngModel)]="rememberMe"
+                name="rememberMe"
+                inputId="rememberMe"
+                [binary]="true">
+              </p-checkbox>
+              <label for="rememberMe" class="ml-2 ">记住我</label>
+            </div>
+
+            <a routerLink="/forgot-password"
+               class="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium">
+              忘记密码？
+            </a>
+          </div>
+
+          <p-button
+            label="登录"
+            icon="pi pi-sign-in"
+            styleClass="w-full py-3 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 font-medium"
+            [disabled]="!username || !password">
+          </p-button>
+        </form>
+      </p-card>
+
+      <!-- 添加错误提示消息 -->
+      @if (loginError) {
+        <div class="mt-4">
+          <p-message severity="error">用户名或密码错误</p-message>
+        </div>
+      }
+    </div>
+  </main>
+
+  <!-- 使用简化版页脚组件 -->
+  <app-simple-footer></app-simple-footer>
+</div>
