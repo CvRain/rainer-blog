@@ -3,15 +3,7 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { ImageModule } from 'primeng/image';
 import { Router } from '@angular/router';
-
-export interface ThemeData {
-  id: number;
-  title: string;
-  description: string;
-  articleCount: number;
-  lastUpdated: string;
-  coverImage: string;
-}
+import {BaseThemeSchema} from '../../services/types';
 
 @Component({
   selector: 'app-theme-card',
@@ -20,13 +12,14 @@ export interface ThemeData {
   styleUrl: './theme-card.component.css'
 })
 export class ThemeCardComponent {
-  theme = input<ThemeData>({
-    id: 1,
-    title: '默认主题',
-    description: '这里是主题的简短描述，用于介绍主题的主要内容和特点。可以包含一些关键信息，帮助用户快速了解这个主题。',
-    articleCount: 15,
-    lastUpdated: '2024-01-01',
-    coverImage: 'images/theme-default-cover.jpg'
+  theme = input<BaseThemeSchema>({
+    id: "1145141919810",
+    description: "",
+    inserted_at: "",
+    is_active: true,
+    name: "默认主题",
+    order: 0,
+    updated_at: ""
   });
 
   constructor(private router: Router) {}

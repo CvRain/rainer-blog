@@ -40,3 +40,15 @@ export interface ApiArticleContent {
 
   [property: string]: any;
 }
+
+export interface BaseThemeSchema {
+  description: string;
+  id: string;
+  inserted_at: string;
+  is_active: boolean;
+  name: string;
+  order: number;
+  updated_at: string;
+
+  [property: string]: any;
+}
