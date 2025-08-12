@@ -52,6 +52,10 @@ export class MiniHeader {
     this.router.navigate(['/login']);
   }
 
+  navigateToArchive(){
+    this.router.navigate(['/archive']);
+  }
+
   showComingSoon() {
     if (typeof window !== 'undefined') {
       alert('暂未完成');

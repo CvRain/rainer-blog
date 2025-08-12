@@ -55,6 +55,10 @@ export class HeaderComponent {
     this.router.navigate(['/login']);
   }
 
+  navigateToArchive(){
+    this.router.navigate(['/archive']);
+  }
+
   showComingSoon() {
     alert('暂未完成');
   }

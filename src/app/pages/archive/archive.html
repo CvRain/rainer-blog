@@ -1,0 +1,21 @@
+<main>
+  <app-mini-header></app-mini-header>
+  
+  <app-blur-cover 
+    [title]="'文章归档'"
+    [description]="'探索所有主题和文章'"
+    [showScrollIndicator]="false">
+  </app-blur-cover>
+
+  <div class="container mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      @for (theme of themes; track theme.id) {
+        <app-theme-card [theme]="theme"></app-theme-card>
+      }
+    </div>
+  </div>
+  
+  <app-simple-footer></app-simple-footer>
+</main>
+
+<router-outlet></router-outlet>
