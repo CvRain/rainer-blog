@@ -6,6 +6,7 @@ import { provideHttpClient } from '@angular/common/http';
 import Aura from '@primeuix/themes/aura';
 import { routes } from './app.routes';
 import { provideMarkdown } from 'ngx-markdown';
+import { TreeModule } from 'primeng/tree';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,5 +22,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     provideMarkdown(),
+    TreeModule
   ],
 };

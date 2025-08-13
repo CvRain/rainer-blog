@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Article } from '../../services/article';
 import { ApiArticleContent, BaseResponse, UserInfo } from '../../services/types';
@@ -25,6 +25,9 @@ export class ArticleReader implements OnInit {
   error: string | undefined = undefined;
   userService = inject(User);
   userInfo: UserInfo = {} as UserInfo;
+  
+  // 添加输入属性，支持通过路由参数或直接传入ID获取文章
+  articleId = input<string | undefined>(undefined);
 
   constructor(
     private route: ActivatedRoute,
@@ -46,9 +49,17 @@ export class ArticleReader implements OnInit {
   }
 
   ngOnInit() {
-    const articleId = this.route.snapshot.paramMap.get('id');
-    if (articleId) {
-      this.loadArticle(articleId);
+    // 检查是否有通过输入属性传入的ID
+    const inputArticleId = this.articleId();
+    if (inputArticleId) {
+      this.loadArticle(inputArticleId);
+      return;
+    }
+    
+    // 如果没有通过输入属性传入，则从路由参数获取
+    const routeArticleId = this.route.snapshot.paramMap.get('id');
+    if (routeArticleId) {
+      this.loadArticle(routeArticleId);
     } else {
       this.error = '文章ID无效';
       this.loading = false;

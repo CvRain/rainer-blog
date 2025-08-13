@@ -1,1 +1,81 @@
-<p>theme-detail works!</p>
+<div class="flex flex-col min-h-screen">
+  <app-mini-header class="mb-6"></app-mini-header>
+
+  <!-- 页面加载状态 -->
+  @if (loading) {
+    <div class="flex justify-center items-center flex-grow">
+      <i class="pi pi-spin pi-spinner text-3xl"></i>
+    </div>
+  }
+
+  <!-- 错误状态 -->
+  @if (error && !loading) {
+    <div class="max-w-4xl mx-auto p-4 flex-grow">
+      <p-card>
+        <div class="text-center py-8">
+          <i class="pi pi-exclamation-triangle text-5xl text-red-500 mb-4 block"></i>
+          <h2 class="text-2xl font-bold mb-2">出错了</h2>
+          <p class="mb-6 text-gray-600 dark:text-gray-300">{{ error }}</p>
+          <button routerLink="/" class="p-button p-component p-button-outlined">
+            <span class="p-button-label">返回首页</span>
+          </button>
+        </div>
+      </p-card>
+    </div>
+  }
+
+  <!-- 主题内容 -->
+  @if (theme && !loading && !error) {
+    <div class="flex flex-col md:flex-row flex-grow container mx-auto px-4 py-6 gap-6">
+      <!-- 左侧边栏 - 章节和文章树 -->
+      <div class="w-full md:w-1/4 lg:w-1/5">
+        <p-card>
+          <div class="mb-4">
+            <h2 class="text-xl font-bold">{{ theme.name }}</h2>
+            @if (theme.description) {
+              <p class="text-gray-600 dark:text-gray-300 text-sm mt-2">{{ theme.description }}</p>
+            }
+          </div>
+          
+          <p-tree 
+            [value]="treeNodes" 
+            selectionMode="single"
+            (onNodeSelect)="onNodeSelect($event)"
+            [style]="{ 'border': 'none' }">
+            <ng-template let-node pTemplate="default">
+              <div class="flex items-center">
+                @if (node.icon) {
+                  <i class="{{node.icon}} mr-2"></i>
+                }
+                <span>{{ node.label }}</span>
+              </div>
+            </ng-template>
+          </p-tree>
+        </p-card>
+      </div>
+
+      <!-- 右侧内容区域 -->
+      <div class="w-full md:w-3/4 lg:w-4/5">
+        @if (selectedArticle) {
+          <app-article-reader [articleId]="selectedArticle.id"></app-article-reader>
+        } @else {
+          <p-card>
+            <div class="text-center py-12">
+              <i class="pi pi-book text-5xl text-blue-500 mb-4 block"></i>
+              <h2 class="text-2xl font-bold mb-2">选择一篇文章开始阅读</h2>
+              <p class="text-gray-600 dark:text-gray-300">
+                请从左侧目录中选择一篇文章开始阅读
+              </p>
+            </div>
+          </p-card>
+        }
+      </div>
+    </div>
+  }
+
+  <div class="mt-auto">
+    <app-simple-footer></app-simple-footer>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

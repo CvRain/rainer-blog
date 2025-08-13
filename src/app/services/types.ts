@@ -26,6 +26,33 @@ export interface ApiArticle {
   [property: string]: any;
 }
 
+export interface ApiChapter {
+  id: string;
+  name: string;
+  description: string | null;
+  order: number;
+  is_active: boolean;
+  inserted_at: string;
+  updated_at: string;
+  theme_id: string;
+  articles: ApiArticle[];
+
+  [property: string]: any;
+}
+
+export interface ApiTheme {
+  id: string;
+  name: string;
+  description: string | null;
+  order: number;
+  is_active: boolean;
+  inserted_at: string;
+  updated_at: string;
+  chapters: ApiChapter[];
+
+  [property: string]: any;
+}
+
 export interface ApiArticleContent {
   id: string;
   title: string;

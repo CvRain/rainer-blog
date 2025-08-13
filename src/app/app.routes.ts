@@ -3,6 +3,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ArticleReader } from './pages/article-reader/article-reader';
 import { Archive } from './pages/archive/archive';
+import { ThemeDetail } from './pages/theme-detail/theme-detail';
 
 export const routes: Routes = [
   {
@@ -24,5 +25,10 @@ export const routes: Routes = [
     path: 'archive',
     component: Archive,
     title: "文章归档 - ClaudeRainer的博客"
+  },
+  {
+    path: 'theme/:id',
+    component: ThemeDetail,
+    title: "主题详情 - ClaudeRainer的博客"
   }
 ];

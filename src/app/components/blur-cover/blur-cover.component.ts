@@ -31,6 +31,4 @@ export class BlurCoverComponent implements OnInit {
     { url: 'https://bilibili.com', icon: this.TvIcon, label: 'Bilibili' }
   ]);
   showScrollIndicator = input(true);
-
-  currentImageUrl: string = 'images/placeholder.jpg';
 }
