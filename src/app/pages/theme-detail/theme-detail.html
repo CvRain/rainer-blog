@@ -56,8 +56,9 @@
 
       <!-- 右侧内容区域 -->
       <div class="w-full md:w-3/4 lg:w-4/5">
-        @if (selectedArticle) {
-          <app-article-reader [articleId]="selectedArticle.id"></app-article-reader>
+        @if (selectedArticleId()) {
+          <!-- 在主题详情页面中隐藏文章阅读器的header -->
+          <app-article-reader [articleId]="selectedArticleId()" [showHeader]="false"></app-article-reader>
         } @else {
           <p-card>
             <div class="text-center py-12">

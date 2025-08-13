@@ -1,5 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import {ActivatedRoute, Router, RouterOutlet} from '@angular/router';
 import { Theme } from '../../services/theme';
 import { ApiTheme, ApiChapter, ApiArticle } from '../../services/types';
 import { CardModule } from 'primeng/card';
@@ -8,7 +8,6 @@ import { TreeModule } from 'primeng/tree';
 import { MiniHeader } from '../../components/mini-header/mini-header';
 import { SimpleFooter } from '../../components/simple-footer/simple-footer';
 import { ArticleReader } from '../article-reader/article-reader';
-import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-theme-detail',
@@ -18,8 +17,8 @@ import { RouterOutlet } from '@angular/router';
     TreeModule,
     MiniHeader,
     SimpleFooter,
-    RouterOutlet,
-    ArticleReader
+    ArticleReader,
+    RouterOutlet
   ],
   templateUrl: './theme-detail.html',
   styleUrl: './theme-detail.css'
@@ -27,9 +26,10 @@ import { RouterOutlet } from '@angular/router';
 export class ThemeDetail implements OnInit {
   themeService = inject(Theme);
   route = inject(ActivatedRoute);
+  router = inject(Router);
 
   theme: ApiTheme | undefined = undefined;
-  selectedArticle: ApiArticle | undefined = undefined;
+  selectedArticleId = signal<string | undefined>(undefined);
   loading = true;
   error: string | undefined = undefined;
 
@@ -46,6 +46,14 @@ export class ThemeDetail implements OnInit {
       this.error = '主题ID无效';
       this.loading = false;
     }
+
+    // 监听路由参数变化
+    this.route.params.subscribe(params => {
+      // 如果URL中有文章ID，则选中对应的文章
+      if (params['articleId']) {
+        this.selectedArticleId.set(params['articleId']);
+      }
+    });
   }
 
   loadTheme(id: string) {
@@ -89,7 +97,9 @@ export class ThemeDetail implements OnInit {
   onNodeSelect(event: any) {
     const nodeData = event.node.data;
     if (nodeData.type === 'article') {
-      this.selectedArticle = nodeData.article;
+      // 使用路由导航，而不是组件嵌套
+      this.router.navigate([`/theme/${this.theme?.id}/article`, nodeData.id]);
+      this.selectedArticleId.set(nodeData.id);
     }
   }
 }

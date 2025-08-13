@@ -30,5 +30,10 @@ export const routes: Routes = [
     path: 'theme/:id',
     component: ThemeDetail,
     title: "主题详情 - ClaudeRainer的博客"
+  },
+  {
+    path: 'theme/:id/article/:articleId',
+    component: ThemeDetail,
+    title: "主题详情 - ClaudeRainer的博客"
   }
 ];

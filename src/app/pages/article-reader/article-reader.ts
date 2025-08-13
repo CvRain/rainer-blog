@@ -28,6 +28,8 @@ export class ArticleReader implements OnInit {
   
   // 添加输入属性，支持通过路由参数或直接传入ID获取文章
   articleId = input<string | undefined>(undefined);
+  // 添加输入属性，控制是否显示header，默认显示
+  showHeader = input<boolean>(true);
 
   constructor(
     private route: ActivatedRoute,
