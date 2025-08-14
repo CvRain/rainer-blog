@@ -24,34 +24,16 @@
     </div>
   }
 
+  <app-blur-cover [title]="theme?.name || '坏了，找不到主题标题了'"
+                  [imageUrl]="'images/gallery-default-1.jpg'"></app-blur-cover>
+
   <!-- 主题内容 -->
   @if (theme && !loading && !error) {
     <div class="flex flex-col md:flex-row flex-grow container mx-auto px-4 py-6 gap-6">
       <!-- 左侧边栏 - 章节和文章树 -->
       <div class="w-full md:w-1/4 lg:w-1/5">
-        <p-card>
-          <div class="mb-4">
-            <h2 class="text-xl font-bold">{{ theme.name }}</h2>
-            @if (theme.description) {
-              <p class="text-gray-600 dark:text-gray-300 text-sm mt-2">{{ theme.description }}</p>
-            }
-          </div>
-          
-          <p-tree 
-            [value]="treeNodes" 
-            selectionMode="single"
-            (onNodeSelect)="onNodeSelect($event)"
-            [style]="{ 'border': 'none' }">
-            <ng-template let-node pTemplate="default">
-              <div class="flex items-center">
-                @if (node.icon) {
-                  <i class="{{node.icon}} mr-2"></i>
-                }
-                <span>{{ node.label }}</span>
-              </div>
-            </ng-template>
-          </p-tree>
-        </p-card>
+        <app-chapter-bar [chapters]="theme.chapters" 
+                         (nodeSelected)="onNodeSelect($event)"></app-chapter-bar>
       </div>
 
       <!-- 右侧内容区域 -->
@@ -75,7 +57,7 @@
   }
 
   <div class="mt-auto">
-    <app-simple-footer></app-simple-footer>
+    <app-footer></app-footer>
   </div>
 </div>
 

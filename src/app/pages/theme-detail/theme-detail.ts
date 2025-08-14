@@ -1,13 +1,15 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import {ActivatedRoute, Router, RouterOutlet} from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Theme } from '../../services/theme';
 import { ApiTheme, ApiChapter, ApiArticle } from '../../services/types';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { TreeModule } from 'primeng/tree';
 import { MiniHeader } from '../../components/mini-header/mini-header';
-import { SimpleFooter } from '../../components/simple-footer/simple-footer';
 import { ArticleReader } from '../article-reader/article-reader';
+import { FooterComponent } from '../../components/footer/footer.component';
+import { BlurCoverComponent } from '../../components/blur-cover/blur-cover.component';
+import { ChapterBar } from '../../components/chapter-bar/chapter-bar';
 
 @Component({
   selector: 'app-theme-detail',
@@ -16,14 +18,17 @@ import { ArticleReader } from '../article-reader/article-reader';
     ButtonModule,
     TreeModule,
     MiniHeader,
-    SimpleFooter,
     ArticleReader,
-    RouterOutlet
+    RouterOutlet,
+    FooterComponent,
+    RouterLink,
+    BlurCoverComponent,
+    ChapterBar
   ],
   templateUrl: './theme-detail.html',
   styleUrl: './theme-detail.css'
 })
-export class ThemeDetail implements OnInit {
+export class ThemeDetail {
   themeService = inject(Theme);
   route = inject(ActivatedRoute);
   router = inject(Router);
@@ -36,10 +41,9 @@ export class ThemeDetail implements OnInit {
   // 树形节点数据
   treeNodes: any[] = [];
 
-  constructor() {}
-
-  ngOnInit() {
+  constructor() {
     const themeId = this.route.snapshot.paramMap.get('id');
+
     if (themeId) {
       this.loadTheme(themeId);
     } else {
@@ -94,10 +98,9 @@ export class ThemeDetail implements OnInit {
     });
   }
 
-  onNodeSelect(event: any) {
-    const nodeData = event.node.data;
-    if (nodeData.type === 'article') {
-      // 使用路由导航，而不是组件嵌套
+  onNodeSelect(nodeData: {type: string, id: string, article?: ApiArticle}) {
+    if (nodeData.type === 'article' && nodeData.article) {
+      // 导航到文章页面，同时传递主题数据
       this.router.navigate([`/theme/${this.theme?.id}/article`, nodeData.id]);
       this.selectedArticleId.set(nodeData.id);
     }

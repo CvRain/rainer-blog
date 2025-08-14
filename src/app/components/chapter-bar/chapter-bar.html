@@ -1,0 +1,25 @@
+<div class="chapter-bar">
+  <p-panel [toggleable]="true" [collapsed]="false">
+    <ng-template pTemplate="header">
+      <span class="font-bold">章节列表</span>
+    </ng-template>
+    <ng-template pTemplate="icons">
+      <i class="pi pi-book mr-2"></i>
+    </ng-template>
+    
+    <p-tree 
+      [value]="treeNodes" 
+      selectionMode="single"
+      (onNodeSelect)="onNodeSelect($event)"
+      [style]="{ 'border': 'none' }">
+      <ng-template let-node pTemplate="default">
+        <div class="flex items-center">
+          @if (node.icon) {
+            <i [class]="node.icon + ' mr-2'"></i>
+          }
+          <span>{{ node.label }}</span>
+        </div>
+      </ng-template>
+    </p-tree>
+  </p-panel>
+</div>

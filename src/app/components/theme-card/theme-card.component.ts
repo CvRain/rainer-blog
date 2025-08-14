@@ -1,9 +1,10 @@
-import { Component, input } from '@angular/core';
+import {Component, inject, input} from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { ImageModule } from 'primeng/image';
 import { Router } from '@angular/router';
 import {BaseThemeSchema} from '../../services/types';
+import {Theme} from '../../services/theme';
 
 @Component({
   selector: 'app-theme-card',
@@ -12,6 +13,8 @@ import {BaseThemeSchema} from '../../services/types';
   styleUrl: './theme-card.component.css'
 })
 export class ThemeCardComponent {
+  themeService = inject(Theme);
+
   theme = input<BaseThemeSchema>({
     id: "1145141919810",
     description: "",

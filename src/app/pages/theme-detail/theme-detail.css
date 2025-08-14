@@ -1,0 +1,10 @@
+/* 为章节栏添加一些额外的样式 */
+.chapter-container {
+  position: sticky;
+  top: 1rem;
+}
+
+/* 确保内容区域有足够的间距 */
+.content-area {
+  min-height: calc(100vh - 200px);
+}
