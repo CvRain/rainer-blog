@@ -1,3 +1,18 @@
+/* 为章节容器添加样式 */
+.theme-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem 2rem;
+  width: 100%;
+}
+
+.chapters-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
 /* 为章节栏添加一些额外的样式 */
 .chapter-container {
   position: sticky;
@@ -7,4 +22,15 @@
 /* 确保内容区域有足够的间距 */
 .content-area {
   min-height: calc(100vh - 200px);
+}
+
+@media (min-width: 768px) {
+  .theme-content {
+    padding: 0 2rem 3rem;
+  }
+  
+  .chapters-container {
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
 }
