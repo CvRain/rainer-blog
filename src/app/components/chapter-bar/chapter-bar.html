@@ -1,42 +1,71 @@
-<div class="chapter-bar">
-  @if (chapter() !== undefined) {
-    <div class="dropdown-card">
-      <div 
-        class="dropdown-header" 
+<div class="mb-4">
+  @if (chapter(); as chapterData) {
+    <div class="rounded-lg shadow-sm border transition-all duration-300 hover:shadow-md hover:-translate-y-0.5">
+      <div
+        class="flex justify-between items-center p-4 cursor-pointer select-none rounded-lg transition-colors duration-200"
         (click)="toggleDropdown()"
         [attr.aria-expanded]="isOpen()"
+        role="button"
+        tabindex="0"
+        (keydown.enter)="toggleDropdown()"
+        (keydown.space)="toggleDropdown()"
       >
-        <h3 class="chapter-title">{{chapter()!.name}}</h3>
-        <svg 
-          class="dropdown-icon" 
-          [class.rotated]="isOpen()" 
-          xmlns="http://www.w3.org/2000/svg" 
-          width="20" 
-          height="20" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="currentColor" 
-          stroke-width="2" 
-          stroke-linecap="round" 
-          stroke-linejoin="round"
-        >
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
+        <div class="flex items-center gap-3">
+          <div class="text-lg">
+            <i class="pi pi-folder-open text-yellow-500"></i>
+          </div>
+          <div class="flex flex-col">
+            <h3 class="m-0 text-base font-semibold">{{ chapterData.name }}</h3>
+            <span class="text-xs mt-1">{{ chapterData.articles?.length || 0 }} 篇文章</span>
+          </div>
+        </div>
+
+        <div class="transition-transform duration-300" [class.rotate-180]="isOpen()">
+          <i class="pi pi-chevron-down"></i>
+        </div>
       </div>
-      
-      <div class="dropdown-content" [class.open]="isOpen()">
-        <ul class="article-list">
-          @for (article of chapter()!.articles; track article.id) {
-            <li class="article-item">
-              <a class="article-link" (click)="onArticleSelect(article); $event.preventDefault()" href="">
-                {{article.title}}
-              </a>
-            </li>
-          }
-        </ul>
+
+      <div class="transition-all duration-300 ease-in-out overflow-hidden" [class.max-h-0]="!isOpen()" [class.max-h-screen]="isOpen()">
+        @if (chapterData.articles && chapterData.articles.length > 0) {
+          <ul class="list-none p-2 mx-3 mb-3 mt-0">
+            @for (article of chapterData.articles; track article.id) {
+              <li class="py-0.5">
+                <a
+                  class="flex items-center gap-3 no-underline text-sm p-3 rounded-lg transition-all duration-200 hover:text-primary"
+                  (click)="onArticleSelect(article); $event.preventDefault()"
+                  href=""
+                  tabindex="0"
+                >
+                  <div class="text-sm">
+                    <i class="pi pi-file text-blue-400"></i>
+                  </div>
+                  <div class="flex flex-col flex-1">
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-baseline gap-2">
+                        <span class="font-medium text-base">{{ article.title }}</span>
+                        @if (article.subtitle) {
+                          <span class="text-sm text-surface-500 dark:text-surface-400">{{ article.subtitle }}</span>
+                        }
+                      </div>
+                      <span class="text-xs text-surface-500 dark:text-surface-400 whitespace-nowrap ml-2">{{ article.inserted_at | date:'yyyy-MM-dd' }}</span>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            }
+          </ul>
+        } @else {
+          <div class="py-6 text-center text-sm flex flex-col items-center gap-2">
+            <i class="pi pi-info-circle"></i>
+            <span>该章节下暂无文章</span>
+          </div>
+        }
       </div>
     </div>
   } @else {
-    <div class="no-chapter">没有章节哦</div>
+    <div class="py-6 text-center text-surface-500 dark:text-surface-400 text-sm bg-surface-0 dark:bg-surface-900 rounded-lg border border-surface-200 dark:border-surface-700 flex flex-col items-center gap-2">
+      <i class="pi pi-exclamation-triangle text-yellow-500"></i>
+      <span>没有章节信息</span>
+    </div>
   }
 </div>

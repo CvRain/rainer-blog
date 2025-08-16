@@ -1,5 +1,5 @@
 <div class="flex flex-col min-h-screen">
-  <app-mini-header class="mb-6"></app-mini-header>
+  <app-header class="mb-6" [userName]="theme.name"></app-header>
 
   <app-blur-cover [title]="theme.name" [description]="theme.description || ''"></app-blur-cover>
 

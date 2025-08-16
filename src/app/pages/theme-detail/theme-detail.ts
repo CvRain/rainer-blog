@@ -9,6 +9,7 @@ import {MiniHeader} from '../../components/mini-header/mini-header';
 import {FooterComponent} from '../../components/footer/footer.component';
 import {BlurCoverComponent} from '../../components/blur-cover/blur-cover.component';
 import {ChapterBar} from '../../components/chapter-bar/chapter-bar';
+import {HeaderComponent} from '../../components/header/header.component';
 
 @Component({
   selector: 'app-theme-detail',
@@ -19,7 +20,8 @@ import {ChapterBar} from '../../components/chapter-bar/chapter-bar';
     MiniHeader,
     FooterComponent,
     BlurCoverComponent,
-    ChapterBar
+    ChapterBar,
+    HeaderComponent
   ],
   templateUrl: './theme-detail.html',
   styleUrl: './theme-detail.css'
@@ -43,7 +45,7 @@ export class ThemeDetail implements OnInit {
       console.log(this.theme);
     });
   }
-  
+
   onArticleSelected(article: ApiArticle): void {
     this.router.navigate(['/article', article.id]);
   }

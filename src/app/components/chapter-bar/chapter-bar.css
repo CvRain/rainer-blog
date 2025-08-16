@@ -1,108 +1,159 @@
-.chapter-bar {
-  margin-bottom: 1rem;
+.chapter-bar-container {
+  font-family: var(--font-family);
 }
 
-.dropdown-card {
-  border-radius: 0.5rem;
+/* 动画过渡相关样式 */
+.transition-max-height {
+  transition: max-height 0.3s ease;
+}
+
+.chapter-card {
+  border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
-  background: var(--card-background);
-  border: 1px solid var(--card-border-color);
-  transition: box-shadow 0.3s ease;
+  transition: all 0.3s ease;
+  overflow: hidden;
 }
 
-.dropdown-card:hover {
+.chapter-card:hover {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
 }
 
-.dropdown-header {
+.chapter-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
   cursor: pointer;
-  border-radius: 0.5rem;
   user-select: none;
+  transition: background-color 0.2s;
+}
+
+.chapter-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.chapter-icon {
+  font-size: 1.25rem;
+}
+
+.chapter-text {
+  display: flex;
+  flex-direction: column;
 }
 
 .chapter-title {
   margin: 0;
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 600;
-  color: var(--text-color);
 }
 
-.dropdown-icon {
+.article-count {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.toggle-icon {
   transition: transform 0.3s ease;
 }
 
-.dropdown-icon.rotated {
+.toggle-icon.rotated {
   transform: rotate(180deg);
 }
 
-.dropdown-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
+.toggle-arrow {
+  font-size: 1rem;
 }
 
-.dropdown-content.open {
-  max-height: 1000px; /* 足够大的值以容纳内容 */
+.chapter-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.chapter-content.open {
+  max-height: 1000px;
 }
 
 .article-list {
   list-style: none;
-  padding: 0.5rem 1rem 1rem;
+  padding: 0.25rem 0.75rem 0.75rem;
   margin: 0;
 }
 
 .article-item {
-  padding: 0.5rem 0;
-  border-bottom: 1px solid var(--divider-color);
-}
-
-.article-item:last-child {
-  border-bottom: none;
+  padding: 0.1rem 0;
 }
 
 .article-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   text-decoration: none;
-  color: var(--text-color-secondary);
-  font-size: 0.95rem;
-  display: block;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  padding: 0.75rem;
+  border-radius: 6px;
   transition: all 0.2s ease;
 }
 
-.article-link:hover {
-  background-color: var(--hover-background);
-  color: var(--text-color);
+.article-icon {
+  font-size: 0.875rem;
+}
+
+.article-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.article-title {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.article-date {
+  font-size: 0.75rem;
+}
+
+.no-articles {
+  padding: 1.5rem 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .no-chapter {
-  padding: 1rem;
+  padding: 1.5rem 1rem;
   text-align: center;
-  color: var(--text-color-secondary);
-  font-style: italic;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-/* 定义CSS变量 */
-:root {
-  --card-background: #ffffff;
-  --card-border-color: #e5e7eb;
-  --text-color: #1f2937;
-  --text-color-secondary: #4b5563;
-  --divider-color: #e5e7eb;
-  --hover-background: #f3f4f6;
-}
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .chapter-header {
+    padding: 0.875rem;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --card-background: #1f2937;
-    --card-border-color: #374151;
-    --text-color: #f9fafb;
-    --text-color-secondary: #d1d5db;
-    --divider-color: #374151;
-    --hover-background: #374151;
+  .chapter-title {
+    font-size: 0.95rem;
+  }
+
+  .article-link {
+    padding: 0.625rem;
+    font-size: 0.85rem;
+  }
+
+  .article-title {
+    font-size: 0.875rem;
   }
 }
