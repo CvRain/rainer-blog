@@ -1,1 +1,7 @@
-<p>article-sidebar works!</p>
+<p-card class="backdrop-blur-lg rounded-none px-6 py-6 mt-8">
+  <div class="flex flex-wrap gap-2 mb-6">
+    <p-button icon="pi pi-plus" label="Expand all" (click)="expandAll()" />
+    <p-button icon="pi pi-minus" label="Collapse all" (click)="collapseAll()" />
+  </div>
+  <p-tree [value]="files"></p-tree>
+</p-card>
