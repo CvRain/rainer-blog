@@ -4,6 +4,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { ArticleReader } from './pages/article-reader/article-reader';
 import { Archive } from './pages/archive/archive';
 import { ThemeDetail } from './pages/theme-detail/theme-detail';
+import {TestPageComponent} from './pages/test-page/test-page.component';
 
 export const routes: Routes = [
   {
@@ -35,5 +36,10 @@ export const routes: Routes = [
     path: 'theme/:id/article/:articleId',
     component: ThemeDetail,
     title: "主题详情 - ClaudeRainer的博客"
+  },
+  {
+    path: 'test',
+    component: TestPageComponent,
+    title: "测试页面 - ClaudeRainer的博客"
   }
 ];

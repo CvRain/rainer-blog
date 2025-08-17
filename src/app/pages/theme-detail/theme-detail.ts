@@ -17,7 +17,6 @@ import {HeaderComponent} from '../../components/header/header.component';
     CardModule,
     ButtonModule,
     TreeModule,
-    MiniHeader,
     FooterComponent,
     BlurCoverComponent,
     ChapterBar,

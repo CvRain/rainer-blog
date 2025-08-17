@@ -93,6 +93,11 @@ export class ArticleReader implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/']);
+    // 检查浏览器历史记录，如果有则返回上一页，否则导航到首页
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 }

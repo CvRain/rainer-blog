@@ -1,37 +1,4 @@
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-  <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
-    <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">计数器</h1>
-
-    <div class="text-center mb-10">
-      <div class="text-6xl font-bold text-indigo-600 bg-gray-50 rounded-xl py-6 shadow-inner">
-        {{ theNumber() }}
-      </div>
-      <p class="text-gray-500 mt-2">当前数值</p>
-    </div>
-
-    <div class="flex flex-col space-y-4">
-      <p-button
-        label="增加"
-        icon="pi pi-plus"
-        styleClass="w-full py-3 text-lg rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
-        (onClick)="increaseNumber()"
-        [rounded]="false" />
-
-      <p-button
-        label="重置"
-        icon="pi pi-refresh"
-        styleClass="w-full py-3 text-lg rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
-        (onClick)="resetNumber()"
-        [rounded]="false"
-        severity="warn" />
-
-      <p-button
-        label="减少"
-        icon="pi pi-minus"
-        styleClass="w-full py-3 text-lg rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
-        (onClick)="decreaseNUmber()"
-        [rounded]="false"
-        severity="danger" />
-    </div>
-  </div>
-</div>
+<main>
+  <app-mini-header></app-mini-header>
+  <app-simple-footer></app-simple-footer>
+</main>
