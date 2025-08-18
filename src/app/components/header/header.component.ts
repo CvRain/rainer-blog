@@ -2,13 +2,15 @@ import { Component, input } from '@angular/core';
 import { RippleModule } from 'primeng/ripple';
 import { RouterOutlet, Router } from '@angular/router';
 import { Card } from 'primeng/card';
+import {Image} from 'primeng/image';
 
 @Component({
   selector: 'app-header',
   imports: [
     RippleModule,
     RouterOutlet,
-    Card
+    Card,
+    Image
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
@@ -18,6 +20,7 @@ export class HeaderComponent {
   isDarkMode = false;
 
   userName = input<string>('用户名');
+  userAvatar = input<string | undefined>('');
 
   constructor(private router: Router) {
     // 初始化时检查当前主题

@@ -46,7 +46,9 @@ export class ThemeDetail implements OnInit {
   }
 
   onArticleSelected(article: ApiArticle): void {
-    this.router.navigate(['/article', article.id]);
+    this.router.navigate(['/article', article.id], {
+      state: { theme: this.theme }
+    });
   }
 
 }

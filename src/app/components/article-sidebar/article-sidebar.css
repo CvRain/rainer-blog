@@ -1,0 +1,25 @@
+:host {
+  position: sticky;
+  top: 0;
+  height: 95vh;
+  overflow-y: auto;
+  display: block;
+  /* 添加顶部边距避免被 header 遮挡 */
+  margin-top: 1rem;
+}
+
+.p-card {
+  height: 95%;
+  display: flex;
+  flex-direction: column;
+}
+
+.p-card-content {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+/* 在有 header 的页面中添加额外的顶部边距 */
+:host-context(app-article-reader[showHeader=true]) {
+  margin-top: 4rem;
+}

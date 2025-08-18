@@ -3,11 +3,15 @@
   <div class="flex justify-between items-center">
     <!-- 左侧内容：用户头像和用户名 -->
     <div class="flex items-center space-x-3">
-      <div
-        class="w-10 h-10 rounded-full border-2 flex items-center justify-center">
-        <i class="pi pi-user"></i>
-      </div>
-      <span class="font-medium hidden sm:block">{{userName()}}</span>
+      @if (userAvatar()) {
+        <div
+          class="w-10 h-10 rounded-full border-2 flex items-center justify-center">
+          <p-image
+            [src]="userAvatar()"
+            class="w-full h-full rounded-full object-cover"></p-image>
+        </div>
+      }
+      <span class="font-medium hidden sm:block">{{ userName() }}</span>
     </div>
 
     <!-- 右侧内容：导航链接和主题切换 -->

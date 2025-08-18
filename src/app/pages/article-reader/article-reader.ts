@@ -1,20 +1,22 @@
 import { Component, inject, input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Article } from '../../services/article';
-import { ApiArticleContent, BaseResponse, UserInfo } from '../../services/types';
+import {ApiArticleContent, ApiTheme, BaseResponse, UserInfo} from '../../services/types';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
-import { DatePipe } from '@angular/common';
+import { DatePipe, CommonModule } from '@angular/common';
 import { MarkdownViewer } from '../../components/markdown-viewer/markdown-viewer';
 import { User } from '../../services/user';
 import {Title} from '@angular/platform-browser';
 import {MiniHeader} from '../../components/mini-header/mini-header';
 import {SimpleFooter} from '../../components/simple-footer/simple-footer';
+import {ArticleSidebar} from '../../components/article-sidebar/article-sidebar';
+import {HeaderComponent} from '../../components/header/header.component';
 
 @Component({
   selector: 'app-article-reader',
-  imports: [CardModule, ButtonModule, DividerModule, DatePipe, RouterOutlet, MarkdownViewer, MiniHeader, SimpleFooter],
+  imports: [CommonModule, CardModule, ButtonModule, DividerModule, DatePipe, RouterOutlet, MarkdownViewer, MiniHeader, SimpleFooter, ArticleSidebar, HeaderComponent],
   templateUrl: './article-reader.html',
   styleUrl: './article-reader.css'
 })
@@ -25,11 +27,16 @@ export class ArticleReader implements OnInit {
   error: string | undefined = undefined;
   userService = inject(User);
   userInfo: UserInfo = {} as UserInfo;
-  
+
   // 添加输入属性，支持通过路由参数或直接传入ID获取文章
   articleId = input<string | undefined>(undefined);
   // 添加输入属性，控制是否显示header，默认显示
   showHeader = input<boolean>(true);
+
+  theme = input<ApiTheme| undefined>(undefined);
+
+  // 内部属性，用于存储从路由状态获取的主题数据
+  routeTheme: ApiTheme | undefined = undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -51,13 +58,35 @@ export class ArticleReader implements OnInit {
   }
 
   ngOnInit() {
+    // 检查路由状态中是否有主题数据
+    console.log('检查路由状态中的主题数据...');
+    console.log('router.getCurrentNavigation():', this.router.getCurrentNavigation());
+    console.log('router.getCurrentNavigation()?.extras:', this.router.getCurrentNavigation()?.extras);
+    console.log('router.getCurrentNavigation()?.extras?.state:', this.router.getCurrentNavigation()?.extras?.state);
+
+    if (this.router.getCurrentNavigation()?.extras?.state?.['theme']) {
+      this.routeTheme = this.router.getCurrentNavigation()?.extras?.state?.['theme'];
+      console.log('从路由状态获取到主题数据:', this.routeTheme);
+    } else {
+      // 尝试从history.state获取主题数据（适用于页面刷新后的情况）
+      if (history.state?.['theme']) {
+        this.routeTheme = history.state['theme'];
+        console.log('从history.state获取到主题数据:', this.routeTheme);
+      } else {
+        console.log('未在路由状态中找到主题数据');
+      }
+    }
+
+    // 检查输入属性
+    console.log('输入属性theme():', this.theme());
+
     // 检查是否有通过输入属性传入的ID
     const inputArticleId = this.articleId();
     if (inputArticleId) {
       this.loadArticle(inputArticleId);
       return;
     }
-    
+
     // 如果没有通过输入属性传入，则从路由参数获取
     const routeArticleId = this.route.snapshot.paramMap.get('id');
     if (routeArticleId) {
@@ -99,5 +128,17 @@ export class ArticleReader implements OnInit {
     } else {
       this.router.navigate(['/']);
     }
+  }
+
+  // 获取当前应该使用的主题数据
+  getCurrentTheme(): ApiTheme | undefined {
+    const inputTheme = this.theme();
+    console.log('getCurrentTheme - inputTheme:', inputTheme);
+    console.log('getCurrentTheme - routeTheme:', this.routeTheme);
+
+    // 优先使用输入属性传入的主题，其次使用路由状态中的主题
+    const currentTheme = inputTheme || this.routeTheme;
+    console.log('getCurrentTheme - 返回值:', currentTheme);
+    return currentTheme;
   }
 }
