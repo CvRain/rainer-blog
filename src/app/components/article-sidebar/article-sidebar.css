@@ -1,7 +1,7 @@
 :host {
   position: sticky;
   top: 0;
-  height: 95vh;
+  height: 100vh;
   overflow-y: auto;
   display: block;
   /* 添加顶部边距避免被 header 遮挡 */
@@ -9,17 +9,103 @@
 }
 
 .p-card {
-  height: 95%;
+  height: calc(100% - 2rem);
   display: flex;
   flex-direction: column;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+}
+
+.app-dark .p-card {
+  border: 1px solid #4b5563;
 }
 
 .p-card-content {
   flex-grow: 1;
   overflow-y: auto;
+  padding: 0 !important;
 }
 
 /* 在有 header 的页面中添加额外的顶部边距 */
 :host-context(app-article-reader[showHeader=true]) {
-  margin-top: 4rem;
+  margin-top: 5rem;
+}
+
+/* 树节点样式优化 */
+::ng-deep .p-tree .p-tree-container .p-treenode {
+  padding: 0.25rem 0;
+}
+
+::ng-deep .p-tree .p-tree-container .p-treenode .p-treenode-content {
+  border-radius: 6px;
+  margin: 0 0.5rem;
+  padding: 0.5rem 0.75rem;
+  transition: all 0.2s ease;
+}
+
+::ng-deep .p-tree .p-tree-container .p-treenode .p-treenode-content:hover {
+  background-color: #f3f4f6;
+}
+
+::ng-deep .app-dark .p-tree .p-tree-container .p-treenode .p-treenode-content:hover {
+  background-color: #374151;
+}
+
+::ng-deep .p-tree .p-tree-container .p-treenode .p-treenode-content .p-tree-toggler {
+  margin-right: 0.5rem;
+}
+
+::ng-deep .p-tree .p-tree-container .p-treenode .p-treenode-content .p-treenode-icon {
+  margin-right: 0.5rem;
+}
+
+/* 文章节点特殊样式 */
+::ng-deep .article-node .p-treenode-content {
+  padding-left: 2rem;
+}
+
+::ng-deep .article-node .p-treenode-content .p-tree-toggler {
+  visibility: hidden;
+  width: 0;
+}
+
+/* 展开/折叠按钮样式 */
+::ng-deep .p-button {
+  font-size: 0.85rem;
+  padding: 0.4rem 0.75rem;
+}
+
+::ng-deep .p-button .p-button-icon {
+  font-size: 0.8rem;
+}
+
+/* 滚动条样式 */
+:host::-webkit-scrollbar {
+  width: 6px;
+}
+
+:host::-webkit-scrollbar-track {
+  background: #f3f4f6;
+}
+
+:host::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+:host::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+.app-dark :host::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+.app-dark :host::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+
+.app-dark :host::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
 }

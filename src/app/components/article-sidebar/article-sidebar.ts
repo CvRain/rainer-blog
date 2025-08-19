@@ -58,6 +58,7 @@ export class ArticleSidebar implements OnInit, OnChanges {
         label: theme.name,
         data: theme.description,
         icon: 'pi pi-fw pi-folder-open',
+        expanded: true,
         children: theme.chapters?.map((chapter: ApiChapter, chapterIndex: number) => ({
           key: `${theme.id}-${chapterIndex}`,
           label: chapter.name,

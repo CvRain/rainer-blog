@@ -12,11 +12,10 @@ import {Title} from '@angular/platform-browser';
 import {MiniHeader} from '../../components/mini-header/mini-header';
 import {SimpleFooter} from '../../components/simple-footer/simple-footer';
 import {ArticleSidebar} from '../../components/article-sidebar/article-sidebar';
-import {HeaderComponent} from '../../components/header/header.component';
 
 @Component({
   selector: 'app-article-reader',
-  imports: [CommonModule, CardModule, ButtonModule, DividerModule, DatePipe, RouterOutlet, MarkdownViewer, MiniHeader, SimpleFooter, ArticleSidebar, HeaderComponent],
+  imports: [CommonModule, CardModule, ButtonModule, DividerModule, DatePipe, RouterOutlet, MarkdownViewer, MiniHeader, SimpleFooter, ArticleSidebar],
   templateUrl: './article-reader.html',
   styleUrl: './article-reader.css'
 })
@@ -140,5 +139,10 @@ export class ArticleReader implements OnInit {
     const currentTheme = inputTheme || this.routeTheme;
     console.log('getCurrentTheme - 返回值:', currentTheme);
     return currentTheme;
+  }
+  
+  // 处理侧边栏节点选择事件
+  onSidebarNodeSelect(event: any) {
+    // 节点选择事件由article-sidebar组件内部处理，此处留空以备将来扩展
   }
 }
