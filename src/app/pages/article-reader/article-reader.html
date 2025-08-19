@@ -4,16 +4,16 @@
     <app-mini-header class="mb-6"></app-mini-header>
   }
 
-  <div class="main-container flex flex-col md:flex-row flex-grow px-4 py-6 gap-6">
+  <div class="main-container flex flex-col md:flex-row flex-grow px-4 py-6 gap-6 max-w-7xl mx-auto w-full">
     <!-- 侧边栏 -->
     @if (getCurrentTheme()) {
-      <div class="sidebar-container hidden md:block">
-        <app-article-sidebar [apiTheme]="getCurrentTheme()"></app-article-sidebar>
+      <div class="sidebar-container hidden md:block md:w-64 lg:w-80 flex-shrink-0">
+        <app-article-sidebar [apiTheme]="getCurrentTheme()" class="sticky top-24"></app-article-sidebar>
       </div>
     }
 
     <!-- 文章内容区域 -->
-    <div class="content-area">
+    <div class="content-area flex-grow">
       <!-- 页面加载状态 -->
       @if (loading) {
         <div class="content-wrapper">
@@ -28,7 +28,7 @@
         <div class="content-wrapper">
           <div class="article-container">
             <p-card class="article-card">
-              <div class="text-center py-8">
+              <div class="text-center py-8 px-4">
                 <i class="pi pi-exclamation-triangle text-5xl text-red-500 mb-4 block"></i>
                 <h2 class="text-2xl font-bold mb-2">出错了</h2>
                 <p class="mb-6 text-gray-600 dark:text-gray-300">{{ error }}</p>
@@ -45,16 +45,25 @@
           <div class="article-container">
             <p-card class="article-card">
               <!-- 文章标题 -->
-              <div class="mb-2">
-                <h1 class="article-title">{{ article.title }}</h1>
-                <div class="article-meta">
-                  <span class="meta-item"><i class="pi pi-calendar"></i>{{ article.inserted_at | date: 'yyyy-MM-dd HH:mm' }}</span>
-                  <span class="meta-item"><i class="pi pi-folder"></i>默认分类</span>
-                  <span class="meta-item"><i class="pi pi-eye"></i>0 次浏览</span>
+              <div class="mb-4">
+                <h1 class="article-title text-3xl font-bold mb-4">{{ article.title }}</h1>
+                <div class="article-meta flex flex-wrap gap-4 text-gray-600 dark:text-gray-300">
+                  <span class="meta-item flex items-center gap-1">
+                    <i class="pi pi-calendar"></i>
+                    {{ article.inserted_at | date: 'yyyy-MM-dd HH:mm' }}
+                  </span>
+                  <span class="meta-item flex items-center gap-1">
+                    <i class="pi pi-folder"></i>
+                    默认分类
+                  </span>
+                  <span class="meta-item flex items-center gap-1">
+                    <i class="pi pi-eye"></i>
+                    0 次浏览
+                  </span>
                 </div>
               </div>
 
-              <p-divider class="article-divider"></p-divider>
+              <p-divider class="article-divider my-6"></p-divider>
 
               <!-- 文章内容 -->
               <div class="prose max-w-none dark:prose-invert">
@@ -63,12 +72,12 @@
                 </app-markdown-viewer>
               </div>
 
-              <p-divider class="article-divider"></p-divider>
+              <p-divider class="article-divider my-6"></p-divider>
 
               <!-- 文章操作 -->
-              <div class="article-actions">
+              <div class="article-actions flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 gap-4">
                 <p-button label="返回" icon="pi pi-arrow-left" (onClick)="goBack()" styleClass="p-button-outlined"></p-button>
-                <div class="action-buttons">
+                <div class="action-buttons flex gap-2">
                   <p-button icon="pi pi-heart" styleClass="p-button-outlined p-button-secondary"></p-button>
                   <p-button icon="pi pi-share-alt" styleClass="p-button-outlined p-button-secondary"></p-button>
                   <p-button icon="pi pi-bookmark" styleClass="p-button-outlined p-button-secondary"></p-button>

@@ -12,6 +12,7 @@ import {Title} from '@angular/platform-browser';
 import {MiniHeader} from '../../components/mini-header/mini-header';
 import {SimpleFooter} from '../../components/simple-footer/simple-footer';
 import {ArticleSidebar} from '../../components/article-sidebar/article-sidebar';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-article-reader',
@@ -79,24 +80,29 @@ export class ArticleReader implements OnInit {
     // 检查输入属性
     console.log('输入属性theme():', this.theme());
 
-    // 检查是否有通过输入属性传入的ID
-    const inputArticleId = this.articleId();
-    if (inputArticleId) {
-      this.loadArticle(inputArticleId);
-      return;
-    }
-
-    // 如果没有通过输入属性传入，则从路由参数获取
-    const routeArticleId = this.route.snapshot.paramMap.get('id');
-    if (routeArticleId) {
-      this.loadArticle(routeArticleId);
-    } else {
-      this.error = '文章ID无效';
-      this.loading = false;
-    }
+    // 监听路由参数变化
+    this.route.paramMap.subscribe(params => {
+      const routeArticleId = params.get('id');
+      if (routeArticleId) {
+        this.loadArticle(routeArticleId);
+      } else {
+        // 检查是否有通过输入属性传入的ID
+        const inputArticleId = this.articleId();
+        if (inputArticleId) {
+          this.loadArticle(inputArticleId);
+        } else {
+          this.error = '文章ID无效';
+          this.loading = false;
+        }
+      }
+    });
   }
 
   loadArticle(id: string) {
+    this.loading = true;
+    this.error = undefined;
+    this.article = undefined;
+    
     this.articleService.getArticleS3ContentById(id).subscribe({
       next: (response: BaseResponse<ApiArticleContent>) => {
         if(response.code !== 200){
