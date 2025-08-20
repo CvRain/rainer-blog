@@ -26,7 +26,7 @@
                 [(ngModel)]="username"
                 name="username"
                 required
-                class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500">
+                class="w-full  border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500">
               <label for="username" class="dark:text-gray-300">用户名或邮箱</label>
             </span>
           </div>
@@ -40,7 +40,7 @@
                 required
                 [feedback]="false"
                 [toggleMask]="true"
-                class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500">
+                class="w-full  border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500">
               </p-password>
               <label for="password" class="dark:text-gray-300">密码</label>
             </span>
@@ -66,7 +66,7 @@
           <p-button
             label="登录"
             icon="pi pi-sign-in"
-            styleClass="w-full py-3 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 font-medium"
+            styleClass="w-full py-3 shadow-md hover:shadow-lg transition-all duration-300 font-medium"
             [disabled]="!username || !password">
           </p-button>
         </form>

@@ -1,8 +1,8 @@
 <div class="mb-4">
   @if (chapter(); as chapterData) {
-    <div class="rounded-lg shadow-sm border transition-all duration-300 hover:shadow-md hover:-translate-y-0.5">
+    <div class=" shadow-sm border transition-all duration-300 hover:shadow-md hover:-translate-y-0.5">
       <div
-        class="flex justify-between items-center p-4 cursor-pointer select-none rounded-lg transition-colors duration-200"
+        class="flex justify-between items-center p-4 cursor-pointer select-none  transition-colors duration-200"
         (click)="toggleDropdown()"
         [attr.aria-expanded]="isOpen()"
         role="button"
@@ -31,7 +31,7 @@
             @for (article of chapterData.articles; track article.id) {
               <li class="py-0.5">
                 <a
-                  class="flex items-center gap-3 no-underline text-sm p-3 rounded-lg transition-all duration-200 hover:text-primary"
+                  class="flex items-center gap-3 no-underline text-sm p-3  transition-all duration-200 hover:text-primary"
                   (click)="onArticleSelect(article); $event.preventDefault()"
                   href=""
                   tabindex="0"
@@ -63,7 +63,7 @@
       </div>
     </div>
   } @else {
-    <div class="py-6 text-center text-surface-500 dark:text-surface-400 text-sm bg-surface-0 dark:bg-surface-900 rounded-lg border border-surface-200 dark:border-surface-700 flex flex-col items-center gap-2">
+    <div class="py-6 text-center text-surface-500 dark:text-surface-400 text-sm bg-surface-0 dark:bg-surface-900  border border-surface-200 dark:border-surface-700 flex flex-col items-center gap-2">
       <i class="pi pi-exclamation-triangle text-yellow-500"></i>
       <span>没有章节信息</span>
     </div>

@@ -1,10 +1,10 @@
-<p-card class="backdrop-blur-lg rounded-lg px-4 py-4 mt-4">
+<p-card class="backdrop-blur-lg px-4 py-4 mt-4">
   <div class="flex flex-wrap gap-2 mb-4">
     <p-button icon="pi pi-plus" label="全部展开" (click)="expandAll()" styleClass="p-button-outlined p-button-secondary p-button-sm" />
     <p-button icon="pi pi-minus" label="全部折叠" (click)="collapseAll()" styleClass="p-button-outlined p-button-secondary p-button-sm" />
   </div>
-  <p-tree 
-    [value]="files" 
+  <p-tree
+    [value]="files"
     selectionMode="single"
     (onNodeSelect)="onNodeSelect($event)"
     [propagateSelectionDown]="false"
