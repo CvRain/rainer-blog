@@ -5,6 +5,7 @@ import { ArticleReader } from './pages/article-reader/article-reader';
 import { Archive } from './pages/archive/archive';
 import { ThemeDetail } from './pages/theme-detail/theme-detail';
 import {TestPageComponent} from './pages/test-page/test-page.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 export const routes: Routes = [
   {
@@ -16,6 +17,11 @@ export const routes: Routes = [
     path: 'login',
     component: LoginComponent,
     title: "用户登录 - ClaudeRainer的博客"
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    title: "控制台 - ClaudeRainer的博客"
   },
   {
     path: 'article/:id',

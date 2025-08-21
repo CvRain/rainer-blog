@@ -79,3 +79,8 @@ export interface BaseThemeSchema {
 
   [property: string]: any;
 }
+
+export interface UserLoginResponse{
+  user: UserInfo,
+  token: string;
+}
