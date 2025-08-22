@@ -1,0 +1,50 @@
+/* 统计卡片样式 */
+.stat-card {
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* 图表容器样式 */
+.chart-container {
+  position: relative;
+  height: 300px;
+}
+
+/* 最近活动列表项样式 */
+.recent-item {
+  transition: background-color 0.2s ease;
+}
+
+.recent-item:hover {
+  background-color: #f9fafb;
+}
+
+.dark .recent-item:hover {
+  background-color: #374151;
+}
+
+/* 管理按钮样式 */
+.management-button {
+  width: 100%;
+  justify-content: flex-start;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .stat-card {
+    margin-bottom: 1rem;
+  }
+  
+  .chart-container {
+    height: 250px;
+  }
+}
+
+/* 暗色主题适配 */
+.dark .stat-card:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
