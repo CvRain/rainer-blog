@@ -84,3 +84,8 @@ export interface UserLoginResponse{
   user: UserInfo,
   token: string;
 }
+
+export interface TokenVerifyResponse {
+  user_email: string;
+  user_name: string;
+}

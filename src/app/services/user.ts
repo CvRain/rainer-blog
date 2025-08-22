@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {BaseResponse, UserInfo, UserLoginResponse} from './types';
+import {BaseResponse, UserInfo, UserLoginResponse, TokenVerifyResponse} from './types';
 
 @Injectable({
   providedIn: 'root'
@@ -30,5 +30,18 @@ export class User {
     }).pipe(
       map(response => response)
     )
+  }
+  
+  verifyToken(token: string): Observable<BaseResponse<TokenVerifyResponse>> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    
+    return this.httpClient.get<BaseResponse<TokenVerifyResponse>>(
+      environment.apiUrl + '/user/verify',
+      { headers }
+    ).pipe(
+      map(response => response)
+    );
   }
 }

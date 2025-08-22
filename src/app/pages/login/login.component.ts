@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
@@ -32,7 +32,7 @@ import { User } from '../../services/user';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   username: string = '';
   password: string = '';
   rememberMe: boolean = false;
@@ -42,6 +42,34 @@ export class LoginComponent {
 
   userService = inject(User);
   router = inject(Router);
+
+  ngOnInit() {
+    // 检查是否存在token，如果存在则验证token有效性
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.loading = true;
+      this.userService.verifyToken(token).subscribe({
+        next: (response) => {
+          this.loading = false;
+          if (response.code === 200) {
+            // token有效，直接跳转到dashboard
+            this.router.navigate(['/dashboard']);
+          } else {
+            // token无效，清除本地存储的token
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+          }
+        },
+        error: (error) => {
+          this.loading = false;
+          // token验证失败，清除本地存储的token
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          console.error('Token验证失败:', error);
+        }
+      });
+    }
+  }
 
   onSubmit() {
     if (!this.username || !this.password) {
