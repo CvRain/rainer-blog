@@ -89,3 +89,15 @@ export interface TokenVerifyResponse {
   user_email: string;
   user_name: string;
 }
+
+export interface TotalOverview{
+  article_append_weekly: number;
+  article_count: number;
+  collection_append_weekly: number;
+  collection_count: number;
+  resource_append_weekly: number;
+  resource_count: number;
+  theme_append_weekly: number;
+  theme_count: number;
+  [property: string]: any;
+}

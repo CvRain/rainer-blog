@@ -11,6 +11,9 @@ import { ButtonModule } from 'primeng/button';
 import { ChartModule } from 'primeng/chart';
 import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
+import {TotalOverview} from '../../services/types';
+import {SimpleFooter} from '../../components/simple-footer/simple-footer';
+import {MiniHeader} from '../../components/mini-header/mini-header';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,7 +23,9 @@ import { PanelModule } from 'primeng/panel';
     ChartModule,
     TableModule,
     PanelModule,
-    DatePipe
+    DatePipe,
+    SimpleFooter,
+    MiniHeader
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
@@ -28,16 +33,12 @@ import { PanelModule } from 'primeng/panel';
 export class DashboardComponent implements OnInit {
   userService = inject(User);
   router = inject(Router);
-  // themeService = inject(Theme);
-  // articleService = inject(Article);
-  // resourceService = inject(Resource);
-  // collectionService = inject(Collection);
+  themeService = inject(Theme);
+  articleService = inject(Article);
+  resourceService = inject(Resource);
+  collectionService = inject(Collection);
 
-  // 统计数据
-  themeCount: number = 12;
-  articleCount: number = 42;
-  resourceCount: number = 128;
-  collectionCount: number = 8;
+  totalOverview: TotalOverview | undefined = {} as TotalOverview;
 
   // 最近新增数据
   recentThemes: any[] = [
@@ -110,7 +111,19 @@ export class DashboardComponent implements OnInit {
 
   loadDashboardData() {
     // 加载统计数据（使用假数据）
-    // this.loadStatistics();
+    this.userService.totalOverview().subscribe({
+      next: (response) => {
+        if (response.code !== 200) {
+          console.error('获取统计数据失败:', response.message);
+          return;
+        }
+        this.totalOverview = response.data;
+        console.log('统计数据:', response.data);
+      },
+      error: (error) => {
+        console.error('获取统计数据失败:', error);
+      }
+    });
 
     // 加载最近新增数据（使用假数据）
     // this.loadRecentData();
@@ -119,121 +132,7 @@ export class DashboardComponent implements OnInit {
     this.initCharts();
   }
 
-  /*
-  loadStatistics() {
-    // 获取主题数量
-    this.themeService.getThemeList().subscribe({
-      next: (response: BaseResponse<ApiTheme[]>) => {
-        if (response.code === 200 && response.data) {
-          this.themeCount = response.data.length;
-        }
-      },
-      error: (error) => {
-        console.error('获取主题数据失败:', error);
-      }
-    });
 
-    // 获取文章数量
-    this.articleService.getArticleList().subscribe({
-      next: (response) => {
-        if (response.code === 200 && response.data) {
-          this.articleCount = response.data.length;
-        }
-      },
-      error: (error) => {
-        console.error('获取文章数据失败:', error);
-      }
-    });
-
-    // 获取资源数量
-    this.resourceService.getResourceList().subscribe({
-      next: (response) => {
-        if (response.code === 200 && response.data) {
-          this.resourceCount = response.data.length;
-        }
-      },
-      error: (error) => {
-        console.error('获取资源数据失败:', error);
-      }
-    });
-
-    // 获取集合数量
-    this.collectionService.getCollectionList().subscribe({
-      next: (response) => {
-        if (response.code === 200 && response.data) {
-          this.collectionCount = response.data.length;
-        }
-      },
-      error: (error) => {
-        console.error('获取集合数据失败:', error);
-      }
-    });
-  }
-  */
-
-  /*
-  loadRecentData() {
-    // 获取最近新增的主题
-    this.themeService.getThemeList().subscribe({
-      next: (response: BaseResponse<ApiTheme[]>) => {
-        if (response.code === 200 && response.data) {
-          // 按创建时间排序，取最近5个
-          this.recentThemes = response.data
-            .sort((a, b) => new Date(b.inserted_at).getTime() - new Date(a.inserted_at).getTime())
-            .slice(0, 5);
-        }
-      },
-      error: (error) => {
-        console.error('获取主题数据失败:', error);
-      }
-    });
-
-    // 获取最近新增的文章
-    this.articleService.getArticleList().subscribe({
-      next: (response) => {
-        if (response.code === 200 && response.data) {
-          // 按创建时间排序，取最近5个
-          this.recentArticles = response.data
-            .sort((a, b) => new Date(b.inserted_at).getTime() - new Date(a.inserted_at).getTime())
-            .slice(0, 5);
-        }
-      },
-      error: (error) => {
-        console.error('获取文章数据失败:', error);
-      }
-    });
-
-    // 获取最近新增的资源
-    this.resourceService.getResourceList().subscribe({
-      next: (response) => {
-        if (response.code === 200 && response.data) {
-          // 按创建时间排序，取最近5个
-          this.recentResources = response.data
-            .sort((a, b) => new Date(b.inserted_at).getTime() - new Date(a.inserted_at).getTime())
-            .slice(0, 5);
-        }
-      },
-      error: (error) => {
-        console.error('获取资源数据失败:', error);
-      }
-    });
-
-    // 获取最近新增的集合
-    this.collectionService.getCollectionList().subscribe({
-      next: (response) => {
-        if (response.code === 200 && response.data) {
-          // 按创建时间排序，取最近5个
-          this.recentCollections = response.data
-            .sort((a, b) => new Date(b.inserted_at).getTime() - new Date(a.inserted_at).getTime())
-            .slice(0, 5);
-        }
-      },
-      error: (error) => {
-        console.error('获取集合数据失败:', error);
-      }
-    });
-  }
-  */
 
   initCharts() {
     // 初始化主题图表数据

@@ -1,9 +1,6 @@
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
-  <!-- 页面标题 -->
-  <div class="mb-6">
-    <h1 class="text-2xl font-bold text-gray-800 dark:text-white">控制台</h1>
-    <p class="text-gray-600 dark:text-gray-400">欢迎回来，这里是你博客系统的管理中心</p>
-  </div>
+  <app-mini-header></app-mini-header>
+  <div class="mb-6"></div>
 
   <!-- 统计卡片 -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
@@ -15,7 +12,7 @@
         </div>
         <div class="ml-4">
           <p class="text-gray-500 dark:text-gray-400 text-sm">主题数</p>
-          <h3 class="text-2xl font-bold text-gray-800 dark:text-white">{{ themeCount }}</h3>
+          <h3 class="text-2xl font-bold text-gray-800 dark:text-white">{{ totalOverview?.theme_count || 0 }}</h3>
         </div>
       </div>
     </div>
@@ -28,7 +25,7 @@
         </div>
         <div class="ml-4">
           <p class="text-gray-500 dark:text-gray-400 text-sm">文章数</p>
-          <h3 class="text-2xl font-bold text-gray-800 dark:text-white">{{ articleCount }}</h3>
+          <h3 class="text-2xl font-bold text-gray-800 dark:text-white">{{ totalOverview?.article_count || 0 }}</h3>
         </div>
       </div>
     </div>
@@ -41,7 +38,7 @@
         </div>
         <div class="ml-4">
           <p class="text-gray-500 dark:text-gray-400 text-sm">资源数</p>
-          <h3 class="text-2xl font-bold text-gray-800 dark:text-white">{{ resourceCount }}</h3>
+          <h3 class="text-2xl font-bold text-gray-800 dark:text-white">{{ totalOverview?.resource_count || 0 }}</h3>
         </div>
       </div>
     </div>
@@ -54,7 +51,7 @@
         </div>
         <div class="ml-4">
           <p class="text-gray-500 dark:text-gray-400 text-sm">资源集合</p>
-          <h3 class="text-2xl font-bold text-gray-800 dark:text-white">{{ collectionCount }}</h3>
+          <h3 class="text-2xl font-bold text-gray-800 dark:text-white">{{ totalOverview?.collection_count || 0 }}</h3>
         </div>
       </div>
     </div>
@@ -138,34 +135,34 @@
     </div>
     <div class="p-4">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <button 
-          pButton 
-          type="button" 
-          label="主题管理" 
+        <button
+          pButton
+          type="button"
+          label="主题管理"
           icon="pi pi-folder"
           class="p-button-outlined p-button-secondary"
           (click)="goToThemes()">
         </button>
-        <button 
-          pButton 
-          type="button" 
-          label="文章管理" 
+        <button
+          pButton
+          type="button"
+          label="文章管理"
           icon="pi pi-file"
           class="p-button-outlined p-button-secondary"
           (click)="goToArticles()">
         </button>
-        <button 
-          pButton 
-          type="button" 
-          label="资源管理" 
+        <button
+          pButton
+          type="button"
+          label="资源管理"
           icon="pi pi-image"
           class="p-button-outlined p-button-secondary"
           (click)="goToResources()">
         </button>
-        <button 
-          pButton 
-          type="button" 
-          label="集合管理" 
+        <button
+          pButton
+          type="button"
+          label="集合管理"
           icon="pi pi-collection"
           class="p-button-outlined p-button-secondary"
           (click)="goToCollections()">
@@ -173,4 +170,6 @@
       </div>
     </div>
   </div>
+
+  <app-simple-footer></app-simple-footer>
 </div>

@@ -3,7 +3,7 @@ import {environment} from '../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {BaseResponse, UserInfo, UserLoginResponse, TokenVerifyResponse} from './types';
+import {BaseResponse, UserInfo, UserLoginResponse, TokenVerifyResponse, TotalOverview} from './types';
 
 @Injectable({
   providedIn: 'root'
@@ -31,15 +31,23 @@ export class User {
       map(response => response)
     )
   }
-  
+
   verifyToken(token: string): Observable<BaseResponse<TokenVerifyResponse>> {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-    
+
     return this.httpClient.get<BaseResponse<TokenVerifyResponse>>(
       environment.apiUrl + '/user/verify',
       { headers }
+    ).pipe(
+      map(response => response)
+    );
+  }
+
+  totalOverview(): Observable<BaseResponse<TotalOverview>> {
+    return this.httpClient.get<BaseResponse<TotalOverview>>(
+      environment.apiUrl + '/total/overview'
     ).pipe(
       map(response => response)
     );
