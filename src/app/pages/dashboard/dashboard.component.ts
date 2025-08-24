@@ -164,19 +164,19 @@ export class DashboardComponent implements OnInit {
 
   // 导航到不同管理页面
   goToThemes() {
-    // TODO: 实现导航到主题管理页面
+    this.router.navigate(['/dashboard/themes']);
   }
 
   goToArticles() {
-    // TODO: 实现导航到文章管理页面
+    this.router.navigate(['/dashboard/articles']);
   }
 
   goToResources() {
-    // TODO: 实现导航到资源管理页面
+    this.router.navigate(['/dashboard/resources']);
   }
 
   goToCollections() {
-    // TODO: 实现导航到集合管理页面
+    this.router.navigate(['/dashboard/collections']);
   }
 
   goToUsers() {

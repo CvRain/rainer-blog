@@ -1,0 +1,64 @@
+/* 章节管理组件样式 */
+
+/* 工具栏样式 */
+.p-toolbar {
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+
+.dark .p-toolbar {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+}
+
+/* 表格样式 */
+.p-datatable .p-datatable-thead > tr > th {
+  background-color: #f3f4f6;
+  color: #374151;
+  font-weight: 600;
+  border: none;
+}
+
+.dark .p-datatable .p-datatable-thead > tr > th {
+  background-color: #1f2937;
+  color: #d1d5db;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  border: none;
+  padding: 0.75rem 1rem;
+}
+
+.p-datatable .p-datatable-tbody > tr:hover {
+  background-color: #f9fafb;
+}
+
+.dark .p-datatable .p-datatable-tbody > tr:hover {
+  background-color: #374151;
+}
+
+/* 分页控件样式 */
+.p-paginator {
+  background-color: transparent;
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  padding: 1rem;
+}
+
+.dark .p-paginator {
+  border-top: 1px solid #374151;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .p-datatable .p-datatable-thead > tr > th,
+  .p-datatable .p-datatable-tbody > tr > td {
+    padding: 0.5rem;
+  }
+  
+  .p-toolbar {
+    padding: 0.5rem;
+  }
+}

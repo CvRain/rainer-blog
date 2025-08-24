@@ -6,6 +6,11 @@ import { Archive } from './pages/archive/archive';
 import { ThemeDetail } from './pages/theme-detail/theme-detail';
 import {TestPageComponent} from './pages/test-page/test-page.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { ThemeManagement } from './pages/dashboard/theme-management/theme-management';
+import { ChapterManagement } from './pages/dashboard/chapter-management/chapter-management';
+import { ArticleManagement } from './pages/dashboard/article-management/article-management';
+import { CollectionManagement } from './pages/dashboard/collection-management/collection-management';
+import { ResourceManagement } from './pages/dashboard/resource-management/resource-management';
 
 export const routes: Routes = [
   {
@@ -22,6 +27,31 @@ export const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     title: "控制台 - ClaudeRainer的博客"
+  },
+  {
+    path: 'dashboard/themes',
+    component: ThemeManagement,
+    title: "主题管理 - 控制台"
+  },
+  {
+    path: 'dashboard/chapters',
+    component: ChapterManagement,
+    title: "章节管理 - 控制台"
+  },
+  {
+    path: 'dashboard/articles',
+    component: ArticleManagement,
+    title: "文章管理 - 控制台"
+  },
+  {
+    path: 'dashboard/collections',
+    component: CollectionManagement,
+    title: "集合管理 - 控制台"
+  },
+  {
+    path: 'dashboard/resources',
+    component: ResourceManagement,
+    title: "资源管理 - 控制台"
   },
   {
     path: 'article/:id',
