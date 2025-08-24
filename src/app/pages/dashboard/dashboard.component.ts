@@ -178,4 +178,8 @@ export class DashboardComponent implements OnInit {
   goToCollections() {
     // TODO: 实现导航到集合管理页面
   }
+
+  goToUsers() {
+    // TODO: 实现导航到用户管理页面
+  }
 }

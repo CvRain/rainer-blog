@@ -1,6 +1,13 @@
+/* 侧边栏样式 */
+.sidebar {
+  min-height: calc(100vh - 4rem); /* 减去页眉高度 */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+}
+
 /* 统计卡片样式 */
 .stat-card {
   transition: all 0.3s ease;
+  height: 100%;
 }
 
 .stat-card:hover {
@@ -35,6 +42,11 @@
 
 /* 响应式调整 */
 @media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    min-height: auto;
+  }
+  
   .stat-card {
     margin-bottom: 1rem;
   }
@@ -47,4 +59,31 @@
 /* 暗色主题适配 */
 .dark .stat-card:hover {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
 }
