@@ -1,0 +1,15 @@
+<app-mini-header></app-mini-header>
+
+<div class="min-h-[calc(100vh-120px)] grid grid-cols-12 gap-4 p-4">
+  <aside class="col-span-12 md:col-span-3 lg:col-span-2">
+    <p-card class="shadow-sm">
+      <p-panelMenu [model]="items" class="w-full"></p-panelMenu>
+    </p-card>
+  </aside>
+
+  <main class="col-span-12 md:col-span-9 lg:col-span-10">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+
+<app-simple-footer></app-simple-footer>

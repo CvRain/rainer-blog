@@ -1,0 +1,50 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { TagModule } from 'primeng/tag';
+
+@Component({
+  selector: 'dashboard-themes',
+  standalone: true,
+  imports: [CommonModule, TableModule, ButtonModule, InputTextModule, TagModule],
+  template: `
+    <div class="flex items-center justify-between mb-4">
+      <div class="text-xl font-semibold">主题管理</div>
+      <button pButton label="新建主题" icon="pi pi-plus" class="p-button-success"></button>
+    </div>
+    <div class="mb-4">
+      <span class="p-input-icon-left w-full md:w-80">
+        <i class="pi pi-search"></i>
+        <input pInputText type="text" placeholder="搜索主题..." class="w-full" />
+      </span>
+    </div>
+    <p-table [value]="[]" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10,20,50]">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>主题名</th>
+          <th>章节数</th>
+          <th>文章数</th>
+          <th>状态</th>
+          <th class="w-40">操作</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-theme>
+        <tr>
+          <td>示例主题</td>
+          <td>--</td>
+          <td>--</td>
+          <td><p-tag value="Draft" severity="warning"></p-tag></td>
+          <td>
+            <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm"></button>
+            <button pButton icon="pi pi-trash" class="p-button-text p-button-sm p-button-danger"></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  `,
+})
+export class DashboardThemes {}
+
+

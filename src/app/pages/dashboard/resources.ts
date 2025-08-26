@@ -1,0 +1,54 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+
+@Component({
+  selector: 'dashboard-resources',
+  standalone: true,
+  imports: [CommonModule, TableModule, ButtonModule, InputTextModule],
+  template: `
+    <div class="flex items-center justify-between mb-4">
+      <div class="text-xl font-semibold">资源管理</div>
+      <button pButton label="新建集合" icon="pi pi-plus" class="p-button-success"></button>
+    </div>
+    <div class="grid grid-cols-12 gap-4 mb-4">
+      <div class="col-span-12 md:col-span-6">
+        <span class="p-input-icon-left w-full">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" placeholder="搜索集合或资源..." class="w-full" />
+        </span>
+      </div>
+      <div class="col-span-12 md:col-span-3">
+        <select class="w-full p-2 border rounded-md">
+          <option value="all">全部</option>
+        </select>
+      </div>
+    </div>
+    <p-table [value]="[]" [paginator]="true" [rows]="10">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>集合名</th>
+          <th>资源数量</th>
+          <th>创建时间</th>
+          <th class="w-40">操作</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-collection>
+        <tr>
+          <td>示例集合</td>
+          <td>--</td>
+          <td>--</td>
+          <td>
+            <button pButton icon="pi pi-eye" class="p-button-text p-button-sm"></button>
+            <button pButton icon="pi pi-trash" class="p-button-text p-button-sm p-button-danger"></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  `,
+})
+export class DashboardResources {}
+
+

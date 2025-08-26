@@ -6,6 +6,9 @@ import { Archive } from './pages/archive/archive';
 import { ThemeDetail } from './pages/theme-detail/theme-detail';
 import {TestPageComponent} from './pages/test-page/test-page.component';
 import {Dashboard} from './pages/dashboard/dashboard';
+import { DashboardOverview } from './pages/dashboard/overview';
+import { DashboardThemes } from './pages/dashboard/themes';
+import { DashboardResources } from './pages/dashboard/resources';
 
 export const routes: Routes = [
   {
@@ -21,7 +24,15 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: Dashboard,
-    title: "控制台 - ClaudeRainer的博客"
+    title: "控制台 - ClaudeRainer的博客",
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: 'overview' },
+      { path: 'overview', component: DashboardOverview, title: '控制台 - 总览' },
+      { path: 'themes', component: DashboardThemes, title: '控制台 - 主题管理' },
+      { path: 'themes/new', component: DashboardThemes, title: '控制台 - 新建主题' },
+      { path: 'resources', component: DashboardResources, title: '控制台 - 资源管理' },
+      { path: 'resources/new', component: DashboardResources, title: '控制台 - 新建集合' }
+    ]
   },
   {
     path: 'article/:id',

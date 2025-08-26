@@ -1,0 +1,8 @@
+.p-panelmenu .p-panelmenu-header .p-panelmenu-header-content {
+  @apply rounded-md;
+}
+
+.p-panelmenu .p-panelmenu-content {
+  @apply rounded-md;
+}
+
