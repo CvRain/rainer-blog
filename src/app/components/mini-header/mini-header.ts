@@ -2,12 +2,14 @@ import { Component } from '@angular/core';
 import { RippleModule } from 'primeng/ripple';
 import { Router } from '@angular/router';
 import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-mini-header',
   imports: [
     RippleModule,
-    CardModule
+    CardModule,
+    ButtonModule
   ],
   templateUrl: './mini-header.html',
   styleUrl: './mini-header.css'
@@ -60,5 +62,11 @@ export class MiniHeader {
     if (typeof window !== 'undefined') {
       alert('暂未完成');
     }
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this.router.navigate(['/login']);
   }
 }

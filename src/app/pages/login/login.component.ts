@@ -6,7 +6,7 @@ import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DividerModule } from 'primeng/divider';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { MessageModule } from 'primeng/message';
 import { HeaderComponent } from '../../components/header/header.component';
 import { SimpleFooter } from '../../components/simple-footer/simple-footer';
@@ -42,8 +42,12 @@ export class LoginComponent implements OnInit {
 
   userService = inject(User);
   router = inject(Router);
+  route = inject(ActivatedRoute);
+  returnUrl: string | null = null;
 
   ngOnInit() {
+    // 获取 returnUrl 用于登录后跳转
+    this.returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
     // 检查是否存在token，如果存在则验证token有效性
     const token = localStorage.getItem('token');
     if (token) {
@@ -53,7 +57,11 @@ export class LoginComponent implements OnInit {
           this.loading = false;
           if (response.code === 200) {
             // token有效，直接跳转到dashboard
-            this.router.navigate(['/dashboard']);
+            if (this.returnUrl) {
+              this.router.navigateByUrl(this.returnUrl);
+            } else {
+              this.router.navigate(['/dashboard']);
+            }
           } else {
             // token无效，清除本地存储的token
             localStorage.removeItem('token');
@@ -88,8 +96,12 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('user', JSON.stringify(response.data.user));
           
-          // 跳转到dashboard页面
-          this.router.navigate(['/dashboard']);
+          // 登录成功后跳转回来源页或 dashboard
+          if (this.returnUrl) {
+            this.router.navigateByUrl(this.returnUrl);
+          } else {
+            this.router.navigate(['/dashboard']);
+          }
         } else {
           // 登录失败
           this.loginError = true;

@@ -9,6 +9,7 @@ import {Dashboard} from './pages/dashboard/dashboard';
 import { Overview } from './pages/dashboard/overview/overview';
 import { Themes } from './pages/dashboard/themes/themes';
 import { Resources } from './pages/dashboard/resources/resources';
+import { dashboardAuthGuard } from './pages/dashboard/dashboard-auth.guard';
 
 export const routes: Routes = [
   {
@@ -25,6 +26,7 @@ export const routes: Routes = [
     path: 'dashboard',
     component: Dashboard,
     title: "控制台 - ClaudeRainer的博客",
+    canActivate: [dashboardAuthGuard],
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'overview' },
       { path: 'overview', component: Overview, title: '控制台 - 总览' },

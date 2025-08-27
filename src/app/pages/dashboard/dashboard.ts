@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MiniHeader } from '../../components/mini-header/mini-header';
 import { SimpleFooter } from "../../components/simple-footer/simple-footer";
 import { RouterOutlet } from '@angular/router';
@@ -13,7 +13,9 @@ import { CardModule } from 'primeng/card';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
-export class Dashboard {
+
+
+export class Dashboard implements OnInit {
   items: MenuItem[] = [
     {
       label: '博客总览',
@@ -39,4 +41,7 @@ export class Dashboard {
       ]
     }
   ];
+
+  ngOnInit(): void {
+  }
 }
