@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MiniHeader } from '../../components/mini-header/mini-header';
 import { SimpleFooter } from "../../components/simple-footer/simple-footer";
 import { RouterOutlet } from '@angular/router';
@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { MenuItem } from 'primeng/api';
 import { CardModule } from 'primeng/card';
+import { TotalOverview } from '../../services/types';
+import { User } from '../../services/user';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,6 +18,8 @@ import { CardModule } from 'primeng/card';
 
 
 export class Dashboard implements OnInit {
+  userService = inject(User)
+
   items: MenuItem[] = [
     {
       label: '博客总览',
@@ -42,6 +46,20 @@ export class Dashboard implements OnInit {
     }
   ];
 
+  totalView: TotalOverview = {} as TotalOverview;
+
   ngOnInit(): void {
+    this.userService.totalOverview().subscribe((res) => {
+      if (res.code === 200) {
+        this.totalView = res.data || {} as TotalOverview;
+        console.log(this.totalView);
+      }
+    })
+  }
+
+  onChildActivate(instance: any) {
+    if (instance && 'setTotalView' in instance && typeof instance.setTotalView === 'function') {
+      instance.setTotalView(this.totalView);
+    }
   }
 }

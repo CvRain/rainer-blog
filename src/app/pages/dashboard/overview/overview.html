@@ -1,21 +1,35 @@
 <div class="grid grid-cols-12 gap-4">
   <p-card class="col-span-12 md:col-span-4">
     <ng-template pTemplate="title">文章统计</ng-template>
-    <div class="text-3xl font-semibold">--</div>
-    <p-tag value="Articles" severity="info" class="mt-2"></p-tag>
+    <div class="text-3xl font-semibold">{{ totalView?.article_count || 0 }}</div>
+    <p-tag [value]="'近一周 +' + (totalView?.article_append_weekly || 0)" severity="info" class="mt-2"></p-tag>
   </p-card>
   <p-card class="col-span-12 md:col-span-4">
     <ng-template pTemplate="title">章节统计</ng-template>
-    <div class="text-3xl font-semibold">--</div>
+    <div class="text-3xl font-semibold">0</div>
     <p-tag value="Chapters" severity="success" class="mt-2"></p-tag>
   </p-card>
   <p-card class="col-span-12 md:col-span-4">
     <ng-template pTemplate="title">主题统计</ng-template>
-    <div class="text-3xl font-semibold">--</div>
-    <p-tag value="Themes" severity="warning" class="mt-2"></p-tag>
+    <div class="text-3xl font-semibold">{{ totalView?.theme_count || 0 }}</div>
+    <p-tag [value]="'近一周 +' + (totalView?.theme_append_weekly || 0)" severity="warning" class="mt-2"></p-tag>
   </p-card>
   <p-card class="col-span-12">
     <ng-template pTemplate="title">最近更新</ng-template>
-    <div class="text-muted-color">后续接入服务数据...</div>
+    <div class="grid grid-cols-12 gap-4">
+      <p-card class="col-span-12 md:col-span-4">
+        <ng-template pTemplate="title">资源统计</ng-template>
+        <div class="text-3xl font-semibold">{{ totalView?.resource_count || 0 }}</div>
+        <p-tag [value]="'近一周 +' + (totalView?.resource_append_weekly || 0)" severity="info" class="mt-2"></p-tag>
+      </p-card>
+      <p-card class="col-span-12 md:col-span-4">
+        <ng-template pTemplate="title">集合统计</ng-template>
+        <div class="text-3xl font-semibold">{{ totalView?.collection_count || 0 }}</div>
+        <p-tag [value]="'近一周 +' + (totalView?.collection_append_weekly || 0)" severity="success" class="mt-2"></p-tag>
+      </p-card>
+      <div class="col-span-12 md:col-span-4 flex items-center text-muted-color">
+        后续接入最近变更列表...
+      </div>
+    </div>
   </p-card>
 </div>

@@ -11,5 +11,20 @@ import { TagModule } from 'primeng/tag';
   styleUrl: './overview.css'
 })
 export class Overview {
+  totalView = {
+    article_append_weekly: 0,
+    article_count: 0,
+    collection_append_weekly: 0,
+    collection_count: 0,
+    resource_append_weekly: 0,
+    resource_count: 0,
+    theme_append_weekly: 0,
+    theme_count: 0
+  };
 
+  setTotalView(totalView: any) {
+    if (totalView) {
+      this.totalView = totalView;
+    }
+  }
 }
