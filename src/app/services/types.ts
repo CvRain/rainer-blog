@@ -80,7 +80,7 @@ export interface BaseThemeSchema {
   [property: string]: any;
 }
 
-export interface UserLoginResponse{
+export interface UserLoginResponse {
   user: UserInfo,
   token: string;
 }
@@ -90,7 +90,7 @@ export interface TokenVerifyResponse {
   user_name: string;
 }
 
-export interface TotalOverview{
+export interface TotalOverview {
   article_append_weekly: number;
   article_count: number;
   collection_append_weekly: number;
@@ -100,4 +100,19 @@ export interface TotalOverview{
   theme_append_weekly: number;
   theme_count: number;
   [property: string]: any;
+}
+
+export interface ArticleCountData {
+  count: number;
+  [property: string]: any;
+}
+
+export interface UpdateArticleSchema {
+  id: string;
+  title: string;
+  content: string;
+  s3_content: string ;
+  chapter_id: string;
+  order: number ;
+  is_active: boolean;
 }
