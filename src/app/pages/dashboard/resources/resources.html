@@ -1,24 +1,30 @@
 <div class="flex items-center justify-between mb-4">
   <div class="text-xl font-semibold">资源管理</div>
-  <button pButton label="新建集合" icon="pi pi-plus" class="p-button-success"></button>
+  <button pButton label="新建集合" icon="pi pi-plus" class="p-button-success" (click)="openNewDialog()"></button>
 </div>
+
 <div class="grid grid-cols-12 gap-4 mb-4">
   <div class="col-span-12 md:col-span-6">
     <span class="p-input-icon-left w-full">
       <i class="pi pi-search"></i>
-      <input pInputText type="text" placeholder="搜索集合或资源..." class="w-full" />
+      <input pInputText type="text" placeholder="搜索集合或资源..." class="w-full" [(ngModel)]="searchText" />
     </span>
   </div>
   <div class="col-span-12 md:col-span-3">
-    <select class="w-full p-2 border rounded-md">
+    <select class="w-full p-2 border rounded" [(ngModel)]="filterType">
       <option value="all">全部</option>
+      <option value="image">图片</option>
+      <option value="document">文档</option>
+      <option value="video">视频</option>
     </select>
   </div>
 </div>
-<p-table [value]="[]" [paginator]="true" [rows]="10">
+
+<p-table [value]="filteredCollections" [paginator]="true" [rows]="10" [loading]="loading">
   <ng-template pTemplate="header">
     <tr>
       <th>集合名</th>
+      <th>描述</th>
       <th>资源数量</th>
       <th>创建时间</th>
       <th class="w-40">操作</th>
@@ -26,13 +32,57 @@
   </ng-template>
   <ng-template pTemplate="body" let-collection>
     <tr>
-      <td>示例集合</td>
-      <td>--</td>
-      <td>--</td>
+      <td>{{ collection.name }}</td>
+      <td>{{ collection.description || '暂无描述' }}</td>
+      <td>{{ collection.resource_count }}</td>
+      <td>{{ collection.created_at | date:'yyyy-MM-dd HH:mm' }}</td>
       <td>
         <button pButton icon="pi pi-eye" class="p-button-text p-button-sm"></button>
-        <button pButton icon="pi pi-trash" class="p-button-text p-button-sm p-button-danger"></button>
+        <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm" (click)="openEditDialog(collection)"></button>
+        <button pButton icon="pi pi-trash" class="p-button-text p-button-sm p-button-danger" (click)="deleteCollection(collection)"></button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="5" class="text-center py-4">
+        <div class="text-muted-color">
+          <i class="pi pi-inbox text-4xl mb-2"></i>
+          <p>暂无集合数据</p>
+        </div>
       </td>
     </tr>
   </ng-template>
 </p-table>
+
+<!-- 新建/编辑集合对话框 -->
+<p-dialog 
+  [(visible)]="displayDialog" 
+  [header]="editingCollection ? '编辑集合' : '新建集合'" 
+  [modal]="true" 
+  [style]="{width: '50vw'}"
+  [draggable]="false" 
+  [resizable]="false">
+  
+  <div class="grid grid-cols-1 gap-4">
+    <div>
+      <label class="block text-sm font-medium mb-2">集合名称 *</label>
+      <input pInputText type="text" [(ngModel)]="newCollection.name" placeholder="请输入集合名称" class="w-full" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-2">集合描述</label>
+      <textarea pInputTextarea [(ngModel)]="newCollection.description" placeholder="请输入集合描述" rows="3" class="w-full"></textarea>
+    </div>
+  </div>
+  
+  <ng-template pTemplate="footer">
+    <button pButton label="取消" icon="pi pi-times" class="p-button-text" (click)="displayDialog = false"></button>
+    <button pButton label="保存" icon="pi pi-check" class="p-button-success" (click)="saveCollection()"></button>
+  </ng-template>
+</p-dialog>
+
+<!-- 确认删除对话框 -->
+<p-confirmDialog></p-confirmDialog>
+
+<!-- 消息提示 -->
+<p-toast></p-toast>

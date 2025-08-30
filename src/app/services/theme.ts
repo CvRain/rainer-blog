@@ -48,7 +48,7 @@ export class Theme {
     const token = localStorage.getItem('token');
     return this.httpClient.post<BaseResponse<BaseThemeSchema>>(
       environment.apiUrl + '/theme/one',
-      { name, description },
+      { name, description: description || name },
       {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -78,7 +78,7 @@ export class Theme {
 
   updateOne(theme: BaseThemeSchema): Observable<BaseResponse<BaseThemeSchema>> {
     const token = localStorage.getItem('token');
-    return this.httpClient.put<BaseResponse<BaseThemeSchema>>(
+    return this.httpClient.patch<BaseResponse<BaseThemeSchema>>(
       environment.apiUrl + '/theme/one',
       theme,
       { headers: { 'Authorization': `Bearer ${token}` } }

@@ -1,8 +1,8 @@
 <div class="grid grid-cols-12 gap-4">
   <p-card class="col-span-12 md:col-span-4">
     <ng-template pTemplate="title">文章统计</ng-template>
-    <div class="text-3xl font-semibold">{{ totalView?.article_count || 0 }}</div>
-    <p-tag [value]="'近一周 +' + (totalView?.article_append_weekly || 0)" severity="info" class="mt-2"></p-tag>
+    <div class="text-3xl font-semibold">{{ articleStats.total || totalView?.article_count || 0 }}</div>
+    <p-tag [value]="'近一周 +' + (articleStats.weekly || totalView?.article_append_weekly || 0)" severity="info" class="mt-2"></p-tag>
   </p-card>
   <p-card class="col-span-12 md:col-span-4">
     <ng-template pTemplate="title">章节统计</ng-template>

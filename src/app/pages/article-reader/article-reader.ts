@@ -118,7 +118,7 @@ export class ArticleReader implements OnInit {
         }
         this.loading = false;
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('获取文章失败:', error);
         this.error = '获取文章失败: ' + (error.error?.message || error.message);
         this.loading = false;

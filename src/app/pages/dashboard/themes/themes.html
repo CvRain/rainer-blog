@@ -1,33 +1,79 @@
 <div class="flex items-center justify-between mb-4">
   <div class="text-xl font-semibold">主题管理</div>
-  <button pButton label="新建主题" icon="pi pi-plus" class="p-button-success"></button>
-  </div>
-  <div class="mb-4">
+  <button pButton label="新建主题" icon="pi pi-plus" class="p-button-success" (click)="openNewDialog()"></button>
+</div>
+
+<div class="mb-4">
   <span class="p-input-icon-left w-full md:w-80">
     <i class="pi pi-search"></i>
-    <input pInputText type="text" placeholder="搜索主题..." class="w-full" />
+    <input pInputText type="text" placeholder="搜索主题..." class="w-full" [(ngModel)]="searchText" />
   </span>
-  </div>
-  <p-table [value]="[]" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10,20,50]">
+</div>
+
+<p-table [value]="filteredThemes" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10,20,50]" [loading]="loading">
   <ng-template pTemplate="header">
     <tr>
       <th>主题名</th>
-      <th>章节数</th>
-      <th>文章数</th>
+      <th>描述</th>
       <th>状态</th>
+      <th>创建时间</th>
       <th class="w-40">操作</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-theme>
     <tr>
-      <td>示例主题</td>
-      <td>--</td>
-      <td>--</td>
-      <td><p-tag value="Draft" severity="warning"></p-tag></td>
+      <td>{{ theme.name }}</td>
+      <td>{{ theme.description || '暂无描述' }}</td>
       <td>
-        <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm"></button>
-        <button pButton icon="pi pi-trash" class="p-button-text p-button-sm p-button-danger"></button>
+        <p-tag [value]="theme.is_active ? '激活' : '禁用'" [severity]="theme.is_active ? 'success' : 'warning'"></p-tag>
+      </td>
+      <td>{{ theme.inserted_at | date:'yyyy-MM-dd HH:mm' }}</td>
+      <td>
+        <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm" (click)="openEditDialog(theme)"></button>
+        <button pButton icon="pi pi-trash" class="p-button-text p-button-sm p-button-danger" (click)="deleteTheme(theme)"></button>
       </td>
     </tr>
   </ng-template>
-  </p-table>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="5" class="text-center py-4">
+        <div class="text-muted-color">
+          <i class="pi pi-inbox text-4xl mb-2"></i>
+          <p>暂无主题数据</p>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<!-- 新建/编辑主题对话框 -->
+<p-dialog 
+  [(visible)]="displayDialog" 
+  [header]="editingTheme ? '编辑主题' : '新建主题'" 
+  [modal]="true" 
+  [style]="{width: '50vw'}"
+  [draggable]="false" 
+  [resizable]="false">
+  
+  <div class="grid grid-cols-1 gap-4">
+    <div>
+      <label class="block text-sm font-medium mb-2">主题名称 *</label>
+      <input pInputText type="text" [(ngModel)]="newTheme.name" placeholder="请输入主题名称" class="w-full" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-2">主题描述</label>
+      <textarea pInputTextarea [(ngModel)]="newTheme.description" placeholder="请输入主题描述" rows="3" class="w-full"></textarea>
+    </div>
+  </div>
+  
+  <ng-template pTemplate="footer">
+    <button pButton label="取消" icon="pi pi-times" class="p-button-text" (click)="displayDialog = false"></button>
+    <button pButton label="保存" icon="pi pi-check" class="p-button-success" (click)="saveTheme()"></button>
+  </ng-template>
+</p-dialog>
+
+<!-- 确认删除对话框 -->
+<p-confirmDialog></p-confirmDialog>
+
+<!-- 消息提示 -->
+<p-toast></p-toast>
