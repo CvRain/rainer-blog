@@ -26,8 +26,14 @@ export class Chapter {
 
   //获取指定theme下的所有Chapter
   getChapterByTheme(themeId: string): Observable<BaseResponse<ApiChapter[]>> {
+    const token = localStorage.getItem('token');
     return this.httpClient.get<BaseResponse<ApiChapter[]>>(
-      `${environment.apiUrl}/chapter/theme/${themeId}`
+      `${environment.apiUrl}/chapter/theme/${themeId}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }
     ).pipe(
       map(response => response)
     )

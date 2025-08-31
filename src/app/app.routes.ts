@@ -9,6 +9,8 @@ import {Dashboard} from './pages/dashboard/dashboard';
 import { Overview } from './pages/dashboard/overview/overview';
 import { Themes } from './pages/dashboard/themes/themes';
 import { Resources } from './pages/dashboard/resources/resources';
+import { Chapters } from './pages/dashboard/chapters/chapters';
+import { ArticleEditor } from './pages/dashboard/articles/article-editor';
 import { dashboardAuthGuard } from './pages/dashboard/dashboard-auth.guard';
 
 export const routes: Routes = [
@@ -32,6 +34,9 @@ export const routes: Routes = [
       { path: 'overview', component: Overview, title: '控制台 - 总览' },
       { path: 'themes', component: Themes, title: '控制台 - 主题管理' },
       { path: 'themes/new', component: Themes, title: '控制台 - 新建主题' },
+      { path: 'themes/:themeId/chapters', component: Chapters, title: '控制台 - 章节管理' },
+      { path: 'articles/:id/edit', component: ArticleEditor, title: '控制台 - 文章编辑' },
+      { path: 'articles/new', component: ArticleEditor, title: '控制台 - 新建文章' },
       { path: 'resources', component: Resources, title: '控制台 - 资源管理' },
       { path: 'resources/new', component: Resources, title: '控制台 - 新建集合' }
     ]

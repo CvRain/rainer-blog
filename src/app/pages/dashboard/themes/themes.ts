@@ -6,17 +6,19 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
-import { inject } from '@angular/core';
-import { Theme } from '../../../services/theme';
-import { BaseThemeSchema } from '../../../services/types';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
+import { inject } from '@angular/core';
+import { Theme } from '../../../services/theme';
+import { BaseThemeSchema } from '../../../services/types';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-themes',
   standalone: true,
-  imports: [CommonModule, TableModule, ButtonModule, InputTextModule, TagModule, DialogModule, FormsModule, ConfirmDialogModule, ToastModule],
+  imports: [CommonModule, TableModule, ButtonModule, InputTextModule, TagModule, DialogModule, FormsModule, ConfirmDialogModule, ToastModule, TooltipModule],
   providers: [ConfirmationService, MessageService],
   templateUrl: './themes.html',
   styleUrl: './themes.css'
@@ -25,6 +27,7 @@ export class Themes {
   private themeService = inject(Theme);
   private confirmationService = inject(ConfirmationService);
   private messageService = inject(MessageService);
+  private router = inject(Router);
 
   themes: BaseThemeSchema[] = [];
   loading = false;
@@ -74,7 +77,11 @@ export class Themes {
 
     if (this.editingTheme) {
       // 编辑现有主题
-      const updatedTheme = { ...this.editingTheme, ...this.newTheme };
+      const updatedTheme = { 
+        ...this.editingTheme, 
+        name: this.newTheme.name, 
+        description: this.newTheme.description 
+      };
       this.themeService.updateOne(updatedTheme).subscribe({
         next: (response) => {
           this.saving = false;
@@ -187,6 +194,44 @@ export class Themes {
         });
       }
     });
+  }
+
+  toggleThemeStatus(theme: BaseThemeSchema) {
+    const newStatus = !theme.is_active;
+    const action = newStatus ? '激活' : '禁用';
+    
+    this.confirmationService.confirm({
+      message: `确定要${action}主题"${theme.name}"吗？`,
+      header: `确认${action}`,
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        const updatedTheme = { ...theme, is_active: newStatus };
+        this.themeService.updateOne(updatedTheme).subscribe({
+          next: (response) => {
+            if (response.code === 200) {
+              this.messageService.add({
+                severity: 'success',
+                summary: '成功',
+                detail: `主题${action}成功`
+              });
+              this.loadThemes();
+            }
+          },
+          error: (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: '错误',
+              detail: `主题${action}失败`
+            });
+            console.error(`主题${action}失败:`, error);
+          }
+        });
+      }
+    });
+  }
+
+  manageChapters(theme: BaseThemeSchema) {
+    this.router.navigate(['/dashboard/themes', theme.id, 'chapters']);
   }
 
   get filteredThemes() {

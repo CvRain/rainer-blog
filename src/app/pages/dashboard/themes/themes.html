@@ -17,7 +17,7 @@
       <th>描述</th>
       <th>状态</th>
       <th>创建时间</th>
-      <th class="w-40">操作</th>
+      <th class="w-48">操作</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-theme>
@@ -29,8 +29,30 @@
       </td>
       <td>{{ theme.inserted_at | date:'yyyy-MM-dd HH:mm' }}</td>
       <td>
-        <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm" (click)="openEditDialog(theme)"></button>
-        <button pButton icon="pi pi-trash" class="p-button-text p-button-sm p-button-danger" (click)="deleteTheme(theme)"></button>
+        <button pButton 
+          icon="pi pi-sitemap" 
+          class="p-button-text p-button-sm p-button-info" 
+          pTooltip="管理章节"
+          (click)="manageChapters(theme)">
+        </button>
+        <button pButton 
+          [icon]="theme.is_active ? 'pi pi-eye-slash' : 'pi pi-eye'" 
+          class="p-button-text p-button-sm p-button-warning" 
+          [pTooltip]="theme.is_active ? '禁用主题' : '激活主题'"
+          (click)="toggleThemeStatus(theme)">
+        </button>
+        <button pButton 
+          icon="pi pi-pencil" 
+          class="p-button-text p-button-sm" 
+          pTooltip="编辑主题"
+          (click)="openEditDialog(theme)">
+        </button>
+        <button pButton 
+          icon="pi pi-trash" 
+          class="p-button-text p-button-sm p-button-danger" 
+          pTooltip="删除主题"
+          (click)="deleteTheme(theme)">
+        </button>
       </td>
     </tr>
   </ng-template>
