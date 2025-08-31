@@ -28,6 +28,7 @@ export class Themes {
 
   themes: BaseThemeSchema[] = [];
   loading = false;
+  saving = false; // 单独的保存状态
   searchText = '';
   displayDialog = false;
   editingTheme: BaseThemeSchema | null = null;
@@ -58,18 +59,6 @@ export class Themes {
     });
   }
 
-  openNewDialog() {
-    this.newTheme = { name: '', description: '' };
-    this.editingTheme = null;
-    this.displayDialog = true;
-  }
-
-  openEditDialog(theme: BaseThemeSchema) {
-    this.editingTheme = { ...theme };
-    this.newTheme = { name: theme.name, description: theme.description };
-    this.displayDialog = true;
-  }
-
   saveTheme() {
     if (!this.newTheme.name.trim()) {
       this.messageService.add({
@@ -80,22 +69,34 @@ export class Themes {
       return;
     }
 
+    // 使用单独的保存状态
+    this.saving = true;
+
     if (this.editingTheme) {
       // 编辑现有主题
       const updatedTheme = { ...this.editingTheme, ...this.newTheme };
       this.themeService.updateOne(updatedTheme).subscribe({
         next: (response) => {
+          this.saving = false;
           if (response.code === 200) {
             this.messageService.add({
               severity: 'success',
               summary: '成功',
               detail: '主题更新成功'
             });
-            this.displayDialog = false;
-            this.loadThemes();
+            this.closeDialog();
+            // 延迟刷新，确保后端数据已更新
+            setTimeout(() => this.loadThemes(), 100);
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: '错误',
+              detail: response.message || '更新主题失败'
+            });
           }
         },
         error: (error) => {
+          this.saving = false;
           this.messageService.add({
             severity: 'error',
             summary: '错误',
@@ -108,18 +109,27 @@ export class Themes {
       // 创建新主题
       this.themeService.createOne(this.newTheme.name, this.newTheme.description).subscribe({
         next: (response) => {
+          this.saving = false;
           console.debug(response);
-          if (response.code === 200) {
+          if (response.code === 200 || response.code === 201) {
             this.messageService.add({
               severity: 'success',
               summary: '成功',
               detail: '主题创建成功'
             });
-            this.displayDialog = false;
-            this.loadThemes();
+            this.closeDialog();
+            // 延迟刷新，确保后端数据已更新
+            setTimeout(() => this.loadThemes(), 100);
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: '错误',
+              detail: response.message || '创建主题失败'
+            });
           }
         },
         error: (error) => {
+          this.saving = false;
           this.messageService.add({
             severity: 'error',
             summary: '错误',
@@ -129,6 +139,24 @@ export class Themes {
         }
       });
     }
+  }
+
+  closeDialog() {
+    this.displayDialog = false;
+    this.editingTheme = null;
+    this.newTheme = { name: '', description: '' };
+  }
+
+  openNewDialog() {
+    this.newTheme = { name: '', description: '' };
+    this.editingTheme = null;
+    this.displayDialog = true;
+  }
+
+  openEditDialog(theme: BaseThemeSchema) {
+    this.editingTheme = { ...theme };
+    this.newTheme = { name: theme.name, description: theme.description };
+    this.displayDialog = true;
   }
 
   deleteTheme(theme: BaseThemeSchema) {

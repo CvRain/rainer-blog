@@ -53,22 +53,30 @@
   [modal]="true" 
   [style]="{width: '50vw'}"
   [draggable]="false" 
-  [resizable]="false">
+  [resizable]="false"
+  [closable]="!saving"
+  (onHide)="closeDialog()">
   
   <div class="grid grid-cols-1 gap-4">
     <div>
       <label class="block text-sm font-medium mb-2">主题名称 *</label>
-      <input pInputText type="text" [(ngModel)]="newTheme.name" placeholder="请输入主题名称" class="w-full" />
+      <input pInputText type="text" [(ngModel)]="newTheme.name" placeholder="请输入主题名称" class="w-full" [disabled]="saving" />
     </div>
     <div>
       <label class="block text-sm font-medium mb-2">主题描述</label>
-      <textarea pInputTextarea [(ngModel)]="newTheme.description" placeholder="请输入主题描述" rows="3" class="w-full"></textarea>
+      <textarea pInputTextarea [(ngModel)]="newTheme.description" placeholder="请输入主题描述" rows="3" class="w-full" [disabled]="saving"></textarea>
     </div>
   </div>
   
   <ng-template pTemplate="footer">
-    <button pButton label="取消" icon="pi pi-times" class="p-button-text" (click)="displayDialog = false"></button>
-    <button pButton label="保存" icon="pi pi-check" class="p-button-success" (click)="saveTheme()"></button>
+    <button pButton label="取消" icon="pi pi-times" class="p-button-text" (click)="closeDialog()" [disabled]="saving"></button>
+    <button pButton 
+      [label]="saving ? '保存中...' : '保存'" 
+      [icon]="saving ? 'pi pi-spinner pi-spin' : 'pi pi-check'" 
+      class="p-button-success" 
+      (click)="saveTheme()" 
+      [disabled]="saving || !newTheme.name.trim()">
+    </button>
   </ng-template>
 </p-dialog>
 
