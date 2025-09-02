@@ -1,8 +1,25 @@
-.p-panelmenu .p-panelmenu-header .p-panelmenu-header-content {
-  @apply rounded-md;
+:host ::ng-deep .theme-active > .p-treenode-content .p-treenode-label::after,
+:host ::ng-deep .chapter-active > .p-treenode-content .p-treenode-label::after {
+  content: "激活";
+  background-color: var(--p-tag-success-background);
+  color: var(--p-tag-success-color);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  font-size: 12px;
 }
 
-.p-panelmenu .p-panelmenu-content {
-  @apply rounded-md;
+:host ::ng-deep .theme-inactive > .p-treenode-content .p-treenode-label::after,
+:host
+  ::ng-deep
+  .chapter-inactive
+  > .p-treenode-content
+  .p-treenode-label::after {
+  content: "禁用";
+  background-color: var(--p-tag-warning-background);
+  color: var(--p-tag-warning-color);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  font-size: 12px;
 }
-

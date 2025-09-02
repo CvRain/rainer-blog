@@ -4,7 +4,8 @@ import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { inject } from '@angular/core';
 import { Article } from '../../../services/article';
-import { ArticleCountData } from '../../../services/types';
+import { ArticleCountData, TotalOverview } from '../../../services/types';
+import { User } from '../../../services/user';
 
 @Component({
   selector: 'app-overview',
@@ -15,56 +16,21 @@ import { ArticleCountData } from '../../../services/types';
 })
 export class Overview {
   private articleService = inject(Article);
+  private userService = inject(User);
 
-  totalView = {
-    article_append_weekly: 0,
-    article_count: 0,
-    collection_append_weekly: 0,
-    collection_count: 0,
-    resource_append_weekly: 0,
-    resource_count: 0,
-    theme_append_weekly: 0,
-    theme_count: 0
-  };
-
-  // 从 Article 服务获取的精确统计
-  articleStats = {
-    total: 0,
-    weekly: 0
-  };
-
-  setTotalView(totalView: any) {
-    if (totalView) {
-      this.totalView = totalView;
-    }
-  }
+  totalView: TotalOverview = {} as TotalOverview;
 
   ngOnInit() {
-    this.loadArticleStats();
+    this.loadTotalOverview();
   }
 
-  loadArticleStats() {
-    // 获取文章总数
-    this.articleService.getArticleCount().subscribe({
+  loadTotalOverview() {
+    this.userService.totalOverview().subscribe({
       next: (response) => {
-        if (response.code === 200 && response.data) {
-          this.articleStats.total = response.data.count;
-        }
+        this.totalView = response.data || {} as TotalOverview;
       },
       error: (error) => {
-        console.error('获取文章统计失败:', error);
-      }
-    });
-
-    // 获取本周新增文章数
-    this.articleService.getArticleAppendCountWeekly().subscribe({
-      next: (response) => {
-        if (response.code === 200 && response.data) {
-          this.articleStats.weekly = response.data.count;
-        }
-      },
-      error: (error) => {
-        console.error('获取本周文章统计失败:', error);
+        console.error('获取总览失败:', error);
       }
     });
   }

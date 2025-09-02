@@ -1,89 +1,87 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ApiTheme, BaseResponse, BaseThemeSchema } from './types';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
-import { map } from 'rxjs/operators';
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { ApiTheme, BaseResponse, BaseThemeSchema } from "./types";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "../../environments/environment";
+import { map } from "rxjs/operators";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class Theme {
-
-  constructor(private httpClient: HttpClient) {
-
-  }
+  constructor(private httpClient: HttpClient) {}
 
   getActiveThemes(): Observable<BaseResponse<BaseThemeSchema[]>> {
-    return this.httpClient.get<BaseResponse<BaseThemeSchema[]>>(
-      environment.apiUrl + '/theme/active'
-    ).pipe(
-      map(response => response)
-    )
+    return this.httpClient
+      .get<
+        BaseResponse<BaseThemeSchema[]>
+      >(environment.apiUrl + "/theme/active")
+      .pipe(map((response) => response));
   }
 
   getThemeWithDetail(themeId: string): Observable<BaseResponse<ApiTheme>> {
-    return this.httpClient.get<BaseResponse<ApiTheme>>(
-      `${environment.apiUrl}/theme/one/${themeId}/with_details`
-    ).pipe(
-      map(response => response)
-    )
+    return this.httpClient
+      .get<
+        BaseResponse<ApiTheme>
+      >(`${environment.apiUrl}/theme/one/${themeId}/with_details`)
+      .pipe(map((response) => response));
   }
 
-  getAll(): Observable<BaseResponse<BaseThemeSchema[]>> {
-    const token = localStorage.getItem('token');
-    return this.httpClient.get<BaseResponse<BaseThemeSchema[]>>(
-      environment.apiUrl + '/theme/all',
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      }
-    ).pipe(
-      map(response => response)
-    )
+  getAll(): Observable<BaseResponse<ApiTheme[]>> {
+    const token = localStorage.getItem("token");
+    return this.httpClient
+      .get<BaseResponse<ApiTheme[]>>(
+        environment.apiUrl + "/theme/all/with_details",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      .pipe(map((response) => response));
   }
 
-  createOne(name: string, description: string): Observable<BaseResponse<BaseThemeSchema>> {
-    const token = localStorage.getItem('token');
-    return this.httpClient.post<BaseResponse<BaseThemeSchema>>(
-      environment.apiUrl + '/theme/one',
-      { name, description: description || name },
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      }
-    ).pipe(
-      map(response => response)
-    )
+  createOne(
+    name: string,
+    description: string,
+  ): Observable<BaseResponse<BaseThemeSchema>> {
+    const token = localStorage.getItem("token");
+    return this.httpClient
+      .post<BaseResponse<BaseThemeSchema>>(
+        environment.apiUrl + "/theme/one",
+        { name, description: description || name },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      .pipe(map((response) => response));
   }
 
   removeOne(themeId: string): Observable<BaseResponse<BaseThemeSchema>> {
-    const token = localStorage.getItem('token');
-    return this.httpClient.delete<BaseResponse<BaseThemeSchema>>(
-      environment.apiUrl + '/theme/one',
-      {
-        body: {
-          id: themeId
+    const token = localStorage.getItem("token");
+    return this.httpClient
+      .delete<BaseResponse<BaseThemeSchema>>(
+        environment.apiUrl + "/theme/one",
+        {
+          body: {
+            id: themeId,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      }
-    ).pipe(
-      map(response => response)
-    )
+      )
+      .pipe(map((response) => response));
   }
 
   updateOne(theme: BaseThemeSchema): Observable<BaseResponse<BaseThemeSchema>> {
-    const token = localStorage.getItem('token');
-    return this.httpClient.patch<BaseResponse<BaseThemeSchema>>(
-      environment.apiUrl + '/theme/one',
-      theme,
-      { headers: { 'Authorization': `Bearer ${token}` } }
-    ).pipe(
-      map(response => response)
-    )
+    const token = localStorage.getItem("token");
+    return this.httpClient
+      .patch<
+        BaseResponse<BaseThemeSchema>
+      >(environment.apiUrl + "/theme/one", theme, { headers: { Authorization: `Bearer ${token}` } })
+      .pipe(map((response) => response));
   }
 }

@@ -79,13 +79,8 @@ export class Article {
       .pipe((response) => response);
   }
 
-  getArticleS3ContentById(id: string): Observable<BaseResponse<ApiArticleContent>> {
-    const url = `${environment.apiUrl}/article/one/${id}`;
-    return this.http.get<BaseResponse<ApiArticleContent>>(url);
-  }
-
   updateArticleContent(
-    updateArticleSchema: UpdateArticleSchema,
+    updateArticleSchema: ApiArticleContent,
   ): Observable<BaseResponse<ApiArticleContent>> {
     const url = `${environment.apiUrl}/article/one`;
     const token = localStorage.getItem("token");
