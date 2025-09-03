@@ -1,0 +1,19 @@
+::ng-deep .editor-tab-view .p-tabview-panels {
+  padding: 0;
+}
+
+::ng-deep .editor-tab-view .p-tabview-panel {
+  padding: 0;
+}
+
+.editor-textarea {
+  resize: vertical;
+  border: none !important;
+  border-radius: 0;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.preview-container {
+  overflow: auto;
+}

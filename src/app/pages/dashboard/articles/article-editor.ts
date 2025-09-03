@@ -20,6 +20,8 @@ import {
   ApiTheme,
   BaseThemeSchema,
 } from "../../../services/types";
+import { MarkdownViewer } from "../../../components/markdown-viewer/markdown-viewer";
+import { TabsModule } from "primeng/tabs";
 
 @Component({
   selector: "app-article-editor",
@@ -34,6 +36,8 @@ import {
     SelectModule,
     CheckboxModule,
     ToastModule,
+    MarkdownViewer,
+    TabsModule,
   ],
   providers: [MessageService],
   templateUrl: "./article-editor.html",
@@ -63,6 +67,7 @@ export class ArticleEditor implements OnInit {
   saving = false;
   isNewArticle = false;
   articleId: string | null = null;
+  isSidebarVisible = true;
 
   ngOnInit() {
     this.loadThemes();
@@ -74,6 +79,10 @@ export class ArticleEditor implements OnInit {
         this.isNewArticle = true;
       }
     });
+  }
+
+  toggleSidebar() {
+    this.isSidebarVisible = !this.isSidebarVisible;
   }
 
   loadThemes() {

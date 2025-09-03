@@ -15,23 +15,75 @@
       </div>
     </div>
   </div>
-  <button
-    pButton
-    [label]="saving ? '保存中...' : '保存'"
-    [icon]="saving ? 'pi pi-spinner pi-spin' : 'pi pi-check'"
-    class="p-button-success"
-    (click)="saveArticle()"
-    [disabled]="saving || loading"
-  ></button>
+  <div class="flex items-center space-x-2">
+    <button
+      pButton
+      [icon]="isSidebarVisible ? 'pi pi-arrow-right' : 'pi pi-arrow-left'"
+      [label]="isSidebarVisible ? '隐藏属性' : '显示属性'"
+      class="p-button-secondary p-button-text"
+      (click)="toggleSidebar()"
+    ></button>
+    <button
+      pButton
+      [label]="saving ? '保存中...' : '保存'"
+      [icon]="saving ? 'pi pi-spinner pi-spin' : 'pi pi-check'"
+      class="p-button-success"
+      (click)="saveArticle()"
+      [disabled]="saving || loading"
+    ></button>
+  </div>
 </div>
 
 <div class="grid grid-cols-12 gap-4">
-  <!-- 左侧：文章内容编辑 -->
-  <div class="col-span-12 lg:col-span-8">
+  <div
+    class="transition-all duration-300"
+    [ngClass]="{
+      'col-span-12 lg:col-span-8': isSidebarVisible,
+      'col-span-12': !isSidebarVisible
+    }"
+  >
+    <p-card class="h-full">
+      <p-tabs class="h-fit" value="0">
+        <p-tablist>
+          <p-tab value="0">编辑</p-tab>
+          <p-tab value="1">预览</p-tab>
+        </p-tablist>
+        <p-tabpanels>
+          <p-tabpanel value="0">
+            <textarea
+              pInputTextarea
+              [(ngModel)]="article.s3_content"
+              placeholder="请输入文章内容..."
+              rows="20"
+              class="w-full h-full font-mono text-sm editor-textarea"
+              [disabled]="saving || loading"
+            >
+            </textarea>
+          </p-tabpanel>
+          <p-tabpanel value="1">
+            <div class="w-full h-full preview-container">
+              <app-markdown-viewer
+                [markdownText]="article.s3_content || ''"
+              ></app-markdown-viewer>
+            </div>
+          </p-tabpanel>
+        </p-tabpanels>
+      </p-tabs>
+    </p-card>
+  </div>
+
+  <!-- 右侧：文章属性设置 -->
+  <div
+    class="transition-all duration-300"
+    [ngClass]="{
+      'col-span-12 lg:col-span-4': isSidebarVisible,
+      'hidden': !isSidebarVisible
+    }"
+  >
     <p-card>
       <ng-template pTemplate="title">文章内容</ng-template>
 
-      <div class="grid grid-cols-1 gap-4">
+      <div class="grid grid-cols-1 gap-4 mb-4">
         <div>
           <label class="block text-sm font-medium mb-2">文章标题 *</label>
           <input
@@ -55,26 +107,8 @@
             [disabled]="saving || loading"
           />
         </div>
-
-        <div>
-          <label class="block text-sm font-medium mb-2">文章内容</label>
-          <textarea
-            pInputTextarea
-            [(ngModel)]="article.s3_content"
-            placeholder="请输入文章内容..."
-            rows="20"
-            class="w-full font-mono text-sm"
-            [disabled]="saving || loading"
-          >
-          </textarea>
-        </div>
       </div>
-    </p-card>
-  </div>
 
-  <!-- 右侧：文章属性设置 -->
-  <div class="col-span-12 lg:col-span-4">
-    <p-card>
       <ng-template pTemplate="title">文章属性</ng-template>
 
       <div class="grid grid-cols-1 gap-4">
