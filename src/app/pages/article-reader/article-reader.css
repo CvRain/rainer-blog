@@ -1,0 +1,58 @@
+/* 新的文章页眉样式 */
+.article-hero-header {
+  position: relative;
+  height: 45vh; /* 调整了高度 */
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  color: white;
+}
+
+.hero-content .article-title {
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.hero-content .article-meta {
+  color: rgba(255, 255, 255, 0.9) !important;
+  justify-content: center; /* 居中元数据 */
+}
+
+.hero-content .article-meta .pi {
+  text-shadow: none;
+}
+
+/* 将文章容器向上提，与头部重叠 */
+.article-container {
+  margin-top: -5rem; /* 调整重叠量 */
+  position: relative;
+  z-index: 10;
+}
+
+/* 重置卡片背景为不透明 */
+:host ::ng-deep .article-card .p-card {
+  background: var(--p-content-background, #ffffff); /* 使用PrimeNG变量或纯白 */
+}
+
+html.dark :host ::ng-deep .article-card .p-card {
+  background: var(--p-content-background, #1e1e2e); /* Catppuccin Mocha Base */
+}

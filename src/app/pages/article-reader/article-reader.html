@@ -55,30 +55,34 @@
 
       <!-- 文章内容 -->
       @if (article && !loading && !error) {
+      <!-- Hero Header -->
+      <div
+        class="article-hero-header"
+        [style.background-image]="'url(' + backgroundImageUrl() + ')'"
+      >
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <h1 class="article-title text-3xl md:text-4xl font-bold mb-4">
+            {{ article.title }}
+          </h1>
+          <div
+            class="article-meta flex flex-wrap gap-4 text-gray-600 dark:text-gray-300"
+          >
+            <span class="meta-item flex items-center gap-1">
+              <i class="pi pi-calendar"></i>
+              {{ article.inserted_at | date: 'yyyy-MM-dd HH:mm' }}
+            </span>
+            <span class="meta-item flex items-center gap-1">
+              <i class="pi pi-folder"></i>
+              默认分类
+            </span>
+          </div>
+        </div>
+      </div>
+
       <div class="content-wrapper">
         <div class="article-container">
           <p-card class="article-card">
-            <!-- 文章标题 -->
-            <div class="mb-4">
-              <h1 class="article-title text-3xl font-bold mb-4">
-                {{ article.title }}
-              </h1>
-              <div
-                class="article-meta flex flex-wrap gap-4 text-gray-600 dark:text-gray-300"
-              >
-                <span class="meta-item flex items-center gap-1">
-                  <i class="pi pi-calendar"></i>
-                  {{ article.inserted_at | date: 'yyyy-MM-dd HH:mm' }}
-                </span>
-                <span class="meta-item flex items-center gap-1">
-                  <i class="pi pi-folder"></i>
-                  默认分类
-                </span>
-              </div>
-            </div>
-
-            <p-divider class="article-divider my-6"></p-divider>
-
             <!-- 文章内容 -->
             <div class="prose max-w-none dark:prose-invert">
               <app-markdown-viewer [markdownText]="article.s3_content">

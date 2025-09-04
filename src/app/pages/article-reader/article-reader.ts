@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit } from "@angular/core";
+import { Component, inject, input, OnInit, signal } from "@angular/core";
 import { ActivatedRoute, Router, RouterOutlet } from "@angular/router";
 import { Article } from "../../services/article";
 import {
@@ -42,6 +42,7 @@ export class ArticleReader implements OnInit {
   error: string | undefined = undefined;
   userService = inject(User);
   userInfo: UserInfo = {} as UserInfo;
+  backgroundImageUrl = signal<string>("");
 
   // 添加输入属性，支持通过路由参数或直接传入ID获取文章
   articleId = input<string | undefined>(undefined);
@@ -101,6 +102,7 @@ export class ArticleReader implements OnInit {
         console.log("未在路由状态中找到主题数据");
       }
     }
+    this.setBackgroundImage();
 
     // 检查输入属性
     console.log("输入属性theme():", this.theme());
@@ -157,6 +159,17 @@ export class ArticleReader implements OnInit {
       window.history.back();
     } else {
       this.router.navigate(["/"]);
+    }
+  }
+
+  setBackgroundImage(): void {
+    const theme = this.getCurrentTheme();
+    // The user mentioned the API is not ready, so we'll use a placeholder property 'cover'
+    // and default to a static image if it's not present.
+    if (theme && theme["cover"]) {
+      this.backgroundImageUrl.set(theme["cover"]);
+    } else {
+      this.backgroundImageUrl.set("/images/theme-default-cover.jpg");
     }
   }
 

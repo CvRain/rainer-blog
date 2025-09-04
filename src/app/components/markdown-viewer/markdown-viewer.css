@@ -1,0 +1,3 @@
+:host ::ng-deep .markdown-body pre {
+  overflow-x: auto;
+}
