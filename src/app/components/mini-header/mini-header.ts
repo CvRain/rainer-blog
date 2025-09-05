@@ -1,72 +1,60 @@
-import { Component } from '@angular/core';
-import { RippleModule } from 'primeng/ripple';
-import { Router } from '@angular/router';
-import { CardModule } from 'primeng/card';
-import { ButtonModule } from 'primeng/button';
+import { Component, computed, inject } from "@angular/core";
+import { RippleModule } from "primeng/ripple";
+import { Router } from "@angular/router";
+import { CardModule } from "primeng/card";
+import { ButtonModule } from "primeng/button";
+import { ThemeService } from "../../services/theme.service";
 
 @Component({
-  selector: 'app-mini-header',
-  imports: [
-    RippleModule,
-    CardModule,
-    ButtonModule
-  ],
-  templateUrl: './mini-header.html',
-  styleUrl: './mini-header.css'
+  selector: "app-mini-header",
+  imports: [RippleModule, CardModule, ButtonModule],
+  templateUrl: "./mini-header.html",
+  styleUrl: "./mini-header.css",
 })
 export class MiniHeader {
   isMobileMenuOpen = false;
-  isDarkMode = false;
+  themeService = inject(ThemeService);
+  isDarkMode = computed(() => this.themeService.theme() === "dark");
 
-  constructor(private router: Router) {
-    // 初始化时检查当前主题
-    if (typeof document !== 'undefined') {
-      this.isDarkMode = document.documentElement.classList.contains('app-dark');
-    }
-  }
+  constructor(private router: Router) {}
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
-    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenu = document.getElementById("mobile-menu");
     if (mobileMenu) {
       if (this.isMobileMenuOpen) {
-        mobileMenu.classList.remove('hidden');
+        mobileMenu.classList.remove("hidden");
       } else {
-        mobileMenu.classList.add('hidden');
+        mobileMenu.classList.add("hidden");
       }
     }
   }
 
   toggleTheme() {
-    // 切换暗色/亮色主题
-    this.isDarkMode = !this.isDarkMode;
-    document.documentElement.classList.toggle('app-dark', this.isDarkMode);
-
-    // 保存用户选择到 localStorage
-    localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
+    this.themeService.toggleTheme();
   }
 
   navigateToHome() {
-    this.router.navigate(['/']);
+    this.router.navigate(["/"]);
   }
 
   navigateToLogin() {
-    this.router.navigate(['/login']);
+    this.router.navigate(["/login"]);
   }
 
-  navigateToArchive(){
-    this.router.navigate(['/archive']);
+  navigateToArchive() {
+    this.router.navigate(["/archive"]);
   }
 
   showComingSoon() {
-    if (typeof window !== 'undefined') {
-      alert('暂未完成');
+    if (typeof window !== "undefined") {
+      alert("暂未完成");
     }
   }
 
   logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    this.router.navigate(['/login']);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    this.router.navigate(["/login"]);
   }
 }

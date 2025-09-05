@@ -1,58 +1,102 @@
-/* 新的文章页眉样式 */
-.article-hero-header {
-  position: relative;
-  height: 45vh; /* 调整了高度 */
-  width: 100%;
+/* 全局背景 */
+:host .article-reader-background {
   background-size: cover;
   background-position: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 2rem;
-  border-radius: 12px;
-  overflow: hidden;
+  background-attachment: fixed;
 }
 
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 1;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-  color: white;
-}
-
-.hero-content .article-title {
-  color: white;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-}
-
-.hero-content .article-meta {
-  color: rgba(255, 255, 255, 0.9) !important;
-  justify-content: center; /* 居中元数据 */
-}
-
-.hero-content .article-meta .pi {
-  text-shadow: none;
-}
-
-/* 将文章容器向上提，与头部重叠 */
+/* 文章容器 */
 .article-container {
-  margin-top: -5rem; /* 调整重叠量 */
   position: relative;
   z-index: 10;
 }
 
-/* 重置卡片背景为不透明 */
-:host ::ng-deep .article-card .p-card {
-  background: var(--p-content-background, #ffffff); /* 使用PrimeNG变量或纯白 */
+/* 为页面中所有的p-card应用毛玻璃效果 */
+:host ::ng-deep .p-card {
+  /* 使用rgba设置半透明背景 */
+  background: rgba(var(--card-bg-rgb), 0.65) !important;
+  /* 应用背景模糊和饱和度滤镜 */
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  /* 移除默认的盒子阴影，使用边框代替 */
+  box-shadow: none !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-html.dark :host ::ng-deep .article-card .p-card {
-  background: var(--p-content-background, #1e1e2e); /* Catppuccin Mocha Base */
+/* 确保p-card的内容区域也是透明的，以便透出背景 */
+:host ::ng-deep .p-card .p-card-body {
+  background: transparent;
+}
+:host ::ng-deep .p-card .p-card-content {
+  background: transparent;
+}
+
+/* 亮色主题下的卡片背景RGB变量 */
+:host {
+  --card-bg-rgb: 255, 255, 255;
+}
+
+/* 暗色主题下的卡片背景RGB变量 */
+html.dark :host {
+  --card-bg-rgb: 49, 50, 68; /* Catppuccin Macchiato Base */
+}
+
+/* 文章标题 */
+.article-title {
+  color: var(--p-text-color);
+}
+
+/* 文章元信息 */
+.article-meta {
+  color: var(--p-text-secondary-color);
+}
+
+/* 模糊的固定背景层 */
+.fixed-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  /* 应用高斯模糊 */
+  filter: blur(8px);
+  /* 稍微放大以避免模糊产生的边缘问题 */
+  transform: scale(1.1);
+  /* 确保背景在最底层 */
+  z-index: -1;
+}
+
+/* 文章容器 */
+.article-container {
+  position: relative;
+  z-index: 10;
+}
+
+/* 恢复p-card的默认不透明背景 */
+:host ::ng-deep .p-card {
+  background: var(--p-content-background) !important;
+  box-shadow: var(--p-card-shadow) !important;
+}
+
+/* 亮色主题下的卡片背景 */
+:host {
+  --p-content-background: #ffffff;
+}
+
+/* 暗色主题下的卡片背景 */
+html.dark :host {
+  --p-content-background: #1e1e2e; /* Catppuccin Mocha Base */
+}
+
+/* 文章标题 */
+.article-title {
+  color: var(--p-text-color);
+}
+
+/* 文章元信息 */
+.article-meta {
+  color: var(--p-text-secondary-color);
 }

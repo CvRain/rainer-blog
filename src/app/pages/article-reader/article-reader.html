@@ -1,4 +1,11 @@
-<div class="flex flex-col min-h-screen">
+<!-- Blurred Background Layer -->
+<div
+  class="fixed-background"
+  [style.backgroundImage]="'url(' + backgroundImageUrl() + ')'"
+></div>
+
+<!-- Main Content -->
+<div class="flex flex-col min-h-screen relative">
   <!-- 根据showHeader属性决定是否显示header -->
   @if (showHeader()) {
   <app-mini-header class="mb-6"></app-mini-header>
@@ -55,36 +62,30 @@
 
       <!-- 文章内容 -->
       @if (article && !loading && !error) {
-      <!-- Hero Header -->
-      <div
-        class="article-hero-header"
-        [style.background-image]="'url(' + backgroundImageUrl() + ')'"
-      >
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-          <h1 class="article-title text-3xl md:text-4xl font-bold mb-4">
-            {{ article.title }}
-          </h1>
-          <div
-            class="article-meta flex flex-wrap gap-4 text-gray-600 dark:text-gray-300"
-          >
-            <span class="meta-item flex items-center gap-1">
-              <i class="pi pi-calendar"></i>
-              {{ article.inserted_at | date: 'yyyy-MM-dd HH:mm' }}
-            </span>
-            <span class="meta-item flex items-center gap-1">
-              <i class="pi pi-folder"></i>
-              默认分类
-            </span>
-          </div>
-        </div>
-      </div>
-
       <div class="content-wrapper">
         <div class="article-container">
           <p-card class="article-card">
+            <!-- Article Header -->
+            <div class="article-header text-center mb-8">
+              <h1 class="article-title text-3xl md:text-4xl font-bold mb-4">
+                {{ article.title }}
+              </h1>
+              <div
+                class="article-meta flex flex-wrap justify-center gap-4 text-gray-600 dark:text-gray-300"
+              >
+                <span class="meta-item flex items-center gap-1">
+                  <i class="pi pi-calendar"></i>
+                  {{ article.inserted_at | date: 'yyyy-MM-dd HH:mm' }}
+                </span>
+                <span class="meta-item flex items-center gap-1">
+                  <i class="pi pi-folder"></i>
+                  默认分类
+                </span>
+              </div>
+            </div>
+
             <!-- 文章内容 -->
-            <div class="prose max-w-none dark:prose-invert">
+            <div class="max-w-none">
               <app-markdown-viewer [markdownText]="article.s3_content">
               </app-markdown-viewer>
             </div>

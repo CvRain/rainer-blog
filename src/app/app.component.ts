@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { TestPageComponent } from './pages/test-page/test-page.component';
+import { Component, inject } from "@angular/core";
+import { RouterOutlet } from "@angular/router";
+import { TestPageComponent } from "./pages/test-page/test-page.component";
+import { ThemeService } from "./services/theme.service";
 
 @Component({
-  selector: 'app-root',
+  selector: "app-root",
   imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  templateUrl: "./app.component.html",
+  styleUrl: "./app.component.css",
 })
 export class AppComponent {
-  title = 'rainer-blog';
+  title = "rainer-blog";
+  themeService = inject(ThemeService);
 }

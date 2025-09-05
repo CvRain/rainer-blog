@@ -169,7 +169,8 @@ export class ArticleReader implements OnInit {
     if (theme && theme["cover"]) {
       this.backgroundImageUrl.set(theme["cover"]);
     } else {
-      this.backgroundImageUrl.set("/images/theme-default-cover.jpg");
+      // 使用您选择的登录背景作为默认值
+      this.backgroundImageUrl.set("/images/login-background.jpg");
     }
   }
 

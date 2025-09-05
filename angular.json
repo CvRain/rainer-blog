@@ -26,7 +26,6 @@
             ],
             "styles": [
               "src/styles.css",
-              "public/styles/github-markdown.css",
               "node_modules/prismjs/themes/prism-okaidia.css",
               "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css",
               "node_modules/prismjs/plugins/line-highlight/prism-line-highlight.css"
@@ -95,10 +94,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css",
-              "public/styles/github-markdown.css"
-            ],
+            "styles": ["src/styles.css", "public/styles/github-markdown.css"],
             "scripts": []
           }
         }
