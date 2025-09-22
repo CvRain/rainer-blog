@@ -81,7 +81,7 @@ export interface BaseThemeSchema {
 }
 
 export interface UserLoginResponse {
-  user: UserInfo,
+  user: UserInfo;
   token: string;
 }
 
@@ -111,8 +111,18 @@ export interface UpdateArticleSchema {
   id: string;
   title: string;
   content: string;
-  s3_content: string ;
+  s3_content: string;
   chapter_id: string;
-  order: number ;
+  order: number;
   is_active: boolean;
+}
+
+export interface ApiCollection {
+  id: string;
+  name: string;
+  description: string;
+  order: number;
+  is_active: boolean;
+  inserted_at: string;
+  updated_at: string;
 }
