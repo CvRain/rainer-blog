@@ -7,42 +7,48 @@
         <div class="flex items-center justify-between">
           <span>内容结构</span>
           <div class="flex space-x-1">
-            <button pButton 
-              icon="pi pi-plus" 
-              class="p-button-sm p-button-text" 
+            <button pButton
+              icon="pi pi-plus"
+              class="p-button-sm p-button-text"
               pTooltip="展开全部"
               (click)="expandAll()">
             </button>
-            <button pButton 
-              icon="pi pi-minus" 
-              class="p-button-sm p-button-text" 
+            <button pButton
+              icon="pi pi-minus"
+              class="p-button-sm p-button-text"
               pTooltip="收起全部"
               (click)="collapseAll()">
             </button>
           </div>
         </div>
       </ng-template>
-      
+
       <div class="mb-4">
         <div class="text-xs text-muted-color mb-2">快速导航</div>
         <div class="flex flex-col space-y-1">
-          <button pButton 
-            label="博客总览" 
-            icon="pi pi-home" 
+          <button pButton
+            label="博客总览"
+            icon="pi pi-home"
             class="p-button-sm p-button-text w-full justify-start"
             (click)="router.navigate(['/dashboard/overview'])">
           </button>
-          <button pButton 
-            label="主题管理" 
-            icon="pi pi-book" 
+          <button pButton
+            label="主题管理"
+            icon="pi pi-book"
             class="p-button-sm p-button-text w-full justify-start"
             (click)="router.navigate(['/dashboard/themes'])">
           </button>
-          <button pButton 
-            label="资源管理" 
-            icon="pi pi-folder" 
-            class="p-button-sm p-button-sm p-button-text w-full justify-start"
+          <button pButton
+            label="资源管理"
+            icon="pi pi-folder"
+            class="p-button-sm p-button-text w-full justify-start"
             (click)="router.navigate(['/dashboard/resources'])">
+          </button>
+          <button pButton
+            label="集合管理"
+            icon="pi pi-th-large"
+            class="p-button-sm p-button-text w-full justify-start"
+            (click)="router.navigate(['/dashboard/collections'])">
           </button>
         </div>
       </div>
@@ -50,15 +56,15 @@
       <div class="mb-4">
         <div class="text-xs text-muted-color mb-2">快速操作</div>
         <div class="flex flex-col space-y-1">
-          <button pButton 
-            label="新建主题" 
-            icon="pi pi-plus" 
+          <button pButton
+            label="新建主题"
+            icon="pi pi-plus"
             class="p-button-sm p-button-success w-full justify-start"
             (click)="createNewTheme()">
           </button>
-          <button pButton 
-            label="新建文章" 
-            icon="pi pi-plus" 
+          <button pButton
+            label="新建文章"
+            icon="pi pi-plus"
             class="p-button-sm p-button-info w-full justify-start"
             (click)="createNewArticle()">
           </button>
@@ -66,8 +72,8 @@
       </div>
 
       <div class="text-xs text-muted-color mb-2">内容树</div>
-      <p-tree 
-        [value]="treeNodes" 
+      <p-tree
+        [value]="treeNodes"
         [loading]="loading"
         (onNodeSelect)="onNodeSelect($event)"
         selectionMode="single"

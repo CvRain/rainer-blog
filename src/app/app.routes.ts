@@ -12,6 +12,8 @@ import { Resources } from "./pages/dashboard/resources/resources";
 import { Chapters } from "./pages/dashboard/chapters/chapters";
 import { ArticleEditor } from "./pages/dashboard/articles/article-editor";
 import { dashboardAuthGuard } from "./pages/dashboard/dashboard-auth.guard";
+import { Collection } from "./services/collection";
+import { CollectionsComponent } from "./pages/dashboard/collections/collections.component";
 
 export const routes: Routes = [
   {
@@ -59,6 +61,11 @@ export const routes: Routes = [
         path: "resources/new",
         component: Resources,
         title: "控制台 - 新建集合",
+      },
+      {
+        path: "collections",
+        component: CollectionsComponent,
+        title: "控制台 - 集合管理"
       },
     ],
   },
