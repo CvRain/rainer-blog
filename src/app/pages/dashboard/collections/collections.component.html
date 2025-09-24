@@ -1,109 +1,92 @@
-
 <div class="flex items-center justify-between mb-4">
-	<div class="text-xl font-semibold">集合管理</div>
-	<button pButton label="新建集合" icon="pi pi-plus" class="p-button-success" (click)="openNewDialog()"></button>
+  <div class="text-xl font-semibold">集合管理</div>
+  <button pButton label="新建集合" icon="pi pi-plus" class="p-button-success" (click)="openNewDialog()"></button>
 </div>
 
 <div class="mb-4">
-	<span class="p-input-icon-left w-full">
-		<i class="pi pi-search"></i>
-		<input pInputText type="text" placeholder="搜索集合..." class="w-full" [(ngModel)]="searchText" />
-	</span>
+  <span class="p-input-icon-left w-full md:w-80">
+    <i class="pi pi-search"></i>
+    <input pInputText type="text" placeholder="搜索集合..." class="w-full" [(ngModel)]="searchText" />
+  </span>
 </div>
 
-<p-table [value]="filteredCollections" [paginator]="true" [rows]="10" [loading]="loading" dataKey="id">
-	<ng-template pTemplate="header">
-		<tr>
-			<th style="width: 3rem"></th>
-			<th>集合名</th>
-			<th>描述</th>
-			<th>创建时间</th>
-			<th>状态</th>
-			<th class="w-40">操作</th>
-		</tr>
-	</ng-template>
-	<ng-template pTemplate="body" let-collection>
-		<tr>
-			<td>
-				<button pButton icon="pi pi-chevron-down" class="p-button-text p-button-sm"
-					[ngClass]="{'rotate-180': expandedRows[collection.id]}"
-					(click)="toggleRowExpand(collection)"></button>
-			</td>
-			<td>{{ collection.name }}</td>
-			<td>{{ collection.description || '暂无描述' }}</td>
-			<td>{{ collection.inserted_at | date:'yyyy-MM-dd HH:mm' }}</td>
-			<td>
-				<span class="px-2 py-1 rounded text-xs" [ngClass]="collection.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'">
-					{{ collection.is_active ? '启用' : '停用' }}
-				</span>
-			</td>
-			<td>
-				<button pButton icon="pi pi-pencil" class="p-button-text p-button-sm" (click)="openEditDialog(collection)"></button>
-				<button pButton icon="pi pi-trash" class="p-button-text p-button-sm p-button-danger" (click)="deleteCollection(collection)"></button>
-			</td>
-		</tr>
-		<tr *ngIf="expandedRows[collection.id]">
-			<td colspan="6" class="bg-gray-50">
-				<div class="p-4">
-					<div class="font-semibold mb-2">资源列表（假数据）</div>
-					<div *ngIf="getResourcesForCollection(collection.id).length; else noResource">
-						<ul class="divide-y">
-							<li *ngFor="let res of getResourcesForCollection(collection.id)" class="py-2 flex items-center space-x-4">
-								<ng-container [ngSwitch]="res.type">
-									<img *ngSwitchCase="'image'" [src]="res.url" alt="图片" class="w-10 h-10 object-cover rounded" />
-									<i *ngSwitchCase="'document'" class="pi pi-file-pdf text-xl text-red-500"></i>
-									<i *ngSwitchCase="'video'" class="pi pi-video text-xl text-blue-500"></i>
-									<i *ngSwitchDefault class="pi pi-file text-xl"></i>
-								</ng-container>
-								<span>{{ res.name }}</span>
-								<span class="text-xs text-gray-400">{{ res.created_at }}</span>
-							</li>
-						</ul>
-					</div>
-					<ng-template #noResource>
-						<div class="text-gray-400">暂无资源</div>
-					</ng-template>
-				</div>
-			</td>
-		</tr>
-	</ng-template>
-	<ng-template pTemplate="emptymessage">
-		<tr>
-			<td colspan="6" class="text-center py-4">
-				<div class="text-muted-color">
-					<i class="pi pi-inbox text-4xl mb-2"></i>
-					<p>暂无集合数据</p>
-				</div>
-			</td>
-		</tr>
-	</ng-template>
+<p-table [value]="filteredCollections" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10,20,50]" [loading]="loading">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>集合名称</th>
+      <th>描述</th>
+      <th>创建时间</th>
+      <th class="w-48">操作</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-collection>
+    <tr>
+      <td>{{ collection.name }}</td>
+      <td>{{ collection.description || '暂无描述' }}</td>
+      <td>{{ collection.inserted_at | date:'yyyy-MM-dd HH:mm' }}</td>
+      <td>
+        <button pButton
+          icon="pi pi-pencil"
+          class="p-button-text p-button-sm"
+          pTooltip="编辑集合"
+          (click)="openEditDialog(collection)">
+        </button>
+        <button pButton
+          icon="pi pi-trash"
+          class="p-button-text p-button-sm p-button-danger"
+          pTooltip="删除集合"
+          (click)="deleteCollection(collection)">
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="4" class="text-center py-4">
+        <div class="text-muted-color">
+          <i class="pi pi-inbox text-4xl mb-2"></i>
+          <p>暂无集合数据</p>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
 </p-table>
 
 <!-- 新建/编辑集合对话框 -->
 <p-dialog
-	[(visible)]="displayDialog"
-	[header]="editingCollection ? '编辑集合' : '新建集合'"
-	[modal]="true"
-	[style]="{width: '400px'}"
-	[draggable]="false"
-	[resizable]="false">
-	<div class="grid grid-cols-1 gap-4">
-		<div>
-			<label class="block text-sm font-medium mb-2">集合名称 *</label>
-			<input pInputText type="text" [(ngModel)]="newCollection.name" placeholder="请输入集合名称" class="w-full" />
-		</div>
-		<div>
-			<label class="block text-sm font-medium mb-2">集合描述</label>
-			<textarea pInputTextarea [(ngModel)]="newCollection.description" placeholder="请输入集合描述" rows="3" class="w-full"></textarea>
-		</div>
-	</div>
-	<ng-template pTemplate="footer">
-		<button pButton label="取消" icon="pi pi-times" class="p-button-text" (click)="displayDialog = false"></button>
-		<button pButton label="保存" icon="pi pi-check" class="p-button-success" (click)="saveCollection()"></button>
-	</ng-template>
+  [(visible)]="displayDialog"
+  [header]="editingCollection ? '编辑集合' : '新建集合'"
+  [modal]="true"
+  [style]="{width: '50vw'}"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="displayDialog = false">
+
+  <div class="grid grid-cols-1 gap-4">
+    <div>
+      <label class="block text-sm font-medium mb-2">集合名称 *</label>
+      <input pInputText type="text" [(ngModel)]="newCollection.name" placeholder="请输入集合名称" class="w-full" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-2">集合描述</label>
+      <textarea pInputTextarea [(ngModel)]="newCollection.description" placeholder="请输入集合描述" rows="3" class="w-full"></textarea>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button pButton label="取消" icon="pi pi-times" class="p-button-text" (click)="displayDialog = false"></button>
+    <button pButton
+      label="保存"
+      icon="pi pi-check"
+      class="p-button-success"
+      (click)="saveCollection()"
+      [disabled]="!newCollection.name || !newCollection.name.trim()">
+    </button>
+  </ng-template>
 </p-dialog>
 
 <!-- 确认删除对话框 -->
 <p-confirmDialog></p-confirmDialog>
+
 <!-- 消息提示 -->
 <p-toast></p-toast>
