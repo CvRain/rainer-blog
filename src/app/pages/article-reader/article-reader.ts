@@ -182,7 +182,6 @@ export class ArticleReader implements OnInit {
 
     // 优先使用输入属性传入的主题，其次使用路由状态中的主题
     const currentTheme = inputTheme || this.routeTheme;
-    console.log("getCurrentTheme - 返回值:", currentTheme);
     return currentTheme;
   }
 
