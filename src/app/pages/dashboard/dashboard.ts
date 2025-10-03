@@ -32,6 +32,8 @@ export class Dashboard implements OnInit {
   themeService = inject(Theme);
   router = inject(Router);
 
+  sidebarVisible = true;
+
   totalView: TotalOverview = {} as TotalOverview;
   treeNodes: TreeNode[] = [];
   selectedNode: TreeNode | null = null;
