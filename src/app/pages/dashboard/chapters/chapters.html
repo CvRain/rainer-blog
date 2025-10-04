@@ -1,6 +1,11 @@
 <div class="flex items-center justify-between mb-4">
   <div class="flex items-center space-x-4">
-    <button pButton icon="pi pi-arrow-left" class="p-button-text" (click)="goBackToThemes()"></button>
+    <button
+      pButton
+      icon="pi pi-arrow-left"
+      class="p-button-text"
+      (click)="goBackToThemes()"
+    ></button>
     <div>
       <div class="text-xl font-semibold">章节管理</div>
       <div class="text-sm text-muted-color" *ngIf="currentTheme">
@@ -8,20 +13,27 @@
       </div>
     </div>
   </div>
-  <button pButton label="新建章节" icon="pi pi-plus" class="p-button-success" (click)="openNewDialog()"></button>
+  <button
+    pButton
+    label="新建章节"
+    icon="pi pi-plus"
+    class="p-button-success"
+    (click)="openNewDialog()"
+  ></button>
 </div>
 
 <!-- 主题选择器 -->
 <div class="mb-4">
   <label class="block text-sm font-medium mb-2">选择主题</label>
-  <p-select 
-    [options]="themes" 
-    [(ngModel)]="selectedThemeId" 
-    optionLabel="name" 
+  <p-select
+    [options]="themes"
+    [(ngModel)]="selectedThemeId"
+    optionLabel="name"
     optionValue="id"
     placeholder="选择主题"
     (onChange)="onThemeChange()"
-    class="w-full md:w-80">
+    class="w-full md:w-80"
+  >
   </p-select>
 </div>
 
@@ -29,12 +41,24 @@
 <div class="mb-4">
   <span class="p-input-icon-left w-full md:w-80">
     <i class="pi pi-search"></i>
-    <input pInputText type="text" placeholder="搜索章节..." class="w-full" [(ngModel)]="searchText" />
+    <input
+      pInputText
+      type="text"
+      placeholder="搜索章节..."
+      class="w-full"
+      [(ngModel)]="searchText"
+    />
   </span>
 </div>
 
 <!-- 章节列表 -->
-<p-table [value]="filteredChapters" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10,20,50]" [loading]="loading">
+<p-table
+  [value]="filteredChapters"
+  [paginator]="true"
+  [rows]="10"
+  [rowsPerPageOptions]="[10,20,50]"
+  [loading]="loading"
+>
   <ng-template pTemplate="header">
     <tr>
       <th>章节名</th>
@@ -53,12 +77,32 @@
       <td>{{ chapter.articles?.length || 0 }}</td>
       <td>{{ chapter.order }}</td>
       <td>
-        <p-tag [value]="chapter.is_active ? '激活' : '禁用'" [severity]="chapter.is_active ? 'success' : 'warning'"></p-tag>
+        <p-tag
+          [value]="chapter.is_active ? '激活' : '禁用'"
+          [severity]="chapter.is_active ? 'success' : 'warning'"
+        ></p-tag>
       </td>
       <td>{{ chapter.inserted_at | date:'yyyy-MM-dd HH:mm' }}</td>
       <td>
-        <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm" (click)="openEditDialog(chapter)"></button>
-        <button pButton icon="pi pi-trash" class="p-button-text p-button-sm p-button-danger" (click)="deleteChapter(chapter)"></button>
+        <button
+          pButton
+          icon="pi pi-pencil"
+          class="p-button-text p-button-sm"
+          (click)="openEditDialog(chapter)"
+        ></button>
+        <button
+          pButton
+          [icon]="chapter.is_active ? 'pi pi-eye-slash' : 'pi pi-eye'"
+          class="p-button-text p-button-sm p-button-warning"
+          [pTooltip]="chapter.is_active ? '禁用章节' : '激活章节'"
+          (click)="toggleChapterStatus(chapter)"
+        ></button>
+        <button
+          pButton
+          icon="pi pi-trash"
+          class="p-button-text p-button-sm p-button-danger"
+          (click)="deleteChapter(chapter)"
+        ></button>
       </td>
     </tr>
   </ng-template>
@@ -75,48 +119,71 @@
 </p-table>
 
 <!-- 新建/编辑章节对话框 -->
-<p-dialog 
-  [(visible)]="displayDialog" 
-  [header]="editingChapter ? '编辑章节' : '新建章节'" 
-  [modal]="true" 
+<p-dialog
+  [(visible)]="displayDialog"
+  [header]="editingChapter ? '编辑章节' : '新建章节'"
+  [modal]="true"
   [style]="{width: '50vw'}"
-  [draggable]="false" 
+  [draggable]="false"
   [resizable]="false"
   [closable]="!saving"
-  (onHide)="closeDialog()">
-  
+  (onHide)="closeDialog()"
+>
   <div class="grid grid-cols-1 gap-4">
     <div>
       <label class="block text-sm font-medium mb-2">章节名称 *</label>
-      <input pInputText type="text" [(ngModel)]="newChapter.name" placeholder="请输入章节名称" class="w-full" [disabled]="saving" />
+      <input
+        pInputText
+        type="text"
+        [(ngModel)]="newChapter.name"
+        placeholder="请输入章节名称"
+        class="w-full"
+        [disabled]="saving"
+      />
     </div>
     <div>
       <label class="block text-sm font-medium mb-2">章节描述</label>
-      <textarea pInputTextarea [(ngModel)]="newChapter.description" placeholder="请输入章节描述" rows="3" class="w-full" [disabled]="saving"></textarea>
+      <textarea
+        pInputTextarea
+        [(ngModel)]="newChapter.description"
+        placeholder="请输入章节描述"
+        rows="3"
+        class="w-full"
+        [disabled]="saving"
+      ></textarea>
     </div>
     <div>
       <label class="block text-sm font-medium mb-2">所属主题</label>
-      <p-select 
-        [options]="themes" 
-        [(ngModel)]="newChapter.theme_id" 
-        optionLabel="name" 
+      <p-select
+        [options]="themes"
+        [(ngModel)]="newChapter.theme_id"
+        optionLabel="name"
         optionValue="id"
         placeholder="选择主题"
         class="w-full"
-        [disabled]="saving">
+        [disabled]="saving"
+      >
       </p-select>
     </div>
   </div>
-  
+
   <ng-template pTemplate="footer">
-    <button pButton label="取消" icon="pi pi-times" class="p-button-text" (click)="closeDialog()" [disabled]="saving"></button>
-    <button pButton 
-      [label]="saving ? '保存中...' : '保存'" 
-      [icon]="saving ? 'pi pi-spinner pi-spin' : 'pi pi-check'" 
-      class="p-button-success" 
-      (click)="saveChapter()" 
-      [disabled]="saving || !newChapter.name.trim() || !newChapter.theme_id">
-    </button>
+    <button
+      pButton
+      label="取消"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="closeDialog()"
+      [disabled]="saving"
+    ></button>
+    <button
+      pButton
+      [label]="saving ? '保存中...' : '保存'"
+      [icon]="saving ? 'pi pi-spinner pi-spin' : 'pi pi-check'"
+      class="p-button-success"
+      (click)="saveChapter()"
+      [disabled]="saving || !newChapter.name.trim() || !newChapter.theme_id"
+    ></button>
   </ng-template>
 </p-dialog>
 

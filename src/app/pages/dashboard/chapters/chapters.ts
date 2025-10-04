@@ -10,6 +10,7 @@ import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { ToastModule } from "primeng/toast";
 import { SelectModule } from "primeng/select";
 import { TagModule } from "primeng/tag";
+import { TooltipModule } from "primeng/tooltip";
 import { inject, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Chapter } from "../../../services/chapter";
@@ -30,6 +31,7 @@ import { ApiChapter, ApiTheme, BaseThemeSchema } from "../../../services/types";
     ToastModule,
     SelectModule,
     TagModule,
+    TooltipModule,
   ],
   providers: [ConfirmationService, MessageService],
   templateUrl: "./chapters.html",
@@ -229,6 +231,40 @@ export class Chapters implements OnInit {
               detail: "删除章节失败",
             });
             console.error("删除章节失败:", error);
+          },
+        });
+      },
+    });
+  }
+
+  toggleChapterStatus(chapter: ApiChapter) {
+    const newStatus = !chapter.is_active;
+    const action = newStatus ? "激活" : "禁用";
+
+    this.confirmationService.confirm({
+      message: `确定要${action}章节"${chapter.name}"吗？`,
+      header: `确认${action}`,
+      icon: "pi pi-exclamation-triangle",
+      accept: () => {
+        const updatedChapter = { ...chapter, is_active: newStatus };
+        this.chapterService.updateOne(updatedChapter).subscribe({
+          next: (response) => {
+            if (response.code === 200) {
+              this.messageService.add({
+                severity: "success",
+                summary: "成功",
+                detail: `章节${action}成功`,
+              });
+              this.loadChaptersByTheme(this.selectedThemeId);
+            }
+          },
+          error: (error) => {
+            this.messageService.add({
+              severity: "error",
+              summary: "错误",
+              detail: `章节${action}失败`,
+            });
+            console.error(`章节${action}失败:`, error);
           },
         });
       },
