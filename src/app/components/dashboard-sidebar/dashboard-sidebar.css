@@ -1,0 +1,8 @@
+aside {
+  transition: width 0.3s ease;
+  overflow: hidden;
+}
+
+aside.collapsed {
+  width: 0;
+}

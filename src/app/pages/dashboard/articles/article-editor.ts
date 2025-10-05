@@ -23,6 +23,8 @@ import {
 import { MarkdownViewer } from "../../../components/markdown-viewer/markdown-viewer";
 import { TabsModule } from "primeng/tabs";
 
+import { SplitterModule } from "primeng/splitter";
+
 @Component({
   selector: "app-article-editor",
   standalone: true,
@@ -37,7 +39,7 @@ import { TabsModule } from "primeng/tabs";
     CheckboxModule,
     ToastModule,
     MarkdownViewer,
-    TabsModule,
+    SplitterModule,
   ],
   providers: [MessageService],
   templateUrl: "./article-editor.html",
@@ -67,7 +69,8 @@ export class ArticleEditor implements OnInit {
   saving = false;
   isNewArticle = false;
   articleId: string | null = null;
-  isSidebarVisible = true;
+  isSidebarVisible = false;
+  isPreviewVisible = false;
 
   ngOnInit() {
     this.loadThemes();
@@ -79,6 +82,10 @@ export class ArticleEditor implements OnInit {
         this.isNewArticle = true;
       }
     });
+  }
+
+  togglePreview() {
+    this.isPreviewVisible = !this.isPreviewVisible;
   }
 
   toggleSidebar() {

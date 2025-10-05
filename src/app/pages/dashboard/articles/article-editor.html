@@ -34,49 +34,74 @@
   </div>
 </div>
 
-<div class="grid grid-cols-12 gap-4">
+<div class="flex gap-4">
   <div
-    class="transition-all duration-300"
+    class="transition-all duration-300 flex-grow"
     [ngClass]="{
-      'col-span-12 lg:col-span-8': isSidebarVisible,
-      'col-span-12': !isSidebarVisible
+      'w-full lg:w-8/12': isSidebarVisible,
+      'w-full': !isSidebarVisible
     }"
   >
-    <p-card class="h-full">
-      <p-tabs class="h-fit" value="0">
-        <p-tablist>
-          <p-tab value="0">编辑</p-tab>
-          <p-tab value="1">预览</p-tab>
-        </p-tablist>
-        <p-tabpanels>
-          <p-tabpanel value="0">
-            <textarea
-              pInputTextarea
-              [(ngModel)]="article.s3_content"
-              placeholder="请输入文章内容..."
-              rows="20"
-              class="w-full h-full font-mono text-sm editor-textarea"
-              [disabled]="saving || loading"
-            >
-            </textarea>
-          </p-tabpanel>
-          <p-tabpanel value="1">
-            <div class="w-full h-full preview-container">
-              <app-markdown-viewer
-                [markdownText]="article.s3_content || ''"
-              ></app-markdown-viewer>
-            </div>
-          </p-tabpanel>
-        </p-tabpanels>
-      </p-tabs>
+    <p-card class="lg:h-full wd:h-fit flex flex-col">
+      <ng-template pTemplate="title">
+        <div class="flex items-center justify-between">
+          <div class="text-lg font-semibold">文章内容</div>
+          <button
+            pButton
+            [icon]="isPreviewVisible ? 'pi pi-eye-slash' : 'pi pi-eye'"
+            [label]="isPreviewVisible ? '隐藏预览' : '显示预览'"
+            class="p-button-text p-button-sm"
+            (click)="togglePreview()"
+          ></button>
+        </div>
+      </ng-template>
+
+      <div class="h-[70dvh]">
+        <div *ngIf="isPreviewVisible" class="h-full">
+          <p-splitter
+            [panelSizes]="[50, 50]"
+            [style]="{ height: '100%' }"
+            layout="horizontal"
+          >
+            <ng-template pTemplate>
+              <div class="w-full h-full">
+                <textarea
+                  pInputTextarea
+                  [(ngModel)]="article.s3_content"
+                  placeholder="请输入文章内容..."
+                  rows="20"
+                  class="w-full h-full font-mono text-sm editor-textarea"
+                  [disabled]="saving || loading"
+                ></textarea>
+              </div>
+            </ng-template>
+            <ng-template pTemplate>
+              <div class="w-full h-full preview-container overflow-y-auto">
+                <app-markdown-viewer
+                  [markdownText]="article.s3_content || ''"
+                ></app-markdown-viewer>
+              </div>
+            </ng-template>
+          </p-splitter>
+        </div>
+        <div *ngIf="!isPreviewVisible" class="w-full h-full">
+          <textarea
+            pInputTextarea
+            [(ngModel)]="article.s3_content"
+            placeholder="请输入文章内容..."
+            rows="20"
+            class="w-full h-full font-mono text-sm editor-textarea"
+            [disabled]="saving || loading"
+          ></textarea>
+        </div>
+      </div>
     </p-card>
   </div>
 
-  <!-- 右侧：文章属性设置 -->
   <div
-    class="transition-all duration-300"
+    class="transition-all duration-300 flex-shrink-0"
     [ngClass]="{
-      'col-span-12 lg:col-span-4': isSidebarVisible,
+      'w-full lg:w-4/12': isSidebarVisible,
       'hidden': !isSidebarVisible
     }"
   >
