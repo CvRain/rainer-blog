@@ -1,6 +1,14 @@
 <p-scroll-panel class="w-full h-screen markdown-previewer">
   <div class="markdown-body p-4">
-    <markdown [data]="markdownText()" lineNumbers class="markdown-content">
+    <markdown
+      [data]="markdownText()"
+      lineNumbers
+      matchBarces
+      showLanguage
+      [start]="1"
+      class="markdown-content"
+      clipboard
+    >
     </markdown>
   </div>
 </p-scroll-panel>

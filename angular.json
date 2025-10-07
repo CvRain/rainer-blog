@@ -26,17 +26,35 @@
             ],
             "styles": [
               "src/styles.css",
-              "node_modules/prismjs/themes/prism-okaidia.css",
+              "node_modules/prismjs/themes/prism-solarizedlight.css",
               "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css",
-              "node_modules/prismjs/plugins/line-highlight/prism-line-highlight.css"
+              "node_modules/prismjs/plugins/match-braces/prism-match-braces.min.css"
             ],
             "scripts": [
               "node_modules/prismjs/prism.js",
-              "node_modules/prismjs/components/prism-core.min.js",
-              "node_modules/prismjs/components/prism-css.min.js",
-              "node_modules/prismjs/components/prism-cpp.min.js",
               "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.js",
-              "node_modules/prismjs/plugins/line-highlight/prism-line-highlight.js"
+              "node_modules/clipboard/dist/clipboard.min.js",
+              "node_modules/prismjs/plugins/match-braces/prism-match-braces.min.js",
+              "node_modules/prismjs/plugins/show-language/prism-show-language.min.js",
+
+              "node_modules/prismjs/components/prism-c.min.js",
+              "node_modules/prismjs/components/prism-cmake.min.js",
+              "node_modules/prismjs/components/prism-cpp.min.js",
+              "node_modules/prismjs/components/prism-csharp.min.js",
+              "node_modules/prismjs/components/prism-elixir.min.js",
+              "node_modules/prismjs/components/prism-elm.min.js",
+              "node_modules/prismjs/components/prism-erlang.min.js",
+              "node_modules/prismjs/components/prism-go.min.js",
+              "node_modules/prismjs/components/prism-haskell.min.js",
+              "node_modules/prismjs/components/prism-java.min.js",
+              "node_modules/prismjs/components/prism-javascript.min.js",
+              "node_modules/prismjs/components/prism-json.min.js",
+              "node_modules/prismjs/components/prism-kotlin.min.js",
+              "node_modules/prismjs/components/prism-python.min.js",
+              "node_modules/prismjs/components/prism-rust.min.js",
+              "node_modules/prismjs/components/prism-typescript.min.js",
+              "node_modules/prismjs/components/prism-zig.min.js",
+              "node_modules/prismjs/components/prism-sql.min.js"
             ]
           },
           "configurations": {
