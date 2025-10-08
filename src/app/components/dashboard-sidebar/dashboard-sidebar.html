@@ -1,5 +1,5 @@
 <aside class="w-80 flex-shrink-0" [class.collapsed]="!sidebarVisible">
-  <p-card class="shadow-sm mb-4">
+  <p-card class="shadow-sm h-full">
     <ng-template pTemplate="title">
       <div class="flex items-center justify-between">
         <span>内容结构</span>
@@ -22,68 +22,70 @@
       </div>
     </ng-template>
 
-    <div class="mb-4">
-      <div class="text-xs text-muted-color mb-2">快速导航</div>
-      <div class="flex flex-col space-y-1">
-        <button
-          pButton
-          label="博客总览"
-          icon="pi pi-home"
-          class="p-button-sm p-button-text w-full justify-start"
-          (click)="router.navigate(['/dashboard/overview'])"
-        ></button>
-        <button
-          pButton
-          label="主题管理"
-          icon="pi pi-book"
-          class="p-button-sm p-button-text w-full justify-start"
-          (click)="router.navigate(['/dashboard/themes'])"
-        ></button>
-        <button
-          pButton
-          label="资源管理"
-          icon="pi pi-folder"
-          class="p-button-sm p-button-text w-full justify-start"
-          (click)="router.navigate(['/dashboard/resources'])"
-        ></button>
-        <button
-          pButton
-          label="集合管理"
-          icon="pi pi-th-large"
-          class="p-button-sm p-button-text w-full justify-start"
-          (click)="router.navigate(['/dashboard/collections'])"
-        ></button>
+    <div class="flex flex-col h-full">
+      <div class="mb-4">
+        <div class="text-xs text-muted-color mb-2">快速导航</div>
+        <div class="flex flex-col space-y-1">
+          <button
+            pButton
+            label="博客总览"
+            icon="pi pi-home"
+            class="p-button-sm p-button-text w-full justify-start"
+            (click)="router.navigate(['/dashboard/overview'])"
+          ></button>
+          <button
+            pButton
+            label="主题管理"
+            icon="pi pi-book"
+            class="p-button-sm p-button-text w-full justify-start"
+            (click)="router.navigate(['/dashboard/themes'])"
+          ></button>
+          <button
+            pButton
+            label="资源管理"
+            icon="pi pi-folder"
+            class="p-button-sm p-button-text w-full justify-start"
+            (click)="router.navigate(['/dashboard/resources'])"
+          ></button>
+          <button
+            pButton
+            label="集合管理"
+            icon="pi pi-th-large"
+            class="p-button-sm p-button-text w-full justify-start"
+            (click)="router.navigate(['/dashboard/collections'])"
+          ></button>
+        </div>
       </div>
-    </div>
 
-    <div class="mb-4">
-      <div class="text-xs text-muted-color mb-2">快速操作</div>
-      <div class="flex flex-col space-y-1">
-        <button
-          pButton
-          label="新建主题"
-          icon="pi pi-plus"
-          class="p-button-sm p-button-success w-full justify-start"
-          (click)="createNewTheme()"
-        ></button>
-        <button
-          pButton
-          label="新建文章"
-          icon="pi pi-plus"
-          class="p-button-sm p-button-info w-full justify-start"
-          (click)="createNewArticle()"
-        ></button>
+      <div class="mb-4">
+        <div class="text-xs text-muted-color mb-2">快速操作</div>
+        <div class="flex flex-col space-y-1">
+          <button
+            pButton
+            label="新建主题"
+            icon="pi pi-plus"
+            class="p-button-sm p-button-success w-full justify-start"
+            (click)="createNewTheme()"
+          ></button>
+          <button
+            pButton
+            label="新建文章"
+            icon="pi pi-plus"
+            class="p-button-sm p-button-info w-full justify-start"
+            (click)="createNewArticle()"
+          ></button>
+        </div>
       </div>
-    </div>
 
-    <div class="text-xs text-muted-color mb-2">内容树</div>
-    <p-tree
-      [value]="treeNodes"
-      [loading]="loading"
-      (onNodeSelect)="onNodeSelect($event)"
-      selectionMode="single"
-      class="max-h-96 overflow-y-auto"
-    >
-    </p-tree>
+      <div class="text-xs text-muted-color mb-2">内容树</div>
+      <p-tree
+        [value]="treeNodes"
+        [loading]="loading"
+        (onNodeSelect)="onNodeSelect($event)"
+        selectionMode="single"
+        class="flex-1 overflow-y-auto"
+      >
+      </p-tree>
+    </div>
   </p-card>
 </aside>
