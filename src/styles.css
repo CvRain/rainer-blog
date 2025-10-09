@@ -1,5 +1,43 @@
+
 @import "tailwindcss";
 @import "primeicons/primeicons.css";
-
 @plugin "tailwindcss-primeui";
-@custom-variant dark (&:where(.my-app-dark, .my-app-dark *));
+@custom-variant dark (&:where(.app-dark, .app-dark *));
+
+/* Catppuccin Latte 主题变量 */
+:root {
+	--p-primary-color: #7287fd;
+	--p-primary-hover-color: #8839ef;
+	--p-primary-active-color: #ea76cb;
+	--p-primary-contrast-color: #eff1f5;
+	--p-surface-0: #eff1f5;
+	--p-surface-100: #e6e9ef;
+	--p-surface-200: #dce0e8;
+	--p-surface-300: #ccd0da;
+	--p-surface-400: #bcc0cc;
+	--p-surface-500: #acb0be;
+	--p-surface-600: #9ca0b0;
+	--p-surface-700: #8c8fa1;
+	--p-surface-800: #7c7f93;
+	--p-surface-900: #6c6f85;
+	--p-surface-950: #5c5f77;
+}
+
+/* Catppuccin Mocha 主题变量（暗色） */
+.app-dark {
+	--p-primary-color: #b4befe;
+	--p-primary-hover-color: #cba6f7;
+	--p-primary-active-color: #f5c2e7;
+	--p-primary-contrast-color: #1e1e2e;
+	--p-surface-0: #1e1e2e;
+	--p-surface-100: #181825;
+	--p-surface-200: #313244;
+	--p-surface-300: #45475a;
+	--p-surface-400: #585b70;
+	--p-surface-500: #6c7086;
+	--p-surface-600: #7f849c;
+	--p-surface-700: #9399b2;
+	--p-surface-800: #a6adc8;
+	--p-surface-900: #bac2de;
+	--p-surface-950: #cdd6f4;
+}
