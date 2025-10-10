@@ -50,12 +50,11 @@ export class ThemeService {
       if (currentTheme === "dark") {
         this.renderer.addClass(this.document.documentElement, "app-dark");
         this.themeLink.href = "theme/lara-dark-blue/theme.css"; // PrimeNG dark theme
-        this.updateMarkdownTheme("mocha");
       } else {
         this.renderer.removeClass(this.document.documentElement, "app-dark");
         this.themeLink.href = "theme/lara-light-blue/theme.css"; // PrimeNG light theme
-        this.updateMarkdownTheme("latte");
       }
+      this.updateMarkdownTheme();
     });
   }
 
@@ -68,7 +67,7 @@ export class ThemeService {
     );
   }
 
-  private updateMarkdownTheme(catppuccin: 'latte' | 'mocha') {
+  private updateMarkdownTheme() {
     this.removeMarkdownStyles();
     const markdownThemeLink = this.renderer.createElement(
       "link",
@@ -83,7 +82,7 @@ export class ThemeService {
     this.renderer.setAttribute(
       markdownThemeLink,
       "href",
-      `styles/catppuccin-${catppuccin}.css`,
+      `styles/markdown-theme.css`,
     );
     this.renderer.appendChild(this.head, markdownThemeLink);
   }

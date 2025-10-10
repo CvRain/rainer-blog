@@ -1,0 +1,185 @@
+/* Markdown Theme - Catppuccin Mocha (暗色) + Zinc (亮色) */
+.markdown-body {
+  background: var(--markdown-bg, #fafafa);
+  color: var(--markdown-fg, #18181b);
+  font-family: 'Inter', 'Noto Sans SC', 'Noto Sans', 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.75;
+  padding: 2rem;
+  border-radius: 1rem;
+  transition: background 0.3s, color 0.3s;
+}
+.app-dark .markdown-body {
+  background: #1e1e2e;
+  color: #cdd6f4;
+}
+.markdown-body h1,
+.markdown-body h1 {
+  font-size: 2.25em;
+  color: var(--markdown-heading, #18181b);
+  font-weight: bold;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 0.3em;
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+.markdown-body h2 {
+  font-size: 1.75em;
+  color: var(--markdown-heading, #18181b);
+  font-weight: bold;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 0.3em;
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+.markdown-body h3 {
+  font-size: 1.5em;
+  color: var(--markdown-heading, #18181b);
+  font-weight: bold;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 0.3em;
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+.markdown-body h4 {
+  font-size: 1.25em;
+  color: var(--markdown-heading, #18181b);
+  font-weight: bold;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 0.3em;
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+.markdown-body h5 {
+  font-size: 1em;
+  color: var(--markdown-heading, #18181b);
+  font-weight: bold;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 0.3em;
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+.markdown-body h6 {
+  font-size: 0.95em;
+  color: var(--markdown-heading, #18181b);
+  font-weight: bold;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 0.3em;
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+.app-dark .markdown-body h1,
+.app-dark .markdown-body h2,
+.app-dark .markdown-body h3,
+.app-dark .markdown-body h4,
+.app-dark .markdown-body h5,
+.app-dark .markdown-body h6 {
+  color: #f5c2e7;
+  border-bottom: 1px solid #313244;
+}
+  color: #3b82f6;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+.app-dark .markdown-body a {
+  color: #89b4fa;
+}
+.markdown-body code {
+  background: #e5e5e5;
+  color: #3d3d3d;
+  border-radius: 0.3em;
+  padding: 0.2em 0.4em;
+  font-size: 0.95em;
+}
+.app-dark .markdown-body code {
+  background: #313244;
+  color: #f5c2e7;
+}
+.markdown-body pre {
+  background: #e5e5e5;
+  color: #18181b;
+  border-radius: 0.5em;
+  padding: 1em;
+  overflow-x: auto;
+  margin-bottom: 1.5em;
+}
+.app-dark .markdown-body pre {
+  background: #313244;
+  color: #cdd6f4;
+}
+.markdown-body blockquote {
+  border-left: 4px solid #a1a1aa;
+  background: #f5f5f5;
+  color: #3d3d3d;
+  padding: 0.7em 1em;
+  margin: 1.5em 0;
+  border-radius: 0.5em;
+}
+.app-dark .markdown-body blockquote {
+  border-left: 4px solid #b4befe;
+  background: #313244;
+  color: #bac2de;
+}
+.markdown-body ul,
+.markdown-body ol {
+  padding-left: 2em;
+}
+.markdown-body ol {
+  list-style-type: decimal;
+}
+.markdown-body ul {
+  list-style-type: disc;
+}
+.markdown-body table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1.5em;
+  background: #f5f5f5;
+  border-radius: 0.5em;
+  overflow: hidden;
+}
+.app-dark .markdown-body table {
+  background: #313244;
+}
+.markdown-body th,
+.markdown-body td {
+  border: 1px solid #e5e5e5;
+  padding: 0.6em 1em;
+}
+.app-dark .markdown-body th,
+.app-dark .markdown-body td {
+  border: 1px solid #45475a;
+}
+.markdown-body th {
+  background: #a1a1aa;
+  color: #18181b;
+}
+.app-dark .markdown-body th {
+  background: #b4befe;
+  color: #1e1e2e;
+}
+.markdown-body img {
+  max-width: 100%;
+  border-radius: 0.5em;
+  box-shadow: 0 2px 8px 0 #e5e5e5;
+}
+.app-dark .markdown-body img {
+  box-shadow: 0 2px 8px 0 #313244;
+}
+.markdown-body hr {
+  border: none;
+  border-top: 1px solid #e5e5e5;
+  margin: 2em 0;
+}
+.app-dark .markdown-body hr {
+  border-top: 1px solid #313244;
+}
+.markdown-body .task-list-item {
+  list-style: none;
+}
+.markdown-body input[type="checkbox"] {
+  accent-color: #22c55e;
+  margin-right: 0.5em;
+}
+.app-dark .markdown-body input[type="checkbox"] {
+  accent-color: #a6e3a1;
+}
