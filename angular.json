@@ -28,7 +28,8 @@
               "src/styles.css",
               "node_modules/prismjs/themes/prism-solarizedlight.css",
               "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css",
-              "node_modules/prismjs/plugins/match-braces/prism-match-braces.min.css"
+              "node_modules/prismjs/plugins/match-braces/prism-match-braces.min.css",
+              "node_modules/katex/dist/katex.min.css"
             ],
             "scripts": [
               "node_modules/prismjs/prism.js",
@@ -36,6 +37,9 @@
               "node_modules/clipboard/dist/clipboard.min.js",
               "node_modules/prismjs/plugins/match-braces/prism-match-braces.min.js",
               "node_modules/prismjs/plugins/show-language/prism-show-language.min.js",
+              "node_modules/katex/dist/katex.min.js",
+              "node_modules/katex/dist/contrib/auto-render.min.js",
+              "node_modules/mermaid/dist/mermaid.min.js",
 
               "node_modules/prismjs/components/prism-c.min.js",
               "node_modules/prismjs/components/prism-cmake.min.js",
