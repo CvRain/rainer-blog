@@ -1,29 +1,29 @@
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import {
   ApiArticle,
   ApiArticleContent,
   ArticleCountData,
   BaseResponse,
   UpdateArticleSchema,
-} from "./types";
-import { environment } from "../../environments/environment";
-import { HttpClient, HttpParams } from "@angular/common/http";
+} from './types';
+import { environment } from '../../environments/environment';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class Article {
   constructor(private http: HttpClient) {}
 
   getPublicArticleList(
     page: number = 1,
-    size: number = 10,
+    size: number = 10
   ): Observable<BaseResponse<ApiArticle[]>> {
     const url = `${environment.apiUrl}/article/public_list`;
     let params = new HttpParams()
-      .set("page", page.toString())
-      .set("page_size", size.toString());
+      .set('page', page.toString())
+      .set('page_size', size.toString());
 
     return this.http.get<BaseResponse<ApiArticle[]>>(url, { params });
   }
@@ -41,10 +41,10 @@ export class Article {
   createArticle(
     title: string,
     content: string | null,
-    chapter_id: string,
+    chapter_id: string
   ): Observable<BaseResponse<ApiArticle>> {
     const url = `${environment.apiUrl}/article/one`;
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     const data = {
       title: title,
       content: content || title,
@@ -52,7 +52,7 @@ export class Article {
     };
     return this.http.post<BaseResponse<ApiArticle>>(url, data, {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
     });
@@ -60,7 +60,7 @@ export class Article {
 
   removeArticle(article_id: string): Observable<BaseResponse<undefined>> {
     const url = `${environment.apiUrl}/article/one`;
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     const data = {
       id: article_id,
     };
@@ -79,20 +79,35 @@ export class Article {
       .pipe((response) => response);
   }
 
+  getArticleDetailAdmin(
+    id: string
+  ): Observable<BaseResponse<ApiArticleContent>> {
+    const url = `${environment.apiUrl}/article/one/admin/${id}`;
+    const token = localStorage.getItem('token');
+    return this.http
+      .get<BaseResponse<ApiArticleContent>>(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .pipe((response) => response);
+  }
+
   updateArticleContent(
-    updateArticleSchema: ApiArticleContent,
+    updateArticleSchema: ApiArticleContent
   ): Observable<BaseResponse<ApiArticleContent>> {
     const url = `${environment.apiUrl}/article/one`;
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     return this.http.patch<BaseResponse<ApiArticleContent>>(
       url,
       updateArticleSchema,
       {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-      },
+      }
     );
   }
 }

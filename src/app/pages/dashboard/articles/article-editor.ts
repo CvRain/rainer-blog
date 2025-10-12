@@ -107,7 +107,7 @@ export class ArticleEditor implements OnInit {
 
   loadArticle(articleId: string) {
     this.loading = true;
-    this.articleService.getArticleDetail(articleId).subscribe({
+    this.articleService.getArticleDetailAdmin(articleId).subscribe({
       next: (response) => {
         this.loading = false;
         if (response.code === 200 && response.data) {
