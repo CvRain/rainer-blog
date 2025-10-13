@@ -1,0 +1,11 @@
+<div class="toc-sidebar">
+  <div class="toc-title">目录</div>
+  <ul class="toc-list">
+    <li *ngFor="let heading of tocHeadings"
+        [ngClass]="'toc-level-' + heading.level">
+      <a href="javascript:void(0)" (click)="scrollToHeading(heading.id)">
+        {{ heading.text }}
+      </a>
+    </li>
+  </ul>
+</div>

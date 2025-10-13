@@ -16,7 +16,6 @@ import { User } from "../../services/user";
 import { Title } from "@angular/platform-browser";
 import { MiniHeader } from "../../components/mini-header/mini-header";
 import { SimpleFooter } from "../../components/simple-footer/simple-footer";
-import { TocSidebarComponent } from "../../components/toc-sidebar/toc-sidebar.component";
 import { ArticleSidebar } from "../../components/article-sidebar/article-sidebar";
 import { filter } from "rxjs/operators";
 
@@ -32,7 +31,6 @@ import { filter } from "rxjs/operators";
     MarkdownViewer,
     MiniHeader,
     SimpleFooter,
-    TocSidebarComponent,
     ArticleSidebar,
   ],
   templateUrl: "./article-reader.html",
@@ -45,7 +43,6 @@ export class ArticleReader implements OnInit {
   userService = inject(User);
   userInfo: UserInfo = {} as UserInfo;
   backgroundImageUrl = signal<string>("");
-  tocHeadings: Array<{ level: number; text: string; id: string }> = [];
 
   // 添加输入属性，支持通过路由参数或直接传入ID获取文章
   articleId = input<string | undefined>(undefined);
@@ -177,6 +174,7 @@ export class ArticleReader implements OnInit {
     }
   }
 
+  // 获取当前应该使用的主题数据
   getCurrentTheme(): ApiTheme | undefined {
     const inputTheme = this.theme();
     console.log("getCurrentTheme - inputTheme:", inputTheme);

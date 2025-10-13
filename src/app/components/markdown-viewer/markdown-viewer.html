@@ -1,6 +1,7 @@
 <p-scroll-panel class="w-full h-screen markdown-previewer">
   <div class="markdown-body p-4">
     <markdown
+      (ready)="onMarkdownReady()"
       [data]="markdownText()"
       lineNumbers
       matchBarces
