@@ -1,10 +1,12 @@
+
 import { Component, Input } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: "app-toc-sidebar",
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CardModule],
   templateUrl: "./toc-sidebar.component.html",
   styleUrls: ["./toc-sidebar.component.css"],
 })

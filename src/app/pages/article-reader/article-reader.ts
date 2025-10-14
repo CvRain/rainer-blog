@@ -39,6 +39,10 @@ import { filter } from "rxjs/operators";
   styleUrl: "./article-reader.css",
 })
 export class ArticleReader implements OnInit {
+  // 回到顶部方法
+  scrollToTop(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
   article: ApiArticleContent | undefined = undefined;
   loading = true;
   error: string | undefined = undefined;

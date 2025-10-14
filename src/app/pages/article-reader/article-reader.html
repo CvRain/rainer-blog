@@ -12,7 +12,7 @@
   }
 
   <div class="flex-grow w-full relative">
-    <div class="w-full max-w-screen-2xl mx-auto flex justify-center">
+    <div class="w-full max-w-screen-2xl mx-auto flex justify-between">
       <!-- 左侧边栏 -->
       @if (getCurrentTheme()) {
       <div class="sidebar-container hidden lg:block w-80 flex-shrink-0 px-4">
@@ -133,6 +133,14 @@
           [tocHeadings]="tocHeadings"
           class="sticky top-24"
         ></app-toc-sidebar>
+        <!-- 回到顶部按钮 -->
+        <button
+          (click)="scrollToTop()"
+          class="fixed bottom-12 right-12 z-50 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg p-3 transition-colors duration-200 flex items-center justify-center"
+          title="回到顶部"
+        >
+          <i class="pi pi-arrow-up text-xl"></i>
+        </button>
       </div>
     </div>
   </div>

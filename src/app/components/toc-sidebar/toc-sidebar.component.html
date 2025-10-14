@@ -1,11 +1,24 @@
-<div class="toc-sidebar">
-  <div class="toc-title">目录</div>
-  <ul class="toc-list">
+
+<p-card class="backdrop-blur-lg w-96 rounded-xl shadow-lg px-4 py-4 mt-4 dark:bg-gray-800 dark:text-gray-100">
+  <div class="flex items-center mb-4">
+    <i class="pi pi-list text-blue-500 mr-2"></i>
+    <span class="text-lg font-bold">目录</span>
+  </div>
+  <ul class="space-y-2 max-h-[60vh] overflow-y-auto" style="scrollbar-width: none; -ms-overflow-style: none;">
     <li *ngFor="let heading of tocHeadings"
-        [ngClass]="'toc-level-' + heading.level">
-      <a href="javascript:void(0)" (click)="scrollToHeading(heading.id)">
+        [ngClass]="{
+          'ml-0': heading.level === 1,
+          'ml-4': heading.level === 2,
+          'ml-8': heading.level === 3,
+          'font-bold text-base': heading.level === 1,
+          'text-sm': heading.level > 1
+        }">
+      <a href="javascript:void(0)"
+         (click)="scrollToHeading(heading.id)"
+         class="block transition-colors duration-200 hover:text-blue-600 cursor-pointer px-2 py-1 rounded"
+         >
         {{ heading.text }}
       </a>
     </li>
   </ul>
-</div>
+</p-card>

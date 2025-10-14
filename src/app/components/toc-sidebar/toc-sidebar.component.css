@@ -1,44 +1,18 @@
-.toc-sidebar {
-  position: sticky;
-  top: 100px;
-  background: var(--toc-bg, #fff);
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  padding: 16px 12px;
-  max-height: 80vh;
-  overflow-y: auto;
+/* 美化 toc-sidebar 组件，采用统一卡片风格和 Tailwind 布局 */
+/* 由 Tailwind fixed 定位控制，无需 sticky 样式 */
+
+
+/* 隐藏滚动条 */
+ul::-webkit-scrollbar {
+  display: none;
 }
-.toc-title {
-  font-weight: bold;
-  font-size: 1.1rem;
-  margin-bottom: 12px;
+
+/* 目录链接悬停高亮 */
+a:hover {
+  color: #2563eb;
+  background: #eff6ff;
 }
-.toc-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.toc-list li {
-  margin-bottom: 8px;
-}
-.toc-level-1 {
-  font-size: 1rem;
-  font-weight: bold;
-  margin-left: 0;
-}
-.toc-level-2 {
-  font-size: 0.95rem;
-  margin-left: 16px;
-}
-.toc-level-3 {
-  font-size: 0.9rem;
-  margin-left: 32px;
-}
-.toc-list a {
-  color: #333;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.toc-list a:hover {
-  color: #007bff;
+.dark a:hover {
+  color: #60a5fa;
+  background: #1e293b;
 }
