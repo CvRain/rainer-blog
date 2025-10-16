@@ -68,6 +68,7 @@
                 <textarea
                   pInputTextarea
                   [(ngModel)]="article.s3_content"
+                  (ngModelChange)="contentChanged = true"
                   placeholder="请输入文章内容..."
                   rows="20"
                   class="w-full h-full font-mono text-sm editor-textarea"
@@ -88,6 +89,7 @@
           <textarea
             pInputTextarea
             [(ngModel)]="article.s3_content"
+            (ngModelChange)="contentChanged = true"
             placeholder="请输入文章内容..."
             rows="20"
             class="w-full h-full font-mono text-sm editor-textarea"
@@ -115,6 +117,7 @@
             pInputText
             type="text"
             [(ngModel)]="article.title"
+            (ngModelChange)="contentChanged = true"
             placeholder="请输入文章标题"
             class="w-full"
             [disabled]="saving || loading"
@@ -127,6 +130,7 @@
             pInputText
             type="text"
             [(ngModel)]="article.subtitle"
+            (ngModelChange)="contentChanged = true"
             placeholder="请输入副标题"
             class="w-full"
             [disabled]="saving || loading"
@@ -173,6 +177,7 @@
             pInputText
             type="number"
             [(ngModel)]="article.order"
+            (ngModelChange)="contentChanged = true"
             placeholder="0"
             class="w-full"
             [disabled]="saving || loading"
@@ -182,6 +187,7 @@
         <div class="flex items-center">
           <p-checkbox
             [(ngModel)]="article.is_active"
+            (onChange)="contentChanged = true"
             [binary]="true"
             [disabled]="saving || loading"
             inputId="isActive"
