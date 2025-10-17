@@ -1,0 +1,24 @@
+.article-card {
+  border-radius: 12px;
+  overflow: hidden;
+  /* visual styling handled by Tailwind/PrimeNG theme (catppuccinPreset) */
+  display: block;
+}
+
+/* keep card content padding controlled by template classes; minimal layout helpers */
+.article-card .p-card-content {
+  padding: 0;
+}
+
+.article-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* keep a small fallback for tag if utility classes are absent */
+.article-card .tag {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+}
