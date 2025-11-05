@@ -3,6 +3,28 @@
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.7.
 
 ## Development server
+## Mermaid 支持
+
+Markdown 查看组件 `MarkdownViewer` 已支持 Mermaid 渲染。使用方法：
+
+- 在 Markdown 中使用代码围栏并指定语言为 `mermaid`：
+
+````markdown
+```mermaid
+graph TD;
+	A[Start] --> B{Is it working?};
+	B -- Yes --> C[Ship it];
+	B -- No --> D[Fix it] --> B;
+```
+````
+
+- 组件会在渲染完成后自动将上述代码块替换为 SVG 图。
+- 主题将根据页面是否存在 `.app-dark` 类自动使用浅色/深色主题。
+
+注意事项：
+
+- 渲染时采用 `securityLevel: 'strict'` 以提升安全性。
+- 重复渲染会跳过已处理的代码块，避免闪烁和重复替换。
 
 To start a local development server, run:
 
