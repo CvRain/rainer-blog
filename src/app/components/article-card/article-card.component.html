@@ -1,22 +1,61 @@
-<p-card class="article-card cursor-pointer hover:shadow-lg transition-shadow duration-300" (click)="onCardClick()">
-  <div class="flex flex-col h-full">
-    <div class="relative">
-      <!-- 提高图片高度以让卡片视觉更大 -->
-      <p-image src="images/article-default-cover.jpg" alt="文章封面" width="100%" height="240px" [imageStyle]="{'object-fit': 'cover'}" styleClass="rounded-t-lg"></p-image>
-      <div class="absolute top-3 right-3">
-        <!-- use theme colors via classes; actual bg handled by Tailwind/theme -->
-        <span class="text-xs px-3 py-1 rounded bg-opacity-70 tag">技术</span>
-      </div>
-    </div>
-    <div class="p-6 flex-grow flex flex-col">
-      <h3 class="text-lg md:text-xl font-bold mb-3">{{ article()?.title || '文章标题' }}</h3>
-      <p class="text-sm mb-4 flex-grow">
-        {{ article()?.subtitle || '这里还没有摘要内容...' }}
-      </p>
-      <div class="flex items-center text-sm mt-3">
-        <span class="mr-4"><i class="pi pi-calendar mr-1"></i> {{ article()?.inserted_at ? (article()?.inserted_at | date: 'yyyy-MM-dd') : '未知时间' }}</span>
-        <span><i class="pi pi-eye mr-1"></i> {{ article()?.order || 0 }}</span>
-      </div>
+<div
+  class="group relative flex flex-col h-full bg-white/60 backdrop-blur-xl rounded-3xl overflow-hidden border border-white/60 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+  (click)="onCardClick()"
+>
+  <div class="relative h-56 m-2 mb-0 overflow-hidden rounded-2xl">
+    <!-- Image with overlay -->
+    <p-image
+      src="images/article-default-cover.jpg"
+      alt="文章封面"
+      styleClass="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+      [imageStyle]="{ height: '100%', width: '100%', 'object-fit': 'cover' }"
+    ></p-image>
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+    ></div>
+
+    <div class="absolute top-3 right-3">
+      <span
+        class="text-xs px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-md text-surface-800 font-bold shadow-sm"
+        >技术</span
+      >
     </div>
   </div>
-</p-card>
+
+  <div class="p-5 flex-grow flex flex-col">
+    <h3
+      class="text-xl font-bold mb-2 text-surface-800 line-clamp-2 group-hover:text-primary-600 transition-colors"
+    >
+      {{ article()?.title || "文章标题" }}
+    </h3>
+    <p
+      class="text-sm text-surface-500 mb-4 flex-grow line-clamp-3 leading-relaxed"
+    >
+      {{ article()?.subtitle || "这里还没有摘要内容..." }}
+    </p>
+
+    <div class="flex items-center justify-between mt-auto">
+      <div
+        class="flex items-center text-xs text-surface-400 font-medium space-x-4"
+      >
+        <span class="flex items-center"
+          ><i class="pi pi-calendar mr-1.5 text-primary-400"></i>
+          {{
+            article()?.inserted_at
+              ? (article()?.inserted_at | date : "yyyy-MM-dd")
+              : "未知时间"
+          }}</span
+        >
+        <span class="flex items-center"
+          ><i class="pi pi-eye mr-1.5 text-blue-400"></i>
+          {{ article()?.order || 0 }}</span
+        >
+      </div>
+      <button
+        class="w-8 h-8 rounded-full bg-surface-100 flex items-center justify-center text-surface-500 group-hover:bg-primary-50 group-hover:text-primary-600 transition-colors"
+      >
+        <i class="pi pi-arrow-right text-xs"></i>
+      </button>
+    </div>
+  </div>
+</div>

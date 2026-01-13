@@ -1,15 +1,13 @@
 import { Component, input } from '@angular/core';
-import { CardModule } from 'primeng/card';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-self-intro-card',
-  imports: [CardModule],
+  imports: [CommonModule],
   templateUrl: './self-intro-card.component.html',
-  styleUrl: './self-intro-card.component.css'
+  styleUrl: './self-intro-card.component.css',
 })
-
 export class SelfIntroCardComponent {
-  userName = input<string>('用户名')
-  userSignature = input<string>('个性签名')
-
+  userName = input<string>('用户名');
+  userSignature = input<string>('个性签名');
 }

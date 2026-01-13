@@ -1,15 +1,18 @@
-<p-card
-  class="fixed top-2 left-4 right-4 z-50 backdrop-blur-lg rounded-2xl shadow-lg px-4 py-2">
-  <div class="flex justify-between items-center">
+<nav
+  class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-6xl bg-white/70 backdrop-blur-xl rounded-full shadow-lg border border-white/40 px-6 py-3 transition-all duration-300 hover:bg-white/80 hover:shadow-xl hover:border-white/60"
+>
+  <div class="flex justify-between items-center w-full">
     <!-- 左侧内容：用户头像和用户名 -->
     <div class="flex items-center space-x-3">
       @if (userAvatar()) {
-        <div
-          class="w-10 h-10 rounded-full border-2 flex items-center justify-center">
-          <p-image
-            [src]="userAvatar()"
-            class="w-full h-full rounded-full object-cover"></p-image>
-        </div>
+      <div
+        class="w-10 h-10 rounded-full border-2 flex items-center justify-center"
+      >
+        <p-image
+          [src]="userAvatar()"
+          class="w-full h-full rounded-full object-cover"
+        ></p-image>
+      </div>
       }
       <span class="font-medium hidden sm:block">{{ userName() }}</span>
     </div>
@@ -18,77 +21,104 @@
     <div class="flex items-center space-x-1">
       <!-- 桌面端导航 -->
       <div class="hidden md:flex items-center space-x-1">
-        <a pRipple
-           class="flex items-center px-3 py-2  transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
-           (click)="navigateToHome()">
+        <a
+          pRipple
+          class="flex items-center px-3 py-2 transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
+          (click)="navigateToHome()"
+        >
           <i class="pi pi-home mr-2"></i>
           <span>首页</span>
         </a>
-        <a pRipple
-           class="flex items-center px-3 py-2  transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
-           (click)="navigateToArchive()">
+        <a
+          pRipple
+          class="flex items-center px-3 py-2 transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
+          (click)="navigateToArchive()"
+        >
           <i class="pi pi-calendar mr-2"></i>
           <span>归档</span>
         </a>
-        <a pRipple
-           class="flex items-center px-3 py-2  transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
-           (click)="showComingSoon()">
+        <a
+          pRipple
+          class="flex items-center px-3 py-2 transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
+          (click)="showComingSoon()"
+        >
           <i class="pi pi-tags mr-2"></i>
           <span>分类</span>
         </a>
-        <a pRipple
-           class="flex items-center px-3 py-2  transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
-           (click)="navigateToLogin()">
+        <a
+          pRipple
+          class="flex items-center px-3 py-2 transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
+          (click)="navigateToLogin()"
+        >
           <i class="pi pi-desktop mr-2"></i>
           <span>控制台</span>
         </a>
       </div>
 
       <!-- 移动端菜单按钮 -->
-      <button pRipple
-              class="md:hidden p-2 rounded-full hover:bg-opacity-80 transition-colors"
-              aria-label="菜单" (click)="toggleMobileMenu()">
+      <button
+        pRipple
+        class="md:hidden p-2 rounded-full hover:bg-opacity-80 transition-colors"
+        aria-label="菜单"
+        (click)="toggleMobileMenu()"
+      >
         <i class="pi pi-bars"></i>
       </button>
 
       <!-- 深色浅色模式切换图标 -->
-      <button pRipple
-              class="p-2 rounded-full hover:bg-opacity-80 ml-2 transition-all duration-300 transform hover:rotate-12"
-              aria-label="切换主题" (click)="toggleTheme()">
+      <button
+        pRipple
+        class="p-2 rounded-full hover:bg-opacity-80 ml-2 transition-all duration-300 transform hover:rotate-12"
+        aria-label="切换主题"
+        (click)="toggleTheme()"
+      >
         <i class="pi pi-moon dark:pi-sun"></i>
       </button>
     </div>
   </div>
 
   <!-- 移动端导航菜单（默认隐藏） -->
-  <div class="md:hidden mt-3" id="mobile-menu" [class.hidden]="!isMobileMenuOpen">
-    <div class="flex flex-col space-y-2 pb-2">
-      <a pRipple
-         class="flex items-center px-4 py-2  transition-all duration-300 cursor-pointer"
-         (click)="navigateToHome()">
-        <i class="pi pi-home mr-2"></i>
-        <span>首页</span>
+  <div
+    class="md:hidden mt-4 bg-white/90 backdrop-blur-xl rounded-3xl p-4 shadow-xl border border-white/50 absolute top-full left-0 right-0 overflow-hidden transition-all duration-300 origin-top"
+    id="mobile-menu"
+    [class.hidden]="!isMobileMenuOpen"
+    [class.animate-fade-in]="isMobileMenuOpen"
+  >
+    <div class="flex flex-col space-y-1">
+      <a
+        pRipple
+        class="flex items-center px-4 py-3 rounded-xl hover:bg-surface-100/50 transition-all duration-300 cursor-pointer"
+        (click)="navigateToHome()"
+      >
+        <i class="pi pi-home mr-3 text-primary-500"></i>
+        <span class="font-medium text-surface-700">首页</span>
       </a>
-      <a pRipple
-         class="flex items-center px-4 py-2  transition-all duration-300 cursor-pointer"
-         (click)="navigateToArchive()">
-        <i class="pi pi-calendar mr-2"></i>
-        <span>归档</span>
+      <a
+        pRipple
+        class="flex items-center px-4 py-3 rounded-xl hover:bg-surface-100/50 transition-all duration-300 cursor-pointer"
+        (click)="navigateToArchive()"
+      >
+        <i class="pi pi-calendar mr-3 text-primary-500"></i>
+        <span class="font-medium text-surface-700">归档</span>
       </a>
-      <a pRipple
-         class="flex items-center px-4 py-2  transition-all duration-300 cursor-pointer"
-         (click)="showComingSoon()">
-        <i class="pi pi-tags mr-2"></i>
-        <span>分类</span>
+      <a
+        pRipple
+        class="flex items-center px-4 py-3 rounded-xl hover:bg-surface-100/50 transition-all duration-300 cursor-pointer"
+        (click)="showComingSoon()"
+      >
+        <i class="pi pi-tags mr-3 text-primary-500"></i>
+        <span class="font-medium text-surface-700">分类</span>
       </a>
-      <a pRipple
-         class="flex items-center px-4 py-2  transition-all duration-300 cursor-pointer"
-         (click)="navigateToLogin()">
-        <i class="pi pi-desktop mr-2"></i>
-        <span>控制台</span>
+      <a
+        pRipple
+        class="flex items-center px-4 py-3 rounded-xl hover:bg-surface-100/50 transition-all duration-300 cursor-pointer"
+        (click)="navigateToLogin()"
+      >
+        <i class="pi pi-desktop mr-3 text-primary-500"></i>
+        <span class="font-medium text-surface-700">控制台</span>
       </a>
     </div>
   </div>
-</p-card>
+</nav>
 
 <router-outlet></router-outlet>
