@@ -1,8 +1,1 @@
-aside {
-  transition: width 0.3s ease;
-  overflow: hidden;
-}
-
-aside.collapsed {
-  width: 0;
-}
+/* 样式已使用 Tailwind Utility Classes 在 HTML 中重构，保留空文件以防止构建错误 */

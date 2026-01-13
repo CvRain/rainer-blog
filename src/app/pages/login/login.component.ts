@@ -1,14 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
-import { DividerModule } from 'primeng/divider';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { MessageModule } from 'primeng/message';
-import { HeaderComponent } from '../../components/header/header.component';
+import { MiniHeader } from '../../components/mini-header/mini-header';
 import { SimpleFooter } from '../../components/simple-footer/simple-footer';
 import { RippleModule } from 'primeng/ripple';
 import { User } from '../../services/user';
@@ -16,21 +15,20 @@ import { User } from '../../services/user';
 @Component({
   selector: 'app-login',
   imports: [
+    CommonModule,
     FormsModule,
-    CardModule,
     InputTextModule,
     PasswordModule,
     ButtonModule,
     CheckboxModule,
-    DividerModule,
     RouterLink,
     MessageModule,
-    HeaderComponent,
+    MiniHeader,
     SimpleFooter,
     RippleModule,
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent implements OnInit {
   username: string = '';
@@ -74,7 +72,7 @@ export class LoginComponent implements OnInit {
           localStorage.removeItem('token');
           localStorage.removeItem('user');
           console.error('Token验证失败:', error);
-        }
+        },
       });
     }
   }
@@ -95,7 +93,7 @@ export class LoginComponent implements OnInit {
           // 登录成功，保存token
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('user', JSON.stringify(response.data.user));
-          
+
           // 登录成功后跳转回来源页或 dashboard
           if (this.returnUrl) {
             this.router.navigateByUrl(this.returnUrl);
@@ -113,7 +111,7 @@ export class LoginComponent implements OnInit {
         this.loginError = true;
         this.errorMessage = '登录请求失败，请稍后重试';
         console.error('登录失败:', error);
-      }
+      },
     });
   }
 }

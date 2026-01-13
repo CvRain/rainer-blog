@@ -1,53 +1,5 @@
-/* mini-header 移动端优化样式（无配色，仅布局与间距） */
-p-card {
-	padding: 0.5rem 1rem;
-	border-radius: 1.25rem;
-	box-shadow: var(--tw-shadow-lg, 0 4px 24px rgba(0,0,0,0.08));
-	backdrop-filter: blur(8px);
-}
-
-.flex {
-	gap: 0.5rem;
-}
-
-@media (max-width: 768px) {
-	.flex.items-center.justify-center {
-		gap: 0.25rem;
-	}
-	a[pRipple] {
-		padding: 0.5rem 0.75rem;
-		min-width: 44px;
-		border-radius: 0.75rem;
-		margin: 0 2px;
-	}
-	.pi {
-		margin-right: 0.5rem !important;
-		font-size: 1.1em;
-	}
-	button[pRipple] {
-		margin-left: 0.25rem;
-		margin-right: 0.25rem;
-		padding: 0.5rem;
-		border-radius: 50%;
-		/* 仅布局，无配色 */
-		box-shadow: var(--tw-shadow, 0 2px 8px rgba(0,0,0,0.04));
-	}
-	#mobile-menu {
-		border-radius: 1rem;
-		box-shadow: var(--tw-shadow-lg, 0 2px 16px rgba(0,0,0,0.10));
-		padding: 0.5rem 0.75rem;
-		margin-top: 0.5rem;
-	}
-	#mobile-menu a[pRipple] {
-		padding: 0.75rem 1rem;
-		border-radius: 0.75rem;
-		margin-bottom: 2px;
-	}
-}
-
-@media (min-width: 769px) {
-	a[pRipple] {
-		padding: 0.5rem 1rem;
-		border-radius: 0.75rem;
-	}
+/* 样式逻辑大部分已移至 HTML Tailwind Classes，保留此文件防止引用报错 */
+:host {
+  display: block;
+  width: 100%;
 }

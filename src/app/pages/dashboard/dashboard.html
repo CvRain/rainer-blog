@@ -1,20 +1,39 @@
 <app-mini-header></app-mini-header>
 
-<div class="min-h-[calc(100vh-120px)] flex gap-4 p-4">
-  <button
-    pButton
-    [icon]="sidebarVisible ? 'pi pi-angle-double-left' : 'pi pi-angle-double-right'"
-    class="p-button-sm p-button-text absolute top-20 left-2"
-    [pTooltip]="sidebarVisible ? '收起侧边栏' : '展开侧边栏'"
-    (click)="sidebarVisible = !sidebarVisible"
-  ></button>
+<div
+  class="min-h-[calc(100vh-64px)] w-full max-w-[1600px] mx-auto flex gap-6 p-6 overflow-hidden"
+>
+  <!-- 侧边栏容器 -->
+  <div
+    class="relative transition-all duration-300 ease-in-out"
+    [class.w-0]="!sidebarVisible"
+    [class.w-80]="sidebarVisible"
+  >
+    <app-dashboard-sidebar
+      [sidebarVisible]="sidebarVisible"
+    ></app-dashboard-sidebar>
+  </div>
 
-  <app-dashboard-sidebar
-    [sidebarVisible]="sidebarVisible"
-  ></app-dashboard-sidebar>
+  <!-- 主内容区 -->
+  <main
+    class="flex-1 relative flex flex-col min-w-0 transition-all duration-300"
+  >
+    <!-- 将切换按钮移动到主内容区的左上角，类似 Notion -->
+    <button
+      pButton
+      [icon]="sidebarVisible ? 'pi pi-angle-double-left' : 'pi pi-angle-double-right'"
+      class="p-button-text p-button-rounded w-8 h-8 !absolute -left-3 top-6 z-20 bg-surface-0 shadow-sm border border-surface-200 text-surface-500 hover:text-primary-500 hover:bg-white hidden md:flex items-center justify-center transform -translate-y-1/2"
+      [pTooltip]="sidebarVisible ? '收起侧边栏' : '展开侧边栏'"
+      tooltipPosition="right"
+      (click)="sidebarVisible = !sidebarVisible"
+    ></button>
 
-  <main class="flex-1 min-w-0">
-    <router-outlet (activate)="onChildActivate($event)"></router-outlet>
+    <!-- 内容卡片：增加毛玻璃、圆角和阴影 -->
+    <div
+      class="flex-1 bg-white/80 backdrop-blur-xl border border-white/50 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden flex flex-col p-6"
+    >
+      <router-outlet (activate)="onChildActivate($event)"></router-outlet>
+    </div>
   </main>
 </div>
 

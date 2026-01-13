@@ -1,91 +1,121 @@
-<aside class="w-80 flex-shrink-0" [class.collapsed]="!sidebarVisible">
-  <p-card class="shadow-sm h-full">
-    <ng-template pTemplate="title">
-      <div class="flex items-center justify-between">
-        <span>内容结构</span>
-        <div class="flex space-x-1">
-          <button
-            pButton
-            icon="pi pi-plus"
-            class="p-button-sm p-button-text"
-            pTooltip="展开全部"
-            (click)="expandAll()"
-          ></button>
-          <button
-            pButton
-            icon="pi pi-minus"
-            class="p-button-sm p-button-text"
-            pTooltip="收起全部"
-            (click)="collapseAll()"
-          ></button>
-        </div>
-      </div>
-    </ng-template>
+<aside
+  class="h-[calc(100vh-64px)] w-full flex flex-col bg-white/70 backdrop-blur-md border border-white/40 rounded-2xl shadow-sm transition-all duration-500 overflow-hidden"
+  [class.opacity-0]="!sidebarVisible"
+  [class.translate-x-[-20px]]="!sidebarVisible"
+>
+  <!-- 标题栏：更清爽的布局 -->
+  <div class="px-5 pt-6 pb-2 flex-shrink-0 flex items-center justify-between">
+    <span class="text-sm font-bold tracking-wide text-primary-600 uppercase"
+      >My Space</span
+    >
+    <div class="flex space-x-1 opacity-60 hover:opacity-100 transition-opacity">
+      <button
+        pButton
+        icon="pi pi-plus"
+        class="p-button-rounded p-button-text w-7 h-7 !p-0"
+        pTooltip="展开全部"
+        tooltipPosition="bottom"
+        (click)="expandAll()"
+      ></button>
+      <button
+        pButton
+        icon="pi pi-minus"
+        class="p-button-rounded p-button-text w-7 h-7 !p-0"
+        pTooltip="收起全部"
+        tooltipPosition="bottom"
+        (click)="collapseAll()"
+      ></button>
+    </div>
+  </div>
 
-    <div class="flex flex-col h-full">
-      <div class="mb-4">
-        <div class="text-xs text-muted-color mb-2">快速导航</div>
-        <div class="flex flex-col space-y-1">
-          <button
-            pButton
-            label="博客总览"
-            icon="pi pi-home"
-            class="p-button-sm p-button-text w-full justify-start"
-            (click)="router.navigate(['/dashboard/overview'])"
-          ></button>
-          <button
-            pButton
-            label="主题管理"
-            icon="pi pi-book"
-            class="p-button-sm p-button-text w-full justify-start"
-            (click)="router.navigate(['/dashboard/themes'])"
-          ></button>
-          <button
-            pButton
-            label="资源管理"
-            icon="pi pi-folder"
-            class="p-button-sm p-button-text w-full justify-start"
-            (click)="router.navigate(['/dashboard/resources'])"
-          ></button>
-          <button
-            pButton
-            label="集合管理"
-            icon="pi pi-th-large"
-            class="p-button-sm p-button-text w-full justify-start"
-            (click)="router.navigate(['/dashboard/collections'])"
-          ></button>
-        </div>
+  <!-- 滚动区域 -->
+  <div class="flex-1 overflow-y-auto px-3 pb-4 custom-scrollbar">
+    <!-- 快速导航组 -->
+    <div class="mb-6 mt-2">
+      <div
+        class="px-3 text-[10px] font-bold text-surface-400 uppercase tracking-wider mb-2"
+      >
+        QUICK ACCESS
       </div>
+      <div class="flex flex-col space-y-1">
+        <button
+          class="group w-full flex items-center gap-3 px-3 py-2 text-sm text-surface-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all duration-200 border-none bg-transparent cursor-pointer text-left"
+          (click)="router.navigate(['/dashboard/overview'])"
+        >
+          <i
+            class="pi pi-home text-surface-400 group-hover:text-primary-500 transition-colors"
+          ></i>
+          <span class="font-medium">博客总览</span>
+        </button>
 
-      <div class="mb-4">
-        <div class="text-xs text-muted-color mb-2">快速操作</div>
-        <div class="flex flex-col space-y-1">
-          <button
-            pButton
-            label="新建主题"
-            icon="pi pi-plus"
-            class="p-button-sm p-button-success w-full justify-start"
-            (click)="createNewTheme()"
-          ></button>
-          <button
-            pButton
-            label="新建文章"
-            icon="pi pi-plus"
-            class="p-button-sm p-button-info w-full justify-start"
-            (click)="createNewArticle()"
-          ></button>
-        </div>
+        <button
+          class="group w-full flex items-center gap-3 px-3 py-2 text-sm text-surface-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all duration-200 border-none bg-transparent cursor-pointer text-left"
+          (click)="router.navigate(['/dashboard/themes'])"
+        >
+          <i
+            class="pi pi-book text-surface-400 group-hover:text-primary-500 transition-colors"
+          ></i>
+          <span class="font-medium">主题管理</span>
+        </button>
+
+        <button
+          class="group w-full flex items-center gap-3 px-3 py-2 text-sm text-surface-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all duration-200 border-none bg-transparent cursor-pointer text-left"
+          (click)="router.navigate(['/dashboard/resources'])"
+        >
+          <i
+            class="pi pi-folder text-surface-400 group-hover:text-primary-500 transition-colors"
+          ></i>
+          <span class="font-medium">资源管理</span>
+        </button>
+
+        <button
+          class="group w-full flex items-center gap-3 px-3 py-2 text-sm text-surface-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all duration-200 border-none bg-transparent cursor-pointer text-left"
+          (click)="router.navigate(['/dashboard/collections'])"
+        >
+          <i
+            class="pi pi-th-large text-surface-400 group-hover:text-primary-500 transition-colors"
+          ></i>
+          <span class="font-medium">集合管理</span>
+        </button>
       </div>
+    </div>
 
-      <div class="text-xs text-muted-color mb-2">内容树</div>
+    <!-- 快速操作卡片 -->
+    <div class="mb-6 px-1">
+      <div class="grid grid-cols-2 gap-2">
+        <button
+          class="flex flex-col items-center justify-center gap-2 p-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl transition-all duration-200 border border-indigo-100 cursor-pointer shadow-sm hover:shadow-md"
+          (click)="createNewTheme()"
+        >
+          <i class="pi pi-plus-circle text-xl"></i>
+          <span class="text-xs font-bold">新建主题</span>
+        </button>
+        <button
+          class="flex flex-col items-center justify-center gap-2 p-3 bg-pink-50 hover:bg-pink-100 text-pink-700 rounded-xl transition-all duration-200 border border-pink-100 cursor-pointer shadow-sm hover:shadow-md"
+          (click)="createNewArticle()"
+        >
+          <i class="pi pi-pencil text-xl"></i>
+          <span class="text-xs font-bold">写文章</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 内容树 -->
+    <div class="px-1">
+      <div
+        class="px-2 text-[10px] font-bold text-surface-400 uppercase tracking-wider mb-2"
+      >
+        CONTENT TREE
+      </div>
+      <!-- 只加载树本身的样式，外框由我们自己控制 -->
       <p-tree
         [value]="treeNodes"
         [loading]="loading"
         (onNodeSelect)="onNodeSelect($event)"
         selectionMode="single"
-        class="flex-1 overflow-y-auto"
+        styleClass="w-full !border-0 !p-0"
       >
       </p-tree>
     </div>
-  </p-card>
+  </div>
 </aside>

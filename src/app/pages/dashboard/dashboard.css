@@ -1,12 +1,47 @@
+:host {
+  display: block;
+  /* 添加一个极其柔和的网格背景 */
+  background-image: radial-gradient(var(--p-primary-200) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-color: var(--p-surface-ground);
+}
+
+/* 隐藏 PrimeNG Tree 默认的边框和背景，让它融入侧边栏 */
+:host ::ng-deep .p-tree {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+:host ::ng-deep .p-tree .p-treenode-content {
+  border-radius: 8px;
+  transition: all 0.2s;
+  padding: 0.25rem 0.5rem;
+}
+
+:host ::ng-deep .p-tree .p-treenode-content:hover {
+  background-color: var(--p-surface-100);
+}
+
+:host ::ng-deep .p-tree .p-treenode-content.p-highlight {
+  background-color: var(--p-primary-50) !important;
+  color: var(--p-primary-700) !important;
+}
+
+/* 自定义状态标签，使其更像现代的 Pills */
 :host ::ng-deep .theme-active > .p-treenode-content .p-treenode-label::after,
 :host ::ng-deep .chapter-active > .p-treenode-content .p-treenode-label::after {
-  content: "激活";
-  background-color: var(--p-tag-success-background);
-  color: var(--p-tag-success-color);
-  padding: 2px 6px;
-  border-radius: 4px;
-  margin-left: 8px;
-  font-size: 12px;
+  content: "ACTIVE";
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  background-color: var(--p-green-100);
+  color: var(--p-green-700);
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-left: auto;
+  margin-right: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 :host ::ng-deep .theme-inactive > .p-treenode-content .p-treenode-label::after,
@@ -15,11 +50,28 @@
   .chapter-inactive
   > .p-treenode-content
   .p-treenode-label::after {
-  content: "禁用";
-  background-color: var(--p-tag-warning-background);
-  color: var(--p-tag-warning-color);
-  padding: 2px 6px;
-  border-radius: 4px;
-  margin-left: 8px;
-  font-size: 12px;
+  content: "HIDDEN";
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  background-color: var(--p-surface-200);
+  color: var(--p-surface-500);
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-left: auto;
+  margin-right: 4px;
+}
+
+/* 调整树节点布局以适应右侧的标签 */
+:host ::ng-deep .p-treenode-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+:host ::ng-deep .p-treenode-label {
+  flex: 1;
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
 }
