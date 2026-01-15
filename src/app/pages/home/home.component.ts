@@ -14,12 +14,11 @@ import { User } from '../../services/user';
     HeaderComponent,
     FooterComponent,
     BlurCoverComponent,
-    HomeContentComponent
+    HomeContentComponent,
   ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.css',
 })
-
 export class HomeComponent {
   userService = inject(User);
 
@@ -27,13 +26,23 @@ export class HomeComponent {
 
   constructor() {
     const result = this.userService.getUserInfo();
-    result.subscribe(res => {
+    result.subscribe((res) => {
       this.userInfo = res.data || {
+        id: '',
         user_avatar: '',
         user_background: '',
         user_email: '',
         user_name: 'unknown',
-        user_signature: 'unknown'
+        user_nickname: 'unknown',
+        user_signature: 'unknown',
+        user_bio: '',
+        user_website: null,
+        user_github: null,
+        user_twitter: null,
+        user_location: '',
+        is_active: false,
+        inserted_at: '',
+        updated_at: '',
       };
       console.log(this.userInfo);
     });

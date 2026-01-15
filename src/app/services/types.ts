@@ -5,11 +5,21 @@ export interface BaseResponse<T> {
 }
 
 export interface UserInfo {
+  id: string;
+  user_name: string;
+  user_email: string;
+  user_nickname: string;
+  user_signature: string;
+  user_bio: string;
   user_avatar: string;
   user_background: string;
-  user_email: string;
-  user_name: string;
-  user_signature: string;
+  user_website: string | null;
+  user_github: string | null;
+  user_twitter: string | null;
+  user_location: string;
+  is_active: boolean;
+  inserted_at: string;
+  updated_at: string;
 }
 
 export interface ApiArticle {

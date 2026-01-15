@@ -1,0 +1,228 @@
+<div class="h-full flex flex-col animate-fade-in relative z-10 space-y-6 pb-10">
+  <p-toast></p-toast>
+
+  <!-- Header Section -->
+  <div>
+    <h1
+      class="text-3xl font-bold bg-gradient-to-r from-primary-600 to-indigo-600 bg-clip-text text-transparent"
+    >
+      Profile Settings
+    </h1>
+    <p class="text-surface-500 mt-2 font-medium">
+      Manage your personal information and account security
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Left Column: Avatar & Basic Identity -->
+    <div class="lg:col-span-1 space-y-6">
+      <div
+        class="bg-white/60 backdrop-blur-xl rounded-3xl p-6 shadow-sm border border-white/60 flex flex-col items-center"
+      >
+        <div class="relative w-32 h-32 mb-4 group">
+          <div
+            class="absolute inset-0 bg-gradient-to-tr from-primary-400 to-indigo-400 rounded-full blur-lg opacity-40 group-hover:opacity-75 transition-opacity duration-300"
+          ></div>
+          <p-image
+            [src]="userInfo.user_avatar || 'images/avatar-default.png'"
+            alt="User Avatar"
+            styleClass="w-full h-full rounded-full overflow-hidden border-4 border-white shadow-md"
+            imageClass="w-full h-full object-cover"
+            [preview]="true"
+          >
+          </p-image>
+          <!-- Edit Overlay (Visual Only for now) -->
+          <div
+            class="absolute inset-0 flex items-center justify-center rounded-full bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white font-medium"
+          >
+            <i class="pi pi-camera text-xl"></i>
+          </div>
+        </div>
+
+        <h2 class="text-xl font-bold text-surface-800">
+          {{ userInfo.user_nickname || userInfo.user_name }}
+        </h2>
+        <p class="text-surface-500 text-sm mb-4">@{{ userInfo.user_name }}</p>
+
+        <div class="w-full space-y-3">
+          <div class="flex flex-col gap-1">
+            <label class="text-xs font-bold text-surface-400 uppercase"
+              >Avatar URL</label
+            >
+            <input
+              type="text"
+              pInputText
+              [(ngModel)]="userInfo.user_avatar"
+              placeholder="https://..."
+              class="w-full !py-2 !px-3 !rounded-lg !text-sm !bg-surface-50 !border-surface-200 focus:!border-primary-500 hover:!border-primary-400"
+            />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label class="text-xs font-bold text-surface-400 uppercase"
+              >Background URL</label
+            >
+            <input
+              type="text"
+              pInputText
+              [(ngModel)]="userInfo.user_background"
+              placeholder="https://..."
+              class="w-full !py-2 !px-3 !rounded-lg !text-sm !bg-surface-50 !border-surface-200 focus:!border-primary-500 hover:!border-primary-400"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Preview Card (Visual feedback) -->
+      <div
+        class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl p-6 shadow-xl text-white relative overflow-hidden h-40 flex items-center justify-center"
+      >
+        <!-- Background Image Preview -->
+        <div class="absolute inset-0 z-0">
+          <img
+            [src]="userInfo.user_background || 'images/bg-default.jpg'"
+            class="w-full h-full object-cover opacity-60"
+          />
+        </div>
+        <div class="relative z-10 text-center">
+          <h3 class="text-2xl font-bold drop-shadow-md">
+            {{ userInfo.user_nickname || "Preview Name" }}
+          </h3>
+          <p class="text-sm opacity-90 drop-shadow-sm">
+            {{ userInfo.user_signature || "Your signature will appear here" }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Details User Form -->
+    <div class="lg:col-span-2 space-y-6">
+      <div
+        class="bg-white/60 backdrop-blur-xl rounded-3xl p-8 shadow-sm border border-white/60"
+      >
+        <h3
+          class="text-lg font-bold text-surface-800 mb-6 flex items-center gap-2"
+        >
+          <i class="pi pi-user text-primary-500"></i> Basic Information
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="flex flex-col gap-2">
+            <label class="font-medium text-surface-600">Nickname</label>
+            <input
+              pInputText
+              [(ngModel)]="userInfo.user_nickname"
+              class="!rounded-xl !bg-white/50"
+            />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label class="font-medium text-surface-600">Location</label>
+            <input
+              pInputText
+              [(ngModel)]="userInfo.user_location"
+              class="!rounded-xl !bg-white/50"
+            />
+          </div>
+          <div class="flex flex-col gap-2 md:col-span-2">
+            <label class="font-medium text-surface-600"
+              >Signature (Short Bio)</label
+            >
+            <input
+              pInputText
+              [(ngModel)]="userInfo.user_signature"
+              class="!rounded-xl !bg-white/50"
+            />
+          </div>
+          <div class="flex flex-col gap-2 md:col-span-2">
+            <label class="font-medium text-surface-600">Full Bio</label>
+            <textarea
+              pInputTextarea
+              [(ngModel)]="userInfo.user_bio"
+              rows="4"
+              class="!rounded-xl !bg-white/50 !w-full"
+            ></textarea>
+          </div>
+        </div>
+
+        <p-divider styleClass="my-8"></p-divider>
+
+        <h3
+          class="text-lg font-bold text-surface-800 mb-6 flex items-center gap-2"
+        >
+          <i class="pi pi-globe text-blue-500"></i> Social Presence
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
+          <div class="flex items-center gap-3">
+            <span
+              class="w-10 h-10 flex items-center justify-center rounded-lg bg-gray-100 text-gray-700"
+            >
+              <i class="pi pi-globe"></i>
+            </span>
+            <input
+              pInputText
+              [(ngModel)]="userInfo.user_website"
+              placeholder="Website URL"
+              class="flex-1 !rounded-xl !bg-white/50"
+            />
+          </div>
+          <div class="flex items-center gap-3">
+            <span
+              class="w-10 h-10 flex items-center justify-center rounded-lg bg-gray-900 text-white"
+            >
+              <i class="pi pi-github"></i>
+            </span>
+            <input
+              pInputText
+              [(ngModel)]="userInfo.user_github"
+              placeholder="GitHub Username"
+              class="flex-1 !rounded-xl !bg-white/50"
+            />
+          </div>
+          <div class="flex items-center gap-3">
+            <span
+              class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-400 text-white"
+            >
+              <i class="pi pi-twitter"></i>
+            </span>
+            <input
+              pInputText
+              [(ngModel)]="userInfo.user_twitter"
+              placeholder="Twitter Handle"
+              class="flex-1 !rounded-xl !bg-white/50"
+            />
+          </div>
+        </div>
+
+        <p-divider styleClass="my-8"></p-divider>
+
+        <h3
+          class="text-lg font-bold text-surface-800 mb-6 flex items-center gap-2"
+        >
+          <i class="pi pi-lock text-red-500"></i> Security
+        </h3>
+
+        <div class="flex flex-col gap-2">
+          <label class="font-medium text-surface-600">New Password</label>
+          <p-password
+            [(ngModel)]="newPassword"
+            [toggleMask]="true"
+            styleClass="w-full"
+            inputStyleClass="!w-full !rounded-xl !bg-white/50"
+            placeholder="Leave blank to keep current password"
+          ></p-password>
+        </div>
+
+        <div class="mt-8 flex justify-end">
+          <button
+            pButton
+            label="Save Changes"
+            icon="pi pi-check"
+            class="!px-6 !py-3 !rounded-xl !font-bold"
+            [loading]="loading"
+            (click)="saveProfile()"
+          ></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -98,6 +98,15 @@
           <span class="text-xs font-bold">写文章</span>
         </button>
       </div>
+
+      <!-- System / Settings Mockup -->
+      <button
+        class="w-full mt-2 flex items-center justify-center gap-2 p-3 bg-surface-50 hover:bg-surface-100 text-surface-600 rounded-xl transition-all duration-200 border border-surface-100 cursor-pointer"
+        (click)="router.navigate(['/dashboard/settings'])"
+      >
+        <i class="pi pi-cog text-lg"></i>
+        <span class="text-xs font-bold">个人设置</span>
+      </button>
     </div>
 
     <!-- 内容树 -->
