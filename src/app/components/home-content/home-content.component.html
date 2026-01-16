@@ -3,8 +3,12 @@
     <div class="flex items-start gap-8">
       <!-- 左侧：个人介绍（固定窄列） -->
       <div class="w-72 flex-shrink-0">
-        <app-self-intro-card [userName]="userInfo().user_name"
-                             [userSignature]="userInfo().user_signature"></app-self-intro-card>
+        <app-self-intro-card
+          [userName]="userInfo().user_name"
+          [userSignature]="userInfo().user_signature"
+          [avatar]="userInfo().user_avatar"
+          [links]="userInfo().links || []"
+        ></app-self-intro-card>
       </div>
 
       <!-- 右侧：文章和主题（flex-grow） -->
@@ -14,11 +18,11 @@
           <h2 class="text-2xl font-bold mb-4">最近文章</h2>
           <div class="flex flex-wrap -mx-3">
             @for (article of articles; track article.id) {
-              <div class="w-full sm:w-1/2 lg:w-1/3 px-3 mb-6">
-                <app-article-card [article]="article"></app-article-card>
-              </div>
+            <div class="w-full sm:w-1/2 lg:w-1/3 px-3 mb-6">
+              <app-article-card [article]="article"></app-article-card>
+            </div>
             } @empty {
-              <p>暂无文章</p>
+            <p>暂无文章</p>
             }
           </div>
         </div>
@@ -27,17 +31,15 @@
           <h2 class="text-2xl font-bold mb-4">主题</h2>
           <div class="space-y-6">
             @for (theme of themes; track theme.id) {
-              <app-theme-card [theme]="theme"></app-theme-card>
+            <app-theme-card [theme]="theme"></app-theme-card>
             }
           </div>
         </div>
 
         <!-- todo 图库展示 -->
-<!--        <div>-->
-<!--          <app-gallery-card></app-gallery-card>-->
-<!--        </div>-->
-
-
+        <!--        <div>-->
+        <!--          <app-gallery-card></app-gallery-card>-->
+        <!--        </div>-->
       </div>
     </div>
   </div>

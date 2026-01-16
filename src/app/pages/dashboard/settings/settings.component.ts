@@ -45,6 +45,30 @@ export class SettingsComponent implements OnInit {
     this.loadUserInfo();
   }
 
+  onFileSelected(event: any, field: 'user_avatar' | 'user_background') {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.userInfo[field] = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  addLink() {
+    if (!this.userInfo.links) {
+      this.userInfo.links = [];
+    }
+    this.userInfo.links.push({ title: '', url: '' });
+  }
+
+  removeLink(index: number) {
+    if (this.userInfo.links) {
+      this.userInfo.links.splice(index, 1);
+    }
+  }
+
   loadUserInfo() {
     this.loading = true;
     this.userService.getUserInfo().subscribe({

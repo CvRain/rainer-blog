@@ -9,7 +9,7 @@
       class="w-full h-full rounded-full overflow-hidden border-4 border-white shadow-inner relative z-10 transition-transform duration-300 group-hover:scale-105"
     >
       <img
-        src="/images/avatar.png"
+        [src]="avatar() || '/images/avatar.png'"
         alt="用户头像"
         class="w-full h-full object-cover"
       />
@@ -45,7 +45,8 @@
     </h4>
     <div class="flex flex-col space-y-2">
       <a
-        href="https://angular.io"
+        *ngFor="let link of links()"
+        [href]="link.url"
         target="_blank"
         class="group flex items-center p-2.5 hover:bg-white/60 hover:shadow-sm rounded-xl cursor-pointer transition-all duration-200 border border-transparent hover:border-white/50"
       >
@@ -53,88 +54,28 @@
           class="w-8 h-8 rounded-lg overflow-hidden mr-3 shadow-sm bg-white p-0.5 group-hover:scale-110 transition-transform"
         >
           <img
-            src="https://placehold.co/50x50/DD0031/FFFFFF?text=A"
-            alt="Angular"
+            [src]="
+              'https://www.google.com/s2/favicons?domain=' + link.url + '&sz=64'
+            "
+            [alt]="link.title"
             class="w-full h-full object-cover rounded-md"
+            onerror="this.src='https://placehold.co/50x50/3B82F6/FFFFFF?text=L'"
           />
         </div>
         <span
           class="text-sm font-medium text-surface-600 dark:text-gray-300 group-hover:text-primary-600 transition-colors"
-          >Angular</span
+          >{{ link.title }}</span
         >
         <i
           class="pi pi-external-link ml-auto text-xs text-surface-300 group-hover:text-surface-400"
         ></i>
       </a>
-
-      <a
-        href="https://primeNG.org"
-        target="_blank"
-        class="group flex items-center p-2.5 hover:bg-white/60 hover:shadow-sm rounded-xl cursor-pointer transition-all duration-200 border border-transparent hover:border-white/50"
+      <div
+        *ngIf="links().length === 0"
+        class="text-surface-400 text-sm text-center py-4"
       >
-        <div
-          class="w-8 h-8 rounded-lg overflow-hidden mr-3 shadow-sm bg-white p-0.5 group-hover:scale-110 transition-transform"
-        >
-          <img
-            src="https://placehold.co/50x50/3B82F6/FFFFFF?text=P"
-            alt="PrimeNG"
-            class="w-full h-full object-cover rounded-md"
-          />
-        </div>
-        <span
-          class="text-sm font-medium text-surface-600 dark:text-gray-300 group-hover:text-primary-600 transition-colors"
-          >PrimeNG</span
-        >
-        <i
-          class="pi pi-external-link ml-auto text-xs text-surface-300 group-hover:text-surface-400"
-        ></i>
-      </a>
-
-      <a
-        href="https://developer.mozilla.org"
-        target="_blank"
-        class="group flex items-center p-2.5 hover:bg-white/60 hover:shadow-sm rounded-xl cursor-pointer transition-all duration-200 border border-transparent hover:border-white/50"
-      >
-        <div
-          class="w-8 h-8 rounded-lg overflow-hidden mr-3 shadow-sm bg-white p-0.5 group-hover:scale-110 transition-transform"
-        >
-          <img
-            src="https://placehold.co/50x50/000000/FFFFFF?text=M"
-            alt="MDN"
-            class="w-full h-full object-cover rounded-md"
-          />
-        </div>
-        <span
-          class="text-sm font-medium text-surface-600 dark:text-gray-300 group-hover:text-primary-600 transition-colors"
-          >MDN Web Docs</span
-        >
-        <i
-          class="pi pi-external-link ml-auto text-xs text-surface-300 group-hover:text-surface-400"
-        ></i>
-      </a>
-
-      <a
-        href="https://github.com"
-        target="_blank"
-        class="group flex items-center p-2.5 hover:bg-white/60 hover:shadow-sm rounded-xl cursor-pointer transition-all duration-200 border border-transparent hover:border-white/50"
-      >
-        <div
-          class="w-8 h-8 rounded-lg overflow-hidden mr-3 shadow-sm bg-white p-0.5 group-hover:scale-110 transition-transform"
-        >
-          <img
-            src="https://placehold.co/50x50/000000/FFFFFF?text=G"
-            alt="GitHub"
-            class="w-full h-full object-cover rounded-md"
-          />
-        </div>
-        <span
-          class="text-sm font-medium text-surface-600 dark:text-gray-300 group-hover:text-primary-600 transition-colors"
-          >GitHub</span
-        >
-        <i
-          class="pi pi-external-link ml-auto text-xs text-surface-300 group-hover:text-surface-400"
-        ></i>
-      </a>
+        No links added.
+      </div>
     </div>
   </div>
 </div>

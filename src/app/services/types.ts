@@ -4,6 +4,11 @@ export interface BaseResponse<T> {
   data: T | undefined;
 }
 
+export interface UserLink {
+  title: string;
+  url: string;
+}
+
 export interface UserInfo {
   id: string;
   user_name: string;
@@ -13,9 +18,7 @@ export interface UserInfo {
   user_bio: string;
   user_avatar: string;
   user_background: string;
-  user_website: string | null;
-  user_github: string | null;
-  user_twitter: string | null;
+  links: UserLink[];
   user_location: string;
   is_active: boolean;
   inserted_at: string;

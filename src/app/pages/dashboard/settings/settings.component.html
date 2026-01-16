@@ -31,12 +31,20 @@
             [preview]="true"
           >
           </p-image>
-          <!-- Edit Overlay (Visual Only for now) -->
+          <!-- Edit Overlay with File Input -->
           <div
             class="absolute inset-0 flex items-center justify-center rounded-full bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white font-medium"
+            (click)="avatarInput.click()"
           >
             <i class="pi pi-camera text-xl"></i>
           </div>
+          <input
+            #avatarInput
+            type="file"
+            accept="image/*"
+            class="hidden"
+            (change)="onFileSelected($event, 'user_avatar')"
+          />
         </div>
 
         <h2 class="text-xl font-bold text-surface-800">
@@ -44,31 +52,21 @@
         </h2>
         <p class="text-surface-500 text-sm mb-4">@{{ userInfo.user_name }}</p>
 
-        <div class="w-full space-y-3">
-          <div class="flex flex-col gap-1">
-            <label class="text-xs font-bold text-surface-400 uppercase"
-              >Avatar URL</label
-            >
-            <input
-              type="text"
-              pInputText
-              [(ngModel)]="userInfo.user_avatar"
-              placeholder="https://..."
-              class="w-full !py-2 !px-3 !rounded-lg !text-sm !bg-surface-50 !border-surface-200 focus:!border-primary-500 hover:!border-primary-400"
-            />
-          </div>
-          <div class="flex flex-col gap-1">
-            <label class="text-xs font-bold text-surface-400 uppercase"
-              >Background URL</label
-            >
-            <input
-              type="text"
-              pInputText
-              [(ngModel)]="userInfo.user_background"
-              placeholder="https://..."
-              class="w-full !py-2 !px-3 !rounded-lg !text-sm !bg-surface-50 !border-surface-200 focus:!border-primary-500 hover:!border-primary-400"
-            />
-          </div>
+        <div class="w-full space-y-3 mt-4">
+          <button
+            pButton
+            label="Upload Background"
+            icon="pi pi-upload"
+            class="p-button-outlined w-full !rounded-xl"
+            (click)="bgInput.click()"
+          ></button>
+          <input
+            #bgInput
+            type="file"
+            accept="image/*"
+            class="hidden"
+            (change)="onFileSelected($event, 'user_background')"
+          />
         </div>
       </div>
 
@@ -151,46 +149,37 @@
           <i class="pi pi-globe text-blue-500"></i> Social Presence
         </h3>
 
-        <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
-          <div class="flex items-center gap-3">
-            <span
-              class="w-10 h-10 flex items-center justify-center rounded-lg bg-gray-100 text-gray-700"
-            >
-              <i class="pi pi-globe"></i>
-            </span>
+        <div class="flex flex-col gap-4">
+          <div
+            *ngFor="let link of userInfo.links; let i = index"
+            class="flex gap-2 items-center"
+          >
             <input
               pInputText
-              [(ngModel)]="userInfo.user_website"
-              placeholder="Website URL"
-              class="flex-1 !rounded-xl !bg-white/50"
+              [(ngModel)]="link.title"
+              placeholder="Title"
+              class="!rounded-xl flex-1 !bg-white/50"
             />
-          </div>
-          <div class="flex items-center gap-3">
-            <span
-              class="w-10 h-10 flex items-center justify-center rounded-lg bg-gray-900 text-white"
-            >
-              <i class="pi pi-github"></i>
-            </span>
             <input
               pInputText
-              [(ngModel)]="userInfo.user_github"
-              placeholder="GitHub Username"
-              class="flex-1 !rounded-xl !bg-white/50"
+              [(ngModel)]="link.url"
+              placeholder="URL"
+              class="!rounded-xl flex-[2] !bg-white/50"
             />
+            <button
+              pButton
+              icon="pi pi-trash"
+              class="p-button-danger p-button-text !rounded-xl"
+              (click)="removeLink(i)"
+            ></button>
           </div>
-          <div class="flex items-center gap-3">
-            <span
-              class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-400 text-white"
-            >
-              <i class="pi pi-twitter"></i>
-            </span>
-            <input
-              pInputText
-              [(ngModel)]="userInfo.user_twitter"
-              placeholder="Twitter Handle"
-              class="flex-1 !rounded-xl !bg-white/50"
-            />
-          </div>
+          <button
+            pButton
+            label="Add Link"
+            icon="pi pi-plus"
+            class="p-button-outlined !rounded-xl"
+            (click)="addLink()"
+          ></button>
         </div>
 
         <p-divider styleClass="my-8"></p-divider>
