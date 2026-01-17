@@ -1,6 +1,36 @@
 <div class="h-full flex flex-col animate-fade-in relative z-10 space-y-6 pb-10">
   <p-toast></p-toast>
 
+  <p-dialog
+    [(visible)]="isCropperVisible"
+    [modal]="true"
+    [style]="{ width: '90vw', maxWidth: '600px' }"
+    header="Crop Image"
+    [draggable]="false"
+    [resizable]="false"
+    (onHide)="cancelCrop()"
+  >
+    <div class="flex flex-col items-center gap-4">
+      <image-cropper
+        [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="true"
+        [aspectRatio]="cropperAspectRatio"
+        [resizeToWidth]="cropperResizeToWidth"
+        format="jpeg"
+        (imageCropped)="imageCropped($event)"
+      ></image-cropper>
+      <div class="flex justify-end gap-2 w-full mt-4">
+        <button
+          pButton
+          label="Cancel"
+          class="p-button-text"
+          (click)="cancelCrop()"
+        ></button>
+        <button pButton label="Confirm" (click)="saveCrop()"></button>
+      </div>
+    </div>
+  </p-dialog>
+
   <!-- Header Section -->
   <div>
     <h1
@@ -17,7 +47,7 @@
     <!-- Left Column: Avatar & Basic Identity -->
     <div class="lg:col-span-1 space-y-6">
       <div
-        class="bg-white/60 backdrop-blur-xl rounded-3xl p-6 shadow-sm border border-white/60 flex flex-col items-center"
+        class="bg-surface-0/60 backdrop-blur-xl rounded-3xl p-6 shadow-sm border border-surface-0/10 dark:border-surface-700/30 flex flex-col items-center"
       >
         <div class="relative w-32 h-32 mb-4 group">
           <div
@@ -95,7 +125,7 @@
     <!-- Right Column: Details User Form -->
     <div class="lg:col-span-2 space-y-6">
       <div
-        class="bg-white/60 backdrop-blur-xl rounded-3xl p-8 shadow-sm border border-white/60"
+        class="bg-surface-0/60 backdrop-blur-xl rounded-3xl p-8 shadow-sm border border-surface-0/10 dark:border-surface-700/30"
       >
         <h3
           class="text-lg font-bold text-surface-800 mb-6 flex items-center gap-2"
@@ -109,7 +139,7 @@
             <input
               pInputText
               [(ngModel)]="userInfo.user_nickname"
-              class="!rounded-xl !bg-white/50"
+              class="!rounded-xl !bg-surface-0/50"
             />
           </div>
           <div class="flex flex-col gap-2">
@@ -117,7 +147,7 @@
             <input
               pInputText
               [(ngModel)]="userInfo.user_location"
-              class="!rounded-xl !bg-white/50"
+              class="!rounded-xl !bg-surface-0/50"
             />
           </div>
           <div class="flex flex-col gap-2 md:col-span-2">
@@ -127,7 +157,7 @@
             <input
               pInputText
               [(ngModel)]="userInfo.user_signature"
-              class="!rounded-xl !bg-white/50"
+              class="!rounded-xl !bg-surface-0/50"
             />
           </div>
           <div class="flex flex-col gap-2 md:col-span-2">
@@ -136,7 +166,7 @@
               pInputTextarea
               [(ngModel)]="userInfo.user_bio"
               rows="4"
-              class="!rounded-xl !bg-white/50 !w-full"
+              class="!rounded-xl !bg-surface-0/50 !w-full"
             ></textarea>
           </div>
         </div>
@@ -158,13 +188,13 @@
               pInputText
               [(ngModel)]="link.title"
               placeholder="Title"
-              class="!rounded-xl flex-1 !bg-white/50"
+              class="!rounded-xl flex-1 !bg-surface-0/50"
             />
             <input
               pInputText
               [(ngModel)]="link.url"
               placeholder="URL"
-              class="!rounded-xl flex-[2] !bg-white/50"
+              class="!rounded-xl flex-[2] !bg-surface-0/50"
             />
             <button
               pButton

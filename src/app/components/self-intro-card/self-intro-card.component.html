@@ -1,5 +1,5 @@
 <div
-  class="bg-white/60 backdrop-blur-xl rounded-3xl p-6 shadow-sm border border-white/60 flex flex-col items-center text-center"
+  class="bg-surface-0/60 backdrop-blur-xl rounded-3xl p-6 shadow-sm border border-surface-0/10 dark:border-surface-700/30 flex flex-col items-center text-center"
 >
   <div class="relative w-28 h-28 mb-4 group cursor-pointer">
     <div
@@ -48,10 +48,10 @@
         *ngFor="let link of links()"
         [href]="link.url"
         target="_blank"
-        class="group flex items-center p-2.5 hover:bg-white/60 hover:shadow-sm rounded-xl cursor-pointer transition-all duration-200 border border-transparent hover:border-white/50"
+        class="group flex items-center p-2.5 hover:bg-surface-100/60 hover:shadow-sm rounded-xl cursor-pointer transition-all duration-200 border border-transparent hover:border-surface-200/50"
       >
         <div
-          class="w-8 h-8 rounded-lg overflow-hidden mr-3 shadow-sm bg-white p-0.5 group-hover:scale-110 transition-transform"
+          class="w-8 h-8 rounded-lg overflow-hidden mr-3 shadow-sm bg-surface-0 p-0.5 group-hover:scale-110 transition-transform"
         >
           <img
             [src]="

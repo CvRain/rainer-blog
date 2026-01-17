@@ -1,5 +1,6 @@
 {
   "lockfileVersion": 1,
+  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "rainer-blog",
@@ -25,6 +26,7 @@
         "markdown-it": "^14.1.0",
         "marked": "^16.1.2",
         "mermaid": "^11.12.0",
+        "ngx-image-cropper": "^9.1.6",
         "ngx-markdown": "^20.0.0",
         "postcss": "^8.5.6",
         "primeicons": "^7.0.0",
@@ -1246,6 +1248,8 @@
     "nanoid": ["nanoid@3.3.11", "", { "bin": { "nanoid": "bin/nanoid.cjs" } }, "sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w=="],
 
     "negotiator": ["negotiator@0.6.3", "", {}, "sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg=="],
+
+    "ngx-image-cropper": ["ngx-image-cropper@9.1.6", "", { "dependencies": { "tslib": "^2.3.0" }, "peerDependencies": { "@angular/common": ">=17.3.0", "@angular/core": ">=17.3.0" } }, "sha512-b250YJ+jZovfqIj8vdEOrpEFay34be5f1Hpvg6Db68VMlvdyyuzboJdR0gCupbXtVcG6qQ86L7YG+SYxXJwApw=="],
 
     "ngx-markdown": ["ngx-markdown@20.0.0", "", { "dependencies": { "tslib": "^2.3.0" }, "optionalDependencies": { "clipboard": "^2.0.11", "emoji-toolkit": ">= 8.0.0 < 10.0.0", "katex": "^0.16.0", "mermaid": ">= 10.6.0 < 12.0.0", "prismjs": "^1.30.0" }, "peerDependencies": { "@angular/common": "^20.0.0", "@angular/core": "^20.0.0", "@angular/platform-browser": "^20.0.0", "marked": "^15.0.0", "rxjs": "^6.5.3 || ^7.4.0", "zone.js": "~0.15.0" } }, "sha512-AtB0EhYlfZbNBFzzhOkqxw5tIX+Z1rLqkRP207ee8c3QHQTn/uRmVVTMwE7LenF2ZOW11Brq/O8h6VfLy9FG+w=="],
 
