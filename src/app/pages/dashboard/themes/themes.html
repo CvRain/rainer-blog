@@ -1,16 +1,34 @@
 <div class="flex items-center justify-between mb-4">
   <div class="text-xl font-semibold">主题管理</div>
-  <button pButton label="新建主题" icon="pi pi-plus" class="p-button-success" (click)="openNewDialog()"></button>
+  <button
+    pButton
+    label="新建主题"
+    icon="pi pi-plus"
+    class="p-button-success"
+    (click)="openNewDialog()"
+  ></button>
 </div>
 
 <div class="mb-4">
   <span class="p-input-icon-left w-full md:w-80">
     <i class="pi pi-search"></i>
-    <input pInputText type="text" placeholder="搜索主题..." class="w-full" [(ngModel)]="searchText" />
+    <input
+      pInputText
+      type="text"
+      placeholder="搜索主题..."
+      class="w-full"
+      [(ngModel)]="searchText"
+    />
   </span>
 </div>
 
-<p-table [value]="filteredThemes" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10,20,50]" [loading]="loading">
+<p-table
+  [value]="filteredThemes"
+  [paginator]="true"
+  [rows]="10"
+  [rowsPerPageOptions]="[10,20,50]"
+  [loading]="loading"
+>
   <ng-template pTemplate="header">
     <tr>
       <th>主题名</th>
@@ -25,34 +43,41 @@
       <td>{{ theme.name }}</td>
       <td>{{ theme.description || '暂无描述' }}</td>
       <td>
-        <p-tag [value]="theme.is_active ? '激活' : '禁用'" [severity]="theme.is_active ? 'success' : 'warning'"></p-tag>
+        <p-tag
+          [value]="theme.is_active ? '激活' : '禁用'"
+          [severity]="theme.is_active ? 'success' : 'warning'"
+        ></p-tag>
       </td>
       <td>{{ theme.inserted_at | date:'yyyy-MM-dd HH:mm' }}</td>
       <td>
-        <button pButton 
-          icon="pi pi-sitemap" 
-          class="p-button-text p-button-sm p-button-info" 
+        <button
+          pButton
+          icon="pi pi-sitemap"
+          class="p-button-text p-button-sm p-button-info"
           pTooltip="管理章节"
-          (click)="manageChapters(theme)">
-        </button>
-        <button pButton 
-          [icon]="theme.is_active ? 'pi pi-eye-slash' : 'pi pi-eye'" 
-          class="p-button-text p-button-sm p-button-warning" 
+          (click)="manageChapters(theme)"
+        ></button>
+        <button
+          pButton
+          [icon]="theme.is_active ? 'pi pi-eye-slash' : 'pi pi-eye'"
+          class="p-button-text p-button-sm p-button-warning"
           [pTooltip]="theme.is_active ? '禁用主题' : '激活主题'"
-          (click)="toggleThemeStatus(theme)">
-        </button>
-        <button pButton 
-          icon="pi pi-pencil" 
-          class="p-button-text p-button-sm" 
+          (click)="toggleThemeStatus(theme)"
+        ></button>
+        <button
+          pButton
+          icon="pi pi-pencil"
+          class="p-button-text p-button-sm"
           pTooltip="编辑主题"
-          (click)="openEditDialog(theme)">
-        </button>
-        <button pButton 
-          icon="pi pi-trash" 
-          class="p-button-text p-button-sm p-button-danger" 
+          (click)="openEditDialog(theme)"
+        ></button>
+        <button
+          pButton
+          icon="pi pi-trash"
+          class="p-button-text p-button-sm p-button-danger"
           pTooltip="删除主题"
-          (click)="deleteTheme(theme)">
-        </button>
+          (click)="deleteTheme(theme)"
+        ></button>
       </td>
     </tr>
   </ng-template>
@@ -69,36 +94,83 @@
 </p-table>
 
 <!-- 新建/编辑主题对话框 -->
-<p-dialog 
-  [(visible)]="displayDialog" 
-  [header]="editingTheme ? '编辑主题' : '新建主题'" 
-  [modal]="true" 
+<p-dialog
+  [(visible)]="displayDialog"
+  [header]="editingTheme ? '编辑主题' : '新建主题'"
+  [modal]="true"
   [style]="{width: '50vw'}"
-  [draggable]="false" 
+  [draggable]="false"
   [resizable]="false"
   [closable]="!saving"
-  (onHide)="closeDialog()">
-  
+  (onHide)="closeDialog()"
+>
   <div class="grid grid-cols-1 gap-4">
     <div>
       <label class="block text-sm font-medium mb-2">主题名称 *</label>
-      <input pInputText type="text" [(ngModel)]="newTheme.name" placeholder="请输入主题名称" class="w-full" [disabled]="saving" />
+      <input
+        pInputText
+        type="text"
+        [(ngModel)]="newTheme.name"
+        placeholder="请输入主题名称"
+        class="w-full"
+        [disabled]="saving"
+      />
     </div>
     <div>
       <label class="block text-sm font-medium mb-2">主题描述</label>
-      <textarea pInputTextarea [(ngModel)]="newTheme.description" placeholder="请输入主题描述" rows="3" class="w-full" [disabled]="saving"></textarea>
+      <textarea
+        pInputTextarea
+        [(ngModel)]="newTheme.description"
+        placeholder="请输入主题描述"
+        rows="3"
+        class="w-full"
+        [disabled]="saving"
+      ></textarea>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium mb-2">封面图片</label>
+      <div class="flex flex-col sm:flex-row gap-4 items-start">
+        <div *ngIf="coverPreview" class="relative group">
+          <img
+            [src]="coverPreview"
+            alt="Cover Preview"
+            class="h-32 w-auto object-cover rounded border shadow-sm"
+          />
+        </div>
+        <div class="flex-1 w-full">
+          <input
+            type="file"
+            (change)="onFileSelected($event)"
+            accept="image/*"
+            [disabled]="saving"
+            class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
+          />
+          <p class="text-xs text-gray-500 mt-2">
+            支持 JPG, PNG, GIF, WebP。建议上传横版图片。
+          </p>
+        </div>
+      </div>
     </div>
   </div>
-  
+
   <ng-template pTemplate="footer">
-    <button pButton label="取消" icon="pi pi-times" class="p-button-text" (click)="closeDialog()" [disabled]="saving"></button>
-    <button pButton 
-      [label]="saving ? '保存中...' : '保存'" 
-      [icon]="saving ? 'pi pi-spinner pi-spin' : 'pi pi-check'" 
-      class="p-button-success" 
-      (click)="saveTheme()" 
-      [disabled]="saving || !newTheme.name.trim()">
-    </button>
+    <button
+      pButton
+      label="取消"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="closeDialog()"
+      [disabled]="saving"
+    ></button>
+    <button
+      pButton
+      [label]="saving ? '保存中...' : '保存'"
+      [icon]="saving ? 'pi pi-spinner pi-spin' : 'pi pi-check'"
+      class="p-button-success"
+      (click)="saveTheme()"
+      [disabled]="saving || !newTheme.name.trim()"
+    ></button>
   </ng-template>
 </p-dialog>
 

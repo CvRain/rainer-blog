@@ -165,6 +165,29 @@
       >
       </p-select>
     </div>
+
+    <div>
+      <label class="block text-sm font-medium mb-2">封面图片</label>
+      <div class="flex flex-col sm:flex-row gap-4 items-start">
+        <div *ngIf="coverPreview" class="relative group">
+          <img
+            [src]="coverPreview"
+            alt="Cover Preview"
+            class="h-32 w-auto object-cover rounded border shadow-sm"
+          />
+        </div>
+        <div class="flex-1 w-full">
+          <input
+            type="file"
+            (change)="onFileSelected($event)"
+            accept="image/*"
+            [disabled]="saving"
+            class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
+          />
+          <p class="text-xs text-gray-500 mt-2">支持 JPG, PNG, GIF, WebP。</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <ng-template pTemplate="footer">

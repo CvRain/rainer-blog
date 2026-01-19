@@ -1,32 +1,33 @@
-import { Component, inject, OnInit, OnDestroy } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
-import { CardModule } from "primeng/card";
-import { InputTextModule } from "primeng/inputtext";
-import { TextareaModule } from "primeng/textarea";
-import { ButtonModule } from "primeng/button";
-import { SelectModule } from "primeng/select";
-import { CheckboxModule } from "primeng/checkbox";
-import { MessageService } from "primeng/api";
-import { ToastModule } from "primeng/toast";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Article } from "../../../services/article";
-import { Chapter } from "../../../services/chapter";
-import { Theme } from "../../../services/theme";
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
+import { TextareaModule } from 'primeng/textarea';
+import { ButtonModule } from 'primeng/button';
+import { SelectModule } from 'primeng/select';
+import { CheckboxModule } from 'primeng/checkbox';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Article } from '../../../services/article';
+import { Chapter } from '../../../services/chapter';
+import { CoverService } from '../../../services/cover.service';
+import { Theme } from '../../../services/theme';
 import {
   ApiArticle,
   ApiArticleContent,
   ApiChapter,
   ApiTheme,
   BaseThemeSchema,
-} from "../../../services/types";
-import { MarkdownViewer } from "../../../components/markdown-viewer/markdown-viewer";
-import { TabsModule } from "primeng/tabs";
+} from '../../../services/types';
+import { MarkdownViewer } from '../../../components/markdown-viewer/markdown-viewer';
+import { TabsModule } from 'primeng/tabs';
 
-import { SplitterModule } from "primeng/splitter";
+import { SplitterModule } from 'primeng/splitter';
 
 @Component({
-  selector: "app-article-editor",
+  selector: 'app-article-editor',
   standalone: true,
   imports: [
     CommonModule,
@@ -42,29 +43,30 @@ import { SplitterModule } from "primeng/splitter";
     SplitterModule,
   ],
   providers: [MessageService],
-  templateUrl: "./article-editor.html",
-  styleUrl: "./article-editor.css",
+  templateUrl: './article-editor.html',
+  styleUrl: './article-editor.css',
 })
 export class ArticleEditor implements OnInit, OnDestroy {
   private articleService = inject(Article);
   private chapterService = inject(Chapter);
   private themeService = inject(Theme);
+  private coverService = inject(CoverService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private messageService = inject(MessageService);
 
   article: Partial<ApiArticleContent> = {
-    title: "",
-    subtitle: "",
-    s3_content: "",
+    title: '',
+    subtitle: '',
+    s3_content: '',
     order: 0,
     is_active: true,
   };
 
   themes: ApiTheme[] = [];
   chapters: ApiChapter[] = [];
-  selectedThemeId: string = "";
-  selectedChapterId: string = "";
+  selectedThemeId: string = '';
+  selectedChapterId: string = '';
   loading = false;
   saving = false;
   isNewArticle = false;
@@ -72,28 +74,42 @@ export class ArticleEditor implements OnInit, OnDestroy {
   isSidebarVisible = false;
   isPreviewVisible = false;
 
+  selectedFile: File | null = null;
+  coverPreview: string | null = null;
+
   private autoSaveInterval: any = null;
-  private lastSavedContent: string = "";
-  private autoSaveKey: string = "article-editor-autosave";
+  private lastSavedContent: string = '';
+  private autoSaveKey: string = 'article-editor-autosave';
   public contentChanged = false;
 
   ngOnInit() {
     this.loadThemes();
     this.route.params.subscribe((params) => {
-      this.articleId = params["id"];
-      if (this.articleId && this.articleId !== "new") {
+      this.articleId = params['id'];
+      if (this.articleId && this.articleId !== 'new') {
         this.loadArticle(this.articleId);
+        // Load cover
+        this.coverService
+          .getCoverUrl('article', this.articleId)
+          .subscribe((url) => {
+            this.coverPreview = url;
+          });
       } else {
         this.isNewArticle = true;
         this.restoreFromLocalStorage();
+        this.selectedFile = null;
+        this.coverPreview = null;
       }
     });
     // 监听内容变化
     this.setupContentWatcher();
     // 启动自动保存定时器
-    this.autoSaveInterval = setInterval(() => {
-      this.handleAutoSave();
-    }, 5 * 60 * 1000); // 5分钟
+    this.autoSaveInterval = setInterval(
+      () => {
+        this.handleAutoSave();
+      },
+      5 * 60 * 1000,
+    ); // 5分钟
   }
 
   ngOnDestroy() {
@@ -130,11 +146,11 @@ export class ArticleEditor implements OnInit, OnDestroy {
   saveToLocalStorage() {
     try {
       localStorage.setItem(this.autoSaveKey, JSON.stringify(this.article));
-      this.lastSavedContent = this.article.s3_content || "";
+      this.lastSavedContent = this.article.s3_content || '';
       this.messageService.add({
-        severity: "info",
-        summary: "自动保存",
-        detail: "内容已自动保存到本地",
+        severity: 'info',
+        summary: '自动保存',
+        detail: '内容已自动保存到本地',
         life: 1500,
       });
     } catch (e) {
@@ -148,13 +164,13 @@ export class ArticleEditor implements OnInit, OnDestroy {
       const data = localStorage.getItem(this.autoSaveKey);
       if (data) {
         const parsed = JSON.parse(data);
-        if (parsed && typeof parsed === "object") {
+        if (parsed && typeof parsed === 'object') {
           this.article = { ...this.article, ...parsed };
-          this.lastSavedContent = this.article.s3_content || "";
+          this.lastSavedContent = this.article.s3_content || '';
           this.messageService.add({
-            severity: "info",
-            summary: "恢复内容",
-            detail: "已恢复上次自动保存的内容",
+            severity: 'info',
+            summary: '恢复内容',
+            detail: '已恢复上次自动保存的内容',
             life: 2000,
           });
         }
@@ -178,7 +194,7 @@ export class ArticleEditor implements OnInit, OnDestroy {
         }
       },
       error: (error) => {
-        console.error("加载主题失败:", error);
+        console.error('加载主题失败:', error);
       },
     });
   }
@@ -199,18 +215,18 @@ export class ArticleEditor implements OnInit, OnDestroy {
       error: (error) => {
         this.loading = false;
         this.messageService.add({
-          severity: "error",
-          summary: "错误",
-          detail: "加载文章失败",
+          severity: 'error',
+          summary: '错误',
+          detail: '加载文章失败',
         });
-        console.error("加载文章失败:", error);
+        console.error('加载文章失败:', error);
       },
     });
   }
 
   onThemeChange() {
-    this.selectedChapterId = "";
-    this.article.chapter_id = "";
+    this.selectedChapterId = '';
+    this.article.chapter_id = '';
     this.loadChaptersForTheme(this.selectedThemeId);
   }
 
@@ -224,27 +240,39 @@ export class ArticleEditor implements OnInit, OnDestroy {
         }
       },
       error: (error) => {
-        console.error("加载章节失败:", error);
+        console.error('加载章节失败:', error);
       },
     });
   }
 
   getThemeIdFromChapter(chapterId: string): string {
     const chapter = this.chapters.find((c) => c.id === chapterId);
-    return chapter ? chapter.theme_id : "";
+    return chapter ? chapter.theme_id : '';
   }
 
   onChapterChange() {
     this.article.chapter_id = this.selectedChapterId;
   }
 
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.coverPreview = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   saveArticle(isAutoSave: boolean = false) {
     if (!this.article.title?.trim()) {
       if (!isAutoSave) {
         this.messageService.add({
-          severity: "warn",
-          summary: "警告",
-          detail: "文章标题不能为空",
+          severity: 'warn',
+          summary: '警告',
+          detail: '文章标题不能为空',
         });
       }
       return;
@@ -252,9 +280,9 @@ export class ArticleEditor implements OnInit, OnDestroy {
     if (!this.article.chapter_id) {
       if (!isAutoSave) {
         this.messageService.add({
-          severity: "warn",
-          summary: "警告",
-          detail: "请选择所属章节",
+          severity: 'warn',
+          summary: '警告',
+          detail: '请选择所属章节',
         });
       }
       return;
@@ -271,47 +299,82 @@ export class ArticleEditor implements OnInit, OnDestroy {
     this.articleService
       .createArticle(
         this.article.title!,
-        this.article.s3_content || "",
+        this.article.s3_content || '',
         this.article.chapter_id!,
       )
       .subscribe({
         next: (response) => {
-          this.saving = false;
           if (response.code === 200 || response.code === 201) {
+            const articleId = response.data?.id;
+
+            const handleSuccess = () => {
+              this.saving = false;
+              if (!isAutoSave) {
+                this.messageService.add({
+                  severity: 'success',
+                  summary: '成功',
+                  detail: '文章创建成功',
+                });
+                this.router.navigate([
+                  '/dashboard/articles',
+                  articleId,
+                  'edit',
+                ]);
+              }
+              // 自动保存成功后可清理本地缓存
+              if (isAutoSave) {
+                localStorage.removeItem(this.autoSaveKey);
+              }
+            };
+
+            if (articleId && this.selectedFile && !isAutoSave) {
+              this.coverService
+                .uploadAndSetCover(this.selectedFile, 'article', articleId)
+                .subscribe({
+                  next: () => {
+                    handleSuccess();
+                  },
+                  error: () => {
+                    this.saving = false;
+                    if (!isAutoSave) {
+                      this.messageService.add({
+                        severity: 'warn',
+                        summary: '警告',
+                        detail: '文章创建成功，但封面 uploading failed',
+                      });
+                      this.router.navigate([
+                        '/dashboard/articles',
+                        articleId,
+                        'edit',
+                      ]);
+                    }
+                  },
+                });
+            } else {
+              this.saving = false;
+              handleSuccess();
+            }
+          } else {
+            this.saving = false;
             if (!isAutoSave) {
               this.messageService.add({
-                severity: "success",
-                summary: "成功",
-                detail: "文章创建成功",
+                severity: 'error',
+                summary: '错误',
+                detail: response.message || '创建文章失败',
               });
-              this.router.navigate([
-                "/dashboard/articles",
-                response.data?.id,
-                "edit",
-              ]);
             }
-            // 自动保存成功后可清理本地缓存
-            if (isAutoSave) {
-              localStorage.removeItem(this.autoSaveKey);
-            }
-          } else if (!isAutoSave) {
-            this.messageService.add({
-              severity: "error",
-              summary: "错误",
-              detail: response.message || "创建文章失败",
-            });
           }
         },
         error: (error) => {
           this.saving = false;
           if (!isAutoSave) {
             this.messageService.add({
-              severity: "error",
-              summary: "错误",
-              detail: "创建文章失败",
+              severity: 'error',
+              summary: '错误',
+              detail: '创建文章失败',
             });
           }
-          console.error("创建文章失败:", error);
+          console.error('创建文章失败:', error);
         },
       });
   }
@@ -331,45 +394,72 @@ export class ArticleEditor implements OnInit, OnDestroy {
       inserted_at: articleData.inserted_at,
       updated_at: articleData.updated_at,
     };
+
     this.articleService.updateArticleContent(updatePayload).subscribe({
       next: (response) => {
-        this.saving = false;
         if (response.code === 200) {
+          const handleSuccess = () => {
+            this.saving = false;
+            if (!isAutoSave) {
+              this.messageService.add({
+                severity: 'success',
+                summary: '成功',
+                detail: '文章更新成功',
+              });
+            }
+            if (isAutoSave) {
+              localStorage.removeItem(this.autoSaveKey);
+            }
+          };
+
+          if (this.selectedFile && !isAutoSave) {
+            this.coverService
+              .uploadAndSetCover(this.selectedFile, 'article', this.articleId!)
+              .subscribe({
+                next: () => {
+                  handleSuccess();
+                },
+                error: () => {
+                  this.saving = false;
+                  if (!isAutoSave) {
+                    this.messageService.add({
+                      severity: 'warn',
+                      summary: '警告',
+                      detail: '文章更新成功，但封面上传失败',
+                    });
+                  }
+                },
+              });
+          } else {
+            this.saving = false;
+            handleSuccess();
+          }
+        } else {
+          this.saving = false;
           if (!isAutoSave) {
             this.messageService.add({
-              severity: "success",
-              summary: "成功",
-              detail: "文章更新成功",
+              severity: 'error',
+              summary: '错误',
+              detail: response.message || '更新文章失败',
             });
-            this.loadArticle(this.articleId!);
           }
-          // 自动保存成功后可清理本地缓存
-          if (isAutoSave) {
-            localStorage.removeItem(this.autoSaveKey);
-          }
-        } else if (!isAutoSave) {
-          this.messageService.add({
-            severity: "error",
-            summary: "错误",
-            detail: response.message || "更新文章失败",
-          });
         }
       },
       error: (error) => {
         this.saving = false;
         if (!isAutoSave) {
           this.messageService.add({
-            severity: "error",
-            summary: "错误",
-            detail: "更新文章失败",
+            severity: 'error',
+            summary: '错误',
+            detail: '更新文章失败',
           });
         }
-        console.error("更新文章失败:", error);
+        console.error('更新文章失败:', error);
       },
     });
   }
 
   goBack() {
-    this.router.navigate(["/dashboard"]);
+    this.router.navigate(['/dashboard']);
   }
 }

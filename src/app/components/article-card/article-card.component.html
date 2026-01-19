@@ -5,7 +5,7 @@
   <div class="relative h-56 m-2 mb-0 overflow-hidden rounded-2xl">
     <!-- Image with overlay -->
     <p-image
-      src="images/article-default-cover.jpg"
+      [src]="coverUrl"
       alt="文章封面"
       styleClass="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
       [imageStyle]="{ height: '100%', width: '100%', 'object-fit': 'cover' }"
@@ -42,7 +42,7 @@
           ><i class="pi pi-calendar mr-1.5 text-primary-400"></i>
           {{
             article()?.inserted_at
-              ? (article()?.inserted_at | date : "yyyy-MM-dd")
+              ? (article()?.inserted_at | date: "yyyy-MM-dd")
               : "未知时间"
           }}</span
         >
