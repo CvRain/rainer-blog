@@ -18,6 +18,7 @@ import { MiniHeader } from '../../components/mini-header/mini-header';
 import { SimpleFooter } from '../../components/simple-footer/simple-footer';
 import { TocSidebarComponent } from '../../components/toc-sidebar/toc-sidebar.component';
 import { ArticleSidebar } from '../../components/article-sidebar/article-sidebar';
+import { CoverService } from '../../services/cover.service';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -47,6 +48,7 @@ export class ArticleReader implements OnInit {
   loading = true;
   error: string | undefined = undefined;
   userService = inject(User);
+  coverService = inject(CoverService);
   userInfo: UserInfo = {} as UserInfo;
   backgroundImageUrl = signal<string>('');
   tocHeadings: Array<{ level: number; text: string; id: string }> = [];
@@ -65,7 +67,7 @@ export class ArticleReader implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private articleService: Article,
-    private titleService: Title
+    private titleService: Title,
   ) {
     const result = this.userService.getUserInfo();
     result.subscribe((res) => {
@@ -93,15 +95,15 @@ export class ArticleReader implements OnInit {
     console.log('检查路由状态中的主题数据...');
     console.log(
       'router.getCurrentNavigation():',
-      this.router.getCurrentNavigation()
+      this.router.getCurrentNavigation(),
     );
     console.log(
       'router.getCurrentNavigation()?.extras:',
-      this.router.getCurrentNavigation()?.extras
+      this.router.getCurrentNavigation()?.extras,
     );
     console.log(
       'router.getCurrentNavigation()?.extras?.state:',
-      this.router.getCurrentNavigation()?.extras?.state
+      this.router.getCurrentNavigation()?.extras?.state,
     );
 
     if (this.router.getCurrentNavigation()?.extras?.state?.['theme']) {
@@ -155,6 +157,7 @@ export class ArticleReader implements OnInit {
         if (response.data) {
           this.article = response.data;
           this.titleService.setTitle(this.article.title);
+          this.updateBackground();
         } else {
           this.error = '未找到指定文章';
         }
@@ -175,6 +178,60 @@ export class ArticleReader implements OnInit {
     } else {
       this.router.navigate(['/']);
     }
+  }
+
+  updateBackground(): void {
+    if (!this.article) {
+      this.setBackgroundImage(); // Fallback to current behavior
+      return;
+    }
+
+    const articleId = this.article.id;
+    const chapterId = this.article.chapter_id;
+    const theme = this.getCurrentTheme();
+    const defaultBg = '/images/login-background.jpg';
+
+    // 1. Try Article Cover
+    this.coverService
+      .getCoverUrl('article', articleId)
+      .subscribe((articleUrl) => {
+        if (articleUrl) {
+          this.backgroundImageUrl.set(articleUrl);
+          return;
+        }
+
+        // 2. Try Chapter Cover
+        if (chapterId) {
+          this.coverService
+            .getCoverUrl('chapter', chapterId)
+            .subscribe((chapterUrl) => {
+              if (chapterUrl) {
+                this.backgroundImageUrl.set(chapterUrl);
+                return;
+              }
+
+              // 3. Try Theme Cover
+              if (theme) {
+                this.coverService
+                  .getCoverUrl('theme', theme.id)
+                  .subscribe((themeUrl) => {
+                    this.backgroundImageUrl.set(themeUrl || defaultBg);
+                  });
+              } else {
+                this.backgroundImageUrl.set(defaultBg);
+              }
+            });
+        } else if (theme) {
+          // No chapter ID, try Theme directly
+          this.coverService
+            .getCoverUrl('theme', theme.id)
+            .subscribe((themeUrl) => {
+              this.backgroundImageUrl.set(themeUrl || defaultBg);
+            });
+        } else {
+          this.backgroundImageUrl.set(defaultBg);
+        }
+      });
   }
 
   setBackgroundImage(): void {

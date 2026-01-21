@@ -1,0 +1,28 @@
+/* CSS variable override for transparent Tree background */
+:host ::ng-deep .custom-glass-tree .p-tree {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+:host ::ng-deep .custom-glass-tree .p-treenode-content {
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+:host ::ng-deep .custom-glass-tree .p-treenode-content:hover {
+  background: rgba(var(--surface-500-rgb), 0.1);
+}
+
+:host ::ng-deep .custom-glass-tree .p-treenode-content.p-highlight {
+  background: rgba(var(--primary-500-rgb), 0.15);
+  color: var(--primary-600);
+}
+
+:host
+  ::ng-deep
+  .custom-glass-tree
+  .p-treenode-content.p-highlight
+  .p-tree-toggler {
+  color: var(--primary-600);
+}

@@ -15,17 +15,21 @@
     <div class="w-full max-w-screen-2xl mx-auto flex justify-between">
       <!-- 左侧边栏 -->
       @if (getCurrentTheme()) {
-      <div class="sidebar-container hidden lg:block w-80 flex-shrink-0 px-4">
+      <div
+        class="sidebar-container hidden lg:block w-72 flex-shrink-0 px-4 mt-6"
+      >
         <app-article-sidebar
           [apiTheme]="getCurrentTheme()"
-          class="sticky top-24"
+          class="sticky top-24 block"
         ></app-article-sidebar>
       </div>
       }
 
       <!-- 中心文章内容 -->
-      <div class="main-container flex-grow min-w-0 px-4 py-6">
-        <div class="content-area w-full max-w-4xl mx-auto">
+      <div class="main-container flex-grow min-w-0 px-4 py-8 md:px-8">
+        <div
+          class="content-area w-full max-w-4xl mx-auto bg-surface-0/60 dark:bg-surface-950/60 backdrop-blur-xl rounded-2xl p-6 md:p-10 shadow-xl border border-surface-0/20 md:border-surface-200/20 dark:border-surface-700/30"
+        >
           <!-- 页面加载状态 -->
           @if (loading) {
           <div class="content-wrapper">
@@ -128,10 +132,12 @@
       </div>
 
       <!-- 右侧目录栏 -->
-      <div class="sidebar-container hidden md:block w-72 flex-shrink-0 px-4">
+      <div
+        class="sidebar-container hidden md:block w-72 flex-shrink-0 px-4 mt-6"
+      >
         <app-toc-sidebar
           [tocHeadings]="tocHeadings"
-          class="sticky top-24"
+          class="sticky top-24 block"
         ></app-toc-sidebar>
         <!-- 回到顶部按钮 -->
         <button

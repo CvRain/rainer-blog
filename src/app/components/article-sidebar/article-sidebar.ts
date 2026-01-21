@@ -1,24 +1,25 @@
-import {Component, input, OnInit, OnChanges, SimpleChanges} from '@angular/core';
-import {Card} from 'primeng/card';
-import {Tree} from 'primeng/tree';
-import {Button} from 'primeng/button';
-import {ApiTheme, ApiChapter, ApiArticle} from '../../services/types';
-import {Router} from '@angular/router';
-import {TreeNode} from 'primeng/api';
+import {
+  Component,
+  input,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
+import { Tree } from 'primeng/tree';
+import { Button } from 'primeng/button';
+import { ApiTheme, ApiChapter, ApiArticle } from '../../services/types';
+import { Router } from '@angular/router';
+import { TreeNode } from 'primeng/api';
 
 @Component({
   selector: 'app-article-sidebar',
-  imports: [
-    Card,
-    Tree,
-    Button
-  ],
+  imports: [Tree, Button],
   templateUrl: './article-sidebar.html',
-  styleUrl: './article-sidebar.css'
+  styleUrl: './article-sidebar.css',
 })
 export class ArticleSidebar implements OnInit, OnChanges {
   files: TreeNode[] = [] as TreeNode[];
-  apiTheme = input<ApiTheme | undefined>(undefined)
+  apiTheme = input<ApiTheme | undefined>(undefined);
 
   // 保存原始主题数据，用于文章跳转
   private originalTheme: ApiTheme | undefined = undefined;
@@ -59,21 +60,25 @@ export class ArticleSidebar implements OnInit, OnChanges {
         data: theme.description,
         icon: 'pi pi-fw pi-folder-open',
         expanded: true,
-        children: theme.chapters?.map((chapter: ApiChapter, chapterIndex: number) => ({
-          key: `${theme.id}-${chapterIndex}`,
-          label: chapter.name,
-          data: chapter.description,
-          icon: 'pi pi-fw pi-folder',
-          children: chapter.articles?.map((article: ApiArticle, articleIndex: number) => ({
-            key: `${theme.id}-${chapterIndex}-${articleIndex}`,
-            label: article.title,
-            data: { article: article, subtitle: article.subtitle },
-            icon: 'pi pi-fw pi-file',
-            leaf: true,
-            styleClass: 'article-node'
-          })) || []
-        })) || []
-      }
+        children:
+          theme.chapters?.map((chapter: ApiChapter, chapterIndex: number) => ({
+            key: `${theme.id}-${chapterIndex}`,
+            label: chapter.name,
+            data: chapter.description,
+            icon: 'pi pi-fw pi-folder',
+            children:
+              chapter.articles?.map(
+                (article: ApiArticle, articleIndex: number) => ({
+                  key: `${theme.id}-${chapterIndex}-${articleIndex}`,
+                  label: article.title,
+                  data: { article: article, subtitle: article.subtitle },
+                  icon: 'pi pi-fw pi-file',
+                  leaf: true,
+                  styleClass: 'article-node',
+                }),
+              ) || [],
+          })) || [],
+      },
     ];
 
     console.debug('ArticleSidebar 生成的文件树:', this.files);
@@ -109,7 +114,7 @@ export class ArticleSidebar implements OnInit, OnChanges {
       // 导航到文章页面，并传递主题数据
       if (this.originalTheme) {
         this.router.navigate(['/article', article.id], {
-          state: { theme: this.originalTheme }
+          state: { theme: this.originalTheme },
         });
       } else {
         this.router.navigate(['/article', article.id]);

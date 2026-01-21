@@ -1,71 +1,99 @@
-<div class="mb-4">
-  @if (chapter(); as chapterData) {
-    <div class=" shadow-sm border transition-all duration-300 hover:shadow-md hover:-translate-y-0.5">
-      <div
-        class="flex justify-between items-center p-4 cursor-pointer select-none  transition-colors duration-200"
-        (click)="toggleDropdown()"
-        [attr.aria-expanded]="isOpen()"
-        role="button"
-        tabindex="0"
-        (keydown.enter)="toggleDropdown()"
-        (keydown.space)="toggleDropdown()"
-      >
-        <div class="flex items-center gap-3">
-          <div class="text-lg">
-            <i class="pi pi-folder-open text-yellow-500"></i>
-          </div>
-          <div class="flex flex-col">
-            <h3 class="m-0 text-base font-semibold">{{ chapterData.name }}</h3>
-            <span class="text-xs mt-1">{{ chapterData.articles.length || 0 }} 篇文章</span>
-          </div>
-        </div>
+<div class="mb-6 group">
+  <!-- Header Card with Glassmorphism -->
+  <div
+    class="relative overflow-hidden rounded-2xl border border-surface-200 dark:border-surface-700 bg-surface-0/60 dark:bg-surface-900/60 backdrop-blur-md shadow-sm transition-all duration-300 hover:shadow-md hover:scale-[1.01] cursor-pointer"
+    (click)="toggleDropdown()"
+    role="button"
+    tabindex="0"
+    (keydown.enter)="toggleDropdown()"
+    (keydown.space)="toggleDropdown()"
+  >
+    <!-- Subtle gradient decoration -->
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-primary-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+    ></div>
 
-        <div class="transition-transform duration-300" [class.rotate-180]="isOpen()">
-          <i class="pi pi-chevron-down"></i>
+    <div class="relative p-5 flex items-center justify-between z-10">
+      <div class="flex items-center gap-4">
+        <div
+          class="p-3 rounded-xl bg-primary-100/50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 group-hover:scale-110 transition-transform duration-300"
+        >
+          <lucide-icon [img]="FolderOpen" class="w-6 h-6"></lucide-icon>
+        </div>
+        <div class="flex flex-col">
+          <h3
+            class="m-0 text-lg font-bold text-surface-900 dark:text-surface-100 tracking-tight"
+          >
+            {{ chapter().name }}
+          </h3>
+          <span
+            class="text-xs font-medium text-surface-500 dark:text-surface-400 mt-1 uppercase tracking-wide"
+            >{{ chapter().articles.length || 0 }} ARTICLES</span
+          >
         </div>
       </div>
 
-      <div class="transition-all duration-300 ease-in-out overflow-hidden" [class.max-h-0]="!isOpen()" [class.max-h-screen]="isOpen()">
-        @if (chapterData.articles && chapterData.articles.length > 0) {
-          <ul class="list-none p-2 mx-3 mb-3 mt-0">
-            @for (article of chapterData.articles; track article.id) {
-              <li class="py-0.5">
-                <a
-                  class="flex items-center gap-3 no-underline text-sm p-3  transition-all duration-200 hover:text-primary"
-                  (click)="onArticleSelect(article); $event.preventDefault()"
-                  href=""
-                  tabindex="0"
-                >
-                  <div class="text-sm">
-                    <i class="pi pi-file text-blue-400"></i>
-                  </div>
-                  <div class="flex flex-col flex-1">
-                    <div class="flex items-center justify-between">
-                      <div class="flex items-baseline gap-2">
-                        <span class="font-medium text-base">{{ article.title }}</span>
-                        @if (article.subtitle) {
-                          <span class="text-sm text-surface-500 dark:text-surface-400">{{ article.subtitle }}</span>
-                        }
-                      </div>
-                      <span class="text-xs text-surface-500 dark:text-surface-400 whitespace-nowrap ml-2">{{ article.inserted_at | date:'yyyy-MM-dd' }}</span>
-                    </div>
-                  </div>
-                </a>
-              </li>
-            }
-          </ul>
-        } @else {
-          <div class="py-6 text-center text-sm flex flex-col items-center gap-2">
-            <i class="pi pi-info-circle"></i>
-            <span>该章节下暂无文章</span>
+      <div
+        class="flex items-center justify-center w-8 h-8 rounded-full bg-surface-100 dark:bg-surface-800 text-surface-500 group-hover:bg-primary-100 dark:group-hover:bg-primary-900/50 group-hover:text-primary-600 transition-all duration-300 transform"
+        [class.rotate-90]="isOpen()"
+      >
+        <lucide-icon [img]="ChevronRight" class="w-5 h-5"></lucide-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- Articles List with Timeline Style -->
+  <div
+    class="overflow-hidden transition-all duration-500 ease-in-out"
+    [class.max-h-0]="!isOpen()"
+    [class.opacity-0]="!isOpen()"
+    [class.max-h-[2000px]]="isOpen()"
+    [class.opacity-100]="isOpen()"
+  >
+    @if (chapter().articles && chapter().articles.length > 0) {
+    <div class="pt-3 pb-2 pl-8">
+      <div
+        class="relative border-l-2 border-surface-200 dark:border-surface-800 ml-4 py-2 space-y-1"
+      >
+        @for (article of chapter().articles; track article.id) {
+        <div class="relative pl-8 pr-2 group/item">
+          <!-- Timeline Dot -->
+          <div
+            class="absolute -left-[9px] top-6 w-[16px] h-[16px] rounded-full border-[3px] border-surface-0 dark:border-surface-950 bg-surface-300 dark:bg-surface-700 group-hover/item:bg-primary-500 group-hover/item:scale-110 transition-all duration-300 z-10"
+          ></div>
+
+          <div
+            class="p-4 rounded-xl cursor-pointer transition-all duration-300 hover:bg-surface-0 dark:hover:bg-surface-800/50 hover:translate-x-1 hover:shadow-sm border border-transparent hover:border-surface-200 dark:hover:border-surface-700/50"
+            (click)="onArticleSelect(article)"
+          >
+            <div
+              class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
+            >
+              <span
+                class="font-medium text-surface-700 dark:text-surface-300 group-hover/item:text-primary-600 dark:group-hover/item:text-primary-400 transition-colors text-base"
+              >
+                {{ article.title }}
+              </span>
+
+              <div
+                class="flex items-center text-xs font-mono text-surface-400 bg-surface-100 dark:bg-surface-800 px-2 py-1 rounded w-fit"
+              >
+                <lucide-icon
+                  [img]="Calendar"
+                  class="w-3 h-3 mr-1.5"
+                ></lucide-icon>
+                <span>{{ article.inserted_at | date:'yyyy-MM-dd' }}</span>
+              </div>
+            </div>
           </div>
+        </div>
         }
       </div>
     </div>
-  } @else {
-    <div class="py-6 text-center text-surface-500 dark:text-surface-400 text-sm bg-surface-0 dark:bg-surface-900  border border-surface-200 dark:border-surface-700 flex flex-col items-center gap-2">
-      <i class="pi pi-exclamation-triangle text-yellow-500"></i>
-      <span>没有章节信息</span>
+    } @else {
+    <div class="p-6 text-center text-surface-400 dark:text-surface-600 italic">
+      暂无文章
     </div>
-  }
+    }
+  </div>
 </div>

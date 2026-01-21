@@ -1,18 +1,16 @@
-/* 美化 toc-sidebar 组件，采用统一卡片风格和 Tailwind 布局 */
-/* 由 Tailwind fixed 定位控制，无需 sticky 样式 */
-
-
-/* 隐藏滚动条 */
-ul::-webkit-scrollbar {
-  display: none;
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
 }
 
-/* 目录链接悬停高亮 */
-a:hover {
-  color: #2563eb;
-  background: #eff6ff;
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
 }
-.dark a:hover {
-  color: #60a5fa;
-  background: #1e293b;
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.3);
+  border-radius: 20px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(156, 163, 175, 0.5);
 }

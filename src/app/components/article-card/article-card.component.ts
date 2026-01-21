@@ -1,53 +1,50 @@
-import { Component, input, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  input,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { ImageModule } from 'primeng/image';
 import { DatePipe, CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ApiArticle } from '../../services/types';
 import { CoverService } from '../../services/cover.service';
 import { Chapter } from '../../services/chapter';
-import { switchMap, of, catchError } from 'rxjs';
+import { switchMap, of, catchError, map } from 'rxjs';
 
 @Component({
   selector: 'app-article-card',
   imports: [ImageModule, DatePipe, CommonModule],
   templateUrl: './article-card.component.html',
   styleUrl: './article-card.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ArticleCardComponent implements OnInit {
+export class ArticleCardComponent {
   article = input<ApiArticle | null>(null);
-  coverUrl: string = 'images/article-default-cover.jpg';
 
   private coverService = inject(CoverService);
-  private chapterService = inject(Chapter);
   private router = inject(Router);
 
-  ngOnInit() {
-    this.loadCoverRefined();
-  }
-
-  // Refined logic with what we have
-  loadCoverRefined() {
-    const info = this.article();
-    if (!info) return;
-
-    this.coverService
-      .getCoverUrl('article', info.id)
-      .pipe(
-        switchMap((url) => {
-          if (url) return of(url);
-          if (info.chapter_id) {
-            return this.coverService.getCoverUrl('chapter', info.chapter_id);
-          }
-          return of(null);
-        }),
-        catchError(() => of(null)),
-      )
-      .subscribe((url) => {
-        if (url) {
-          this.coverUrl = url;
-        }
-      });
-  }
+  coverUrl = toSignal(
+    toObservable(this.article).pipe(
+      switchMap((info) => {
+        if (!info) return of(null);
+        return this.coverService.getCoverUrl('article', info.id).pipe(
+          switchMap((url) => {
+            if (url) return of(url);
+            if (info.chapter_id) {
+              return this.coverService.getCoverUrl('chapter', info.chapter_id);
+            }
+            return of(null);
+          }),
+          catchError(() => of(null)),
+        );
+      }),
+      map((url) => url || 'images/article-default-cover.jpg'),
+    ),
+    { initialValue: 'images/article-default-cover.jpg' },
+  );
 
   onCardClick() {
     if (this.article()) {

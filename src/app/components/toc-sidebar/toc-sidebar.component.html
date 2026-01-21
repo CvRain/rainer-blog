@@ -1,24 +1,32 @@
-
-<p-card class="backdrop-blur-lg w-96 rounded-xl shadow-lg px-4 py-4 mt-4 dark:bg-gray-800 dark:text-gray-100">
-  <div class="flex items-center mb-4">
-    <i class="pi pi-list text-blue-500 mr-2"></i>
-    <span class="text-lg font-bold">目录</span>
+<div
+  class="bg-surface-0/50 dark:bg-surface-950/50 backdrop-blur-xl rounded-2xl shadow-sm border border-surface-0/20 dark:border-surface-700/30 p-4"
+>
+  <div class="flex items-center mb-4 px-2">
+    <i class="pi pi-list text-primary-500 mr-2"></i>
+    <span class="text-lg font-bold text-surface-900 dark:text-surface-100"
+      >目录</span
+    >
   </div>
-  <ul class="space-y-2 max-h-[60vh] overflow-y-auto" style="scrollbar-width: none; -ms-overflow-style: none;">
-    <li *ngFor="let heading of tocHeadings"
-        [ngClass]="{
-          'ml-0': heading.level === 1,
-          'ml-4': heading.level === 2,
-          'ml-8': heading.level === 3,
-          'font-bold text-base': heading.level === 1,
-          'text-sm': heading.level > 1
-        }">
-      <a href="javascript:void(0)"
-         (click)="scrollToHeading(heading.id)"
-         class="block transition-colors duration-200 hover:text-blue-600 cursor-pointer px-2 py-1 rounded"
-         >
+  <ul class="space-y-1 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+    <li
+      *ngFor="let heading of tocHeadings"
+      class="rounded-lg transition-all duration-200 hover:bg-surface-100/50 dark:hover:bg-surface-800/50"
+      [ngClass]="{
+        'pl-0': heading.level === 1,
+        'pl-3': heading.level === 2,
+        'pl-6': heading.level === 3,
+        'font-semibold text-surface-900 dark:text-surface-50':
+          heading.level === 1,
+        'text-sm text-surface-700 dark:text-surface-300': heading.level > 1,
+      }"
+    >
+      <a
+        href="javascript:void(0)"
+        (click)="scrollToHeading(heading.id)"
+        class="block px-2 py-1.5 rounded-lg hover:text-primary-600 dark:hover:text-primary-400 truncate"
+      >
         {{ heading.text }}
       </a>
     </li>
   </ul>
-</p-card>
+</div>
