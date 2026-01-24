@@ -47,17 +47,18 @@ export const CatppuccinPreset = definePreset(Aura, {
         950: '#09090b',
       },
       dark: {
-        0: '#1e1e2e',
-        100: '#181825',
-        200: '#11111b',
-        300: '#313244',
-        400: '#45475a',
-        500: '#585b70',
-        600: '#7f849c',
-        700: '#9399b2',
-        800: '#a6adc8',
-        900: '#bac2de',
-        950: '#cdd6f4',
+        0: '#181825', // Mantle (Card Background) - formerly Base #1e1e2e
+        50: '#11111b', // Crust (Body Background)
+        100: '#1e1e2e', // Base
+        200: '#313244', // Surface0
+        300: '#45475a', // Surface1
+        400: '#585b70', // Surface2
+        500: '#6c7086', // Overlay0
+        600: '#7f849c', // Overlay1
+        700: '#9399b2', // Overlay2
+        800: '#a6adc8', // Subtext0
+        900: '#bac2de', // Subtext1
+        950: '#cdd6f4', // Text
       },
     },
     accent: {

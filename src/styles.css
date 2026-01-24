@@ -3,6 +3,21 @@
 @plugin "tailwindcss-primeui";
 @custom-variant dark (&:where(.app-dark, .app-dark *));
 
+html,
+body {
+  @apply h-full m-0;
+}
+
+body {
+  background-color: var(--p-surface-100);
+  color: var(--p-surface-950);
+  @apply transition-colors duration-300;
+}
+
+.app-dark body {
+  background-color: var(--p-surface-50);
+}
+
 /* Catppuccin Latte 主题变量 */
 :root {
   --p-primary-color: #7287fd;
@@ -22,14 +37,16 @@
   --p-surface-950: #5c5f77;
 }
 
-/* Catppuccin Mocha 主题变量（暗色） */
-.app-dark {
+/* Catppuccin Mocha 主题变量（暗色 - 增强黑色调） */
+:root.app-dark {
   --p-primary-color: #b4befe;
   --p-primary-hover-color: #cba6f7;
   --p-primary-active-color: #f5c2e7;
-  --p-primary-contrast-color: #1e1e2e;
-  --p-surface-0: #1e1e2e;
-  --p-surface-100: #181825;
+  --p-primary-contrast-color: #11111b;
+  /* Shifted for darker aesthetic: 0=Mantle, 50=Crust */
+  --p-surface-0: #181825;
+  --p-surface-50: #11111b;
+  --p-surface-100: #1e1e2e;
   --p-surface-200: #313244;
   --p-surface-300: #45475a;
   --p-surface-400: #585b70;

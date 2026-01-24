@@ -1,5 +1,5 @@
 <div
-  class="bg-surface-0/60 backdrop-blur-xl rounded-3xl p-6 shadow-sm border border-surface-0/10 dark:border-surface-700/30 flex flex-col items-center text-center"
+  class="bg-surface-0/60 dark:bg-surface-0 backdrop-blur-xl rounded-3xl p-6 shadow-sm border border-surface-0/10 dark:border-surface-700/30 flex flex-col items-center text-center"
 >
   <div class="relative w-28 h-28 mb-4 group cursor-pointer">
     <div
@@ -59,7 +59,9 @@
             "
             [alt]="link.title"
             class="w-full h-full object-cover rounded-md"
-            onerror="this.src='https://placehold.co/50x50/3B82F6/FFFFFF?text=L'"
+            onerror="
+              this.src = 'https://placehold.co/50x50/3B82F6/FFFFFF?text=L'
+            "
           />
         </div>
         <span

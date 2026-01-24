@@ -1,18 +1,18 @@
 <nav
-  class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-6xl bg-surface-0/70 backdrop-blur-xl rounded-full shadow-lg border border-surface-0/40 dark:border-surface-700/30 px-6 py-3 transition-all duration-300 hover:bg-surface-0/80 hover:shadow-xl hover:border-surface-0/60 dark:hover:border-surface-700/50"
+  class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-6xl bg-surface-0/70 dark:bg-surface-0 backdrop-blur-xl rounded-full shadow-lg border border-surface-0/40 dark:border-surface-700/30 px-6 py-3 transition-all duration-300 hover:bg-surface-0/80 dark:hover:bg-surface-0 hover:shadow-xl hover:border-surface-0/60 dark:hover:border-surface-700/50"
 >
   <div class="flex justify-between items-center w-full">
     <!-- 左侧内容：用户头像和用户名 -->
     <div class="flex items-center space-x-3">
       @if (userAvatar()) {
-      <div
-        class="w-10 h-10 rounded-full border-2 flex items-center justify-center"
-      >
-        <p-image
-          [src]="userAvatar()"
-          class="w-full h-full rounded-full object-cover"
-        ></p-image>
-      </div>
+        <div
+          class="w-10 h-10 rounded-full border-2 flex items-center justify-center"
+        >
+          <p-image
+            [src]="userAvatar()"
+            class="w-full h-full rounded-full object-cover"
+          ></p-image>
+        </div>
       }
       <span class="font-medium hidden sm:block">{{ userName() }}</span>
     </div>
@@ -79,7 +79,7 @@
 
   <!-- 移动端导航菜单（默认隐藏） -->
   <div
-    class="md:hidden mt-4 bg-white/90 backdrop-blur-xl rounded-3xl p-4 shadow-xl border border-white/50 absolute top-full left-0 right-0 overflow-hidden transition-all duration-300 origin-top"
+    class="md:hidden mt-4 bg-surface-0/90 dark:bg-surface-0 backdrop-blur-xl rounded-3xl p-4 shadow-xl border border-surface-0/50 dark:border-surface-700/50 absolute top-full left-0 right-0 overflow-hidden transition-all duration-300 origin-top"
     id="mobile-menu"
     [class.hidden]="!isMobileMenuOpen"
     [class.animate-fade-in]="isMobileMenuOpen"
