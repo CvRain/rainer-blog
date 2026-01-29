@@ -1,0 +1,30 @@
+<div
+  class="bg-surface-0/60 dark:bg-surface-0 backdrop-blur-xl rounded-3xl p-6 shadow-sm border border-surface-0/10 dark:border-surface-700/30"
+>
+  <h3
+    class="text-lg font-bold text-surface-800 dark:text-surface-950 mb-4 flex items-center"
+  >
+    <i class="pi pi-chart-bar mr-2 text-primary-500"></i>站点统计
+  </h3>
+  <div class="grid grid-cols-2 gap-4">
+    @for (stat of stats(); track stat.label) {
+      <div
+        class="flex flex-col items-center p-3 rounded-2xl bg-surface-50 dark:bg-surface-800/10 hover:bg-surface-100 dark:hover:bg-surface-800/20 transition-colors"
+      >
+        <div
+          class="mb-2 p-2 rounded-full bg-surface-0 dark:bg-surface-700/50 shadow-sm"
+          [ngClass]="stat.color"
+        >
+          <i [class]="stat.icon" class="text-lg"></i>
+        </div>
+        <span
+          class="text-lg font-bold text-surface-800 dark:text-surface-900"
+          >{{ stat.value }}</span
+        >
+        <span class="text-xs text-surface-500 dark:text-surface-600">{{
+          stat.label
+        }}</span>
+      </div>
+    }
+  </div>
+</div>

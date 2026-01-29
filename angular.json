@@ -65,7 +65,10 @@
               "node_modules/prismjs/components/prism-rust.min.js",
               "node_modules/prismjs/components/prism-typescript.min.js",
               "node_modules/prismjs/components/prism-zig.min.js",
-              "node_modules/prismjs/components/prism-sql.min.js"
+              "node_modules/prismjs/components/prism-sql.min.js",
+              "node_modules/prismjs/components/prism-odin.min.js",
+              "node_modules/prismjs/components/prism-lua.min.js",
+              "node_modules/prismjs/components/prism-racket.min.js"
             ]
           },
           "configurations": {

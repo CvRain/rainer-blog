@@ -1,0 +1,28 @@
+<div
+  class="bg-surface-0/60 dark:bg-surface-0 backdrop-blur-xl rounded-3xl p-6 shadow-sm border border-surface-0/10 dark:border-surface-700/30"
+>
+  <h3
+    class="text-lg font-bold text-surface-800 dark:text-surface-950 mb-4 flex items-center"
+  >
+    <i class="pi pi-folder mr-2 text-primary-500"></i>分类
+  </h3>
+  <ul class="space-y-2">
+    @for (cat of categories(); track cat.name) {
+      <li>
+        <a
+          href="#"
+          class="flex justify-between items-center group py-1.5 px-2 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors cursor-pointer"
+        >
+          <span
+            class="text-surface-600 dark:text-surface-400 group-hover:text-primary-500 dark:group-hover:text-primary-400 font-medium text-sm transition-colors"
+            >{{ cat.name }}</span
+          >
+          <span
+            class="bg-surface-200 dark:bg-surface-700 text-surface-600 dark:text-surface-200 text-xs py-0.5 px-2 rounded-md group-hover:bg-primary-100 dark:group-hover:bg-primary-900/30 group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors"
+            >{{ cat.count }}</span
+          >
+        </a>
+      </li>
+    }
+  </ul>
+</div>

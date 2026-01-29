@@ -6,10 +6,24 @@ import { Article } from '../../services/article';
 import { inject } from '@angular/core';
 import { Theme } from '../../services/theme';
 import { ThemeCardComponent } from '../theme-card/theme-card.component';
+import { CategoryCardComponent } from '../category-card/category-card.component';
+import { TagCardComponent } from '../tag-card/tag-card.component';
+import { SiteStatCardComponent } from '../site-stat-card/site-stat-card.component';
+import { CalendarCardComponent } from '../calendar-card/calendar-card.component';
+import { ActivityCardComponent } from '../activity-card/activity-card.component';
 
 @Component({
   selector: 'app-home-content',
-  imports: [SelfIntroCardComponent, ArticleCardComponent, ThemeCardComponent],
+  imports: [
+    SelfIntroCardComponent,
+    ArticleCardComponent,
+    ThemeCardComponent,
+    CategoryCardComponent,
+    TagCardComponent,
+    SiteStatCardComponent,
+    CalendarCardComponent,
+    ActivityCardComponent,
+  ],
   templateUrl: './home-content.component.html',
   styleUrl: './home-content.component.css',
 })
@@ -63,7 +77,7 @@ export class HomeContentComponent implements OnInit {
             .sort(
               (a, b) =>
                 new Date(b.updated_at).getTime() -
-                new Date(a.updated_at).getTime()
+                new Date(a.updated_at).getTime(),
             )
             .slice(0, 3);
         }

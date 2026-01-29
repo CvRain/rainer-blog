@@ -24,19 +24,19 @@
 
   <div class="p-5 flex-grow flex flex-col">
     <h3
-      class="text-xl font-bold mb-2 text-surface-800 line-clamp-2 group-hover:text-primary-600 transition-colors"
+      class="text-xl font-bold mb-2 text-surface-800 dark:text-surface-900 line-clamp-2 group-hover:text-primary-600 transition-colors"
     >
       {{ article()?.title || "文章标题" }}
     </h3>
     <p
-      class="text-sm text-surface-500 mb-4 flex-grow line-clamp-3 leading-relaxed"
+      class="text-sm text-surface-500 dark:text-surface-500 mb-4 flex-grow line-clamp-3 leading-relaxed"
     >
       {{ article()?.subtitle || "这里还没有摘要内容..." }}
     </p>
 
     <div class="flex items-center justify-between mt-auto">
       <div
-        class="flex items-center text-xs text-surface-400 font-medium space-x-4"
+        class="flex items-center text-xs text-surface-400 dark:text-surface-600 font-medium space-x-4"
       >
         <span class="flex items-center"
           ><i class="pi pi-calendar mr-1.5 text-primary-400"></i>

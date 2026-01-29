@@ -1,0 +1,46 @@
+<div
+  class="bg-surface-0/60 dark:bg-surface-0 backdrop-blur-xl rounded-3xl p-6 shadow-sm border border-surface-0/10 dark:border-surface-700/30"
+>
+  <div class="flex justify-between items-center mb-4">
+    <h3
+      class="text-lg font-bold text-surface-800 dark:text-surface-950 flex items-center"
+    >
+      <i class="pi pi-calendar mr-2 text-primary-500"></i>日历
+    </h3>
+    <span
+      class="text-xs font-medium bg-surface-100 dark:bg-surface-800 text-surface-600 dark:text-surface-200 px-2 py-1 rounded-lg"
+    >
+      {{ monthName() }}
+    </span>
+  </div>
+
+  <div class="grid grid-cols-7 gap-1 text-center mb-2">
+    @for (day of weekDays; track day) {
+      <div class="text-xs font-bold text-surface-400 dark:text-surface-500">
+        {{ day }}
+      </div>
+    }
+  </div>
+
+  <div class="grid grid-cols-7 gap-1 text-center">
+    @for (day of days(); track $index) {
+      <div
+        class="aspect-square flex flex-col items-center justify-center relative rounded-lg text-sm transition-colors cursor-default"
+        [ngClass]="{
+          'bg-primary-500 text-white shadow-md': day.isToday,
+          'text-surface-600 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800':
+            !day.isToday && day.num !== '',
+          invisible: day.num === '',
+        }"
+      >
+        <span>{{ day.num }}</span>
+        @if (day.hasPost) {
+          <div
+            class="w-1 h-1 rounded-full absolute bottom-1"
+            [ngClass]="day.isToday ? 'bg-white' : 'bg-primary-500'"
+          ></div>
+        }
+      </div>
+    }
+  </div>
+</div>

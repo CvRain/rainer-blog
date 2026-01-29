@@ -1,0 +1,64 @@
+<div
+  class="bg-surface-0/60 dark:bg-surface-0 backdrop-blur-xl rounded-3xl p-6 shadow-sm border border-surface-0/10 dark:border-surface-700/30"
+>
+  <h3
+    class="text-lg font-bold text-surface-800 dark:text-surface-950 mb-4 flex items-center"
+  >
+    <i class="pi pi-chart-line mr-2 text-primary-500"></i>本周概览
+  </h3>
+
+  <div class="grid grid-cols-2 gap-4 mb-6">
+    <div
+      class="bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl p-4 flex flex-col"
+    >
+      <span
+        class="text-xs text-indigo-500 dark:text-indigo-300 font-bold uppercase mb-1"
+        >新增文章</span
+      >
+      <div class="flex items-end gap-2">
+        <span class="text-2xl font-bold text-surface-800 dark:text-surface-900"
+          >+{{ newArticles() }}</span
+        >
+        <span class="text-xs text-green-500 font-bold mb-1"
+          ><i class="pi pi-arrow-up text-[10px]"></i
+        ></span>
+      </div>
+    </div>
+    <div
+      class="bg-orange-50 dark:bg-orange-900/20 rounded-2xl p-4 flex flex-col"
+    >
+      <span
+        class="text-xs text-orange-500 dark:text-orange-300 font-bold uppercase mb-1"
+        >访客</span
+      >
+      <div class="flex items-end gap-2">
+        <span class="text-2xl font-bold text-surface-800 dark:text-surface-900"
+          >+{{ newVisitors() }}</span
+        >
+        <span class="text-xs text-green-500 font-bold mb-1"
+          ><i class="pi pi-arrow-up text-[10px]"></i> 12%</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- Mini Bar Chart -->
+  <div class="flex items-end justify-between h-24 px-2 gap-2">
+    @for (item of weeklyActivity(); track item.day) {
+      <div class="flex flex-col items-center gap-2 group w-full">
+        <div
+          class="w-full bg-surface-100 dark:bg-surface-800 rounded-t-md relative overflow-hidden h-16 flex items-end"
+        >
+          <div
+            class="w-full bg-primary-400 group-hover:bg-primary-500 transition-all duration-500 rounded-t-md"
+            [style.height.%]="(item.val / maxVal) * 100"
+          ></div>
+        </div>
+        <span
+          class="text-[10px] font-bold text-surface-400 group-hover:text-primary-500 transition-colors"
+          >{{ item.day }}</span
+        >
+      </div>
+    }
+  </div>
+</div>
