@@ -1,16 +1,19 @@
-import { Component, inject, OnInit } from "@angular/core";
-import { MiniHeader } from "../../components/mini-header/mini-header";
-import { SimpleFooter } from "../../components/simple-footer/simple-footer";
-import { RouterOutlet, Router } from "@angular/router";
-import { CommonModule } from "@angular/common";
-import { ButtonModule } from "primeng/button";
-import { TooltipModule } from "primeng/tooltip";
-import { TotalOverview } from "../../services/types";
-import { User } from "../../services/user";
-import { DashboardSidebar } from "../../components/dashboard-sidebar/dashboard-sidebar";
+import { Component, inject, OnInit } from '@angular/core';
+import { MiniHeader } from '../../components/mini-header/mini-header';
+import { SimpleFooter } from '../../components/simple-footer/simple-footer';
+import { RouterOutlet, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
+import { TotalOverview } from '../../services/types';
+import { User } from '../../services/user';
+import {
+  ProjectExplorerComponent,
+  FileNodeData,
+} from '../../components/dashboard/project-explorer/project-explorer.component';
 
 @Component({
-  selector: "app-dashboard",
+  selector: 'app-dashboard',
   imports: [
     MiniHeader,
     SimpleFooter,
@@ -18,10 +21,10 @@ import { DashboardSidebar } from "../../components/dashboard-sidebar/dashboard-s
     CommonModule,
     ButtonModule,
     TooltipModule,
-    DashboardSidebar,
+    ProjectExplorerComponent,
   ],
-  templateUrl: "./dashboard.html",
-  styleUrl: "./dashboard.css",
+  templateUrl: './dashboard.html',
+  styleUrl: './dashboard.css',
 })
 export class Dashboard implements OnInit {
   userService = inject(User);
@@ -44,11 +47,49 @@ export class Dashboard implements OnInit {
     });
   }
 
+  handleFileSelect(data: FileNodeData) {
+    // Temporary navigation logic until we have full tab system
+    switch (data.type) {
+      case 'theme':
+        this.router.navigate(['/dashboard/themes', data.id]);
+        break;
+      case 'chapter':
+        // We need themeId for this route, which is parentId for a chapter
+        if (data.parentId) {
+          this.router.navigate([
+            '/dashboard/themes',
+            data.parentId,
+            'chapters',
+            data.id,
+          ]);
+        }
+        break;
+      case 'article':
+        this.router.navigate(['/dashboard/articles', data.id, 'edit']);
+        break;
+    }
+  }
+
+  handleCreate(event: {
+    type: 'theme' | 'chapter' | 'article';
+    parentId?: string;
+  }) {
+    if (event.type === 'theme') {
+      this.router.navigate(['/dashboard/themes', 'new']);
+    } else if (event.type === 'article') {
+      // If we have parentId (chapter), maybe pre-select it?
+      // For now just go to new article page
+      this.router.navigate(['/dashboard/articles', 'new'], {
+        queryParams: { chapterId: event.parentId },
+      });
+    }
+  }
+
   onChildActivate(instance: any) {
     if (
       instance &&
-      "setTotalView" in instance &&
-      typeof instance.setTotalView === "function"
+      'setTotalView' in instance &&
+      typeof instance.setTotalView === 'function'
     ) {
       instance.setTotalView(this.totalView);
     }

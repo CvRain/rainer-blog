@@ -5,13 +5,14 @@
 >
   <!-- 侧边栏容器 -->
   <div
-    class="relative transition-all duration-300 ease-in-out"
+    class="relative transition-all duration-300 ease-in-out overflow-hidden"
     [class.w-0]="!sidebarVisible"
-    [class.w-80]="sidebarVisible"
+    [class.w-72]="sidebarVisible"
   >
-    <app-dashboard-sidebar
-      [sidebarVisible]="sidebarVisible"
-    ></app-dashboard-sidebar>
+    <app-project-explorer
+      (onNodeSelect)="handleFileSelect($event)"
+      (onCreate)="handleCreate($event)"
+    ></app-project-explorer>
   </div>
 
   <!-- 主内容区 -->

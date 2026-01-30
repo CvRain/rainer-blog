@@ -1,0 +1,88 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+/* Custom Tree Styles for "VSCode" look */
+:host ::ng-deep .p-tree {
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+:host ::ng-deep .p-treenode {
+  padding: 0;
+}
+
+:host ::ng-deep .p-treenode-content {
+  padding: 3px 6px !important;
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+  margin-bottom: 1px;
+  border: 1px solid transparent;
+}
+
+:host ::ng-deep .p-treenode-content:hover {
+  background-color: var(--surface-100) !important;
+  border-color: var(--surface-200) !important;
+}
+
+:host ::ng-deep .p-treenode-content.p-treenode-selectable.p-highlight {
+  background-color: var(--primary-50) !important;
+  color: var(--primary-700) !important;
+  border-color: var(--primary-100) !important;
+}
+
+:host ::ng-deep .p-tree-toggler {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-right: 0.25rem;
+  color: var(--surface-400);
+}
+
+:host ::ng-deep .p-tree-toggler:hover {
+  background-color: var(--surface-200);
+  color: var(--surface-600);
+}
+
+/* Dark Mode Overrides */
+:host-context(.app-dark) ::ng-deep .p-treenode-content:hover {
+  background-color: var(--surface-800) !important;
+  border-color: var(--surface-700) !important;
+}
+
+:host-context(.app-dark)
+  ::ng-deep
+  .p-treenode-content.p-treenode-selectable.p-highlight {
+  background-color: rgba(var(--primary-500-rgb), 0.15) !important;
+  color: var(--primary-200) !important;
+  border-color: rgba(var(--primary-500-rgb), 0.3) !important;
+}
+
+:host-context(.app-dark) ::ng-deep .p-tree-toggler:hover {
+  background-color: var(--surface-700);
+  color: var(--surface-200);
+}
+
+/* Tree Indent Guides (Optional, hard to do perfectly with simple CSS on PrimeNG Tree) */
+
+/* Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--surface-200);
+  border-radius: 3px;
+}
+:host-context(.app-dark) .custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--surface-700);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--surface-300);
+}
+:host-context(.app-dark) .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--surface-600);
+}
