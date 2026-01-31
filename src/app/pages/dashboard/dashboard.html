@@ -30,9 +30,22 @@
 
     <!-- 内容卡片：增加毛玻璃、圆角和阴影 -->
     <div
-      class="flex-1 bg-surface-0/80 backdrop-blur-xl border border-surface-0/50 dark:border-surface-700/30 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden flex flex-col p-6"
+      class="flex-1 bg-surface-0/80 backdrop-blur-xl border border-surface-0/50 dark:border-surface-700/30 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden flex flex-col pt-0 pb-6 px-6 relative"
     >
-      <router-outlet (activate)="onChildActivate($event)"></router-outlet>
+      <!-- Tabs Bar (Inserted at top of content card) -->
+      <app-workspace-tabs
+        *ngIf="tabs.length > 0"
+        [tabs]="tabs"
+        [activeTabId]="activeTabId"
+        (onTabClick)="onTabClicked($event)"
+        (onTabClose)="onTabClosed($event)"
+        class="mb-0 -mx-6 w-[calc(100%+3rem)]"
+      ></app-workspace-tabs>
+
+      <!-- Content Area with top padding compensation if tabs exist -->
+      <div class="flex-1 overflow-auto mt-4">
+        <router-outlet (activate)="onChildActivate($event)"></router-outlet>
+      </div>
     </div>
   </main>
 </div>

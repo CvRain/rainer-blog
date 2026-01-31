@@ -1,0 +1,52 @@
+<div
+  class="flex items-center w-full h-9 bg-surface-50 dark:bg-surface-900 border-b border-surface-200 dark:border-surface-700 overflow-x-auto custom-scrollbar select-none"
+>
+  <div
+    *ngFor="let tab of tabs"
+    class="group relative flex items-center h-full px-3 min-w-[120px] max-w-[200px] border-r border-surface-200 dark:border-surface-700 cursor-pointer transition-colors duration-150"
+    [class.bg-surface-0]="activeTabId === tab.id"
+    [class.dark:bg-surface-800]="activeTabId === tab.id"
+    [class.text-primary-600]="activeTabId === tab.id"
+    [class.dark:text-primary-400]="activeTabId === tab.id"
+    [class.hover:bg-surface-100]="activeTabId !== tab.id"
+    [class.dark:hover:bg-surface-800]="activeTabId !== tab.id"
+    [class.text-surface-600]="activeTabId !== tab.id"
+    [class.dark:text-surface-400]="activeTabId !== tab.id"
+    (click)="handleTabClick(tab.id)"
+  >
+    <!-- Top Highlight for Active Tab -->
+    <div
+      *ngIf="activeTabId === tab.id"
+      class="absolute top-0 left-0 w-full h-[2px] bg-primary-500"
+    ></div>
+
+    <!-- Icon -->
+    <i
+      [class]="
+        tab.type === 'theme'
+          ? 'pi pi-book text-blue-400'
+          : tab.type === 'chapter'
+            ? 'pi pi-folder text-orange-400'
+            : 'pi pi-file text-surface-400'
+      "
+      class="mr-2 text-xs"
+    ></i>
+
+    <!-- Title -->
+    <span class="text-xs truncate flex-1 leading-none mr-2">{{
+      tab.title
+    }}</span>
+
+    <!-- Close Icon (Hidden by default, shown on hover or if active) -->
+    <div
+      class="w-5 h-5 flex items-center justify-center rounded hover:bg-surface-200 dark:hover:bg-surface-700 opacity-0 group-hover:opacity-100 transition-opacity"
+      [class.opacity-100]="activeTabId === tab.id"
+      (click)="handleTabClose($event, tab.id)"
+    >
+      <i class="pi pi-times text-[10px]"></i>
+    </div>
+
+    <!-- Unsaved Indicator (Dot) - Placeholder logic -->
+    <!-- <div *ngIf="tab.isDirty" class="w-2 h-2 rounded-full bg-primary-500 absolute right-2"></div> -->
+  </div>
+</div>

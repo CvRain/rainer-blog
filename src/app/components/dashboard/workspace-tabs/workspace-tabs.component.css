@@ -1,0 +1,18 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  height: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--surface-300);
+  border-radius: 2px;
+}
+:host-context(.app-dark) .custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--surface-700);
+}
