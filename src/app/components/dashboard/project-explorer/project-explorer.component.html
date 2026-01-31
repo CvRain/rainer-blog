@@ -15,7 +15,7 @@
           icon="pi pi-folder-plus"
           class="p-button-text p-button-rounded p-button-sm w-7 h-7"
           pTooltip="New Theme"
-          (click)="onCreate.emit({ type: 'theme' })"
+          (click)="openCreateDialog('theme')"
         ></button>
         <button
           pButton
@@ -52,6 +52,8 @@
       (onNodeSelect)="onNodeSelection($event)"
       [contextMenu]="cm"
       (onNodeContextMenuSelect)="onNodeContextMenuSelect($event)"
+      (onNodeExpand)="onNodeExpand($event)"
+      (onNodeCollapse)="onNodeCollapse($event)"
       [loading]="loading"
       styleClass="w-full border-none p-0 bg-transparent text-sm"
       [indentation]="1.0"
@@ -74,11 +76,6 @@
           >
             {{ node.label }}
           </span>
-
-          <!-- Quick Actions on hover (optional) -->
-          <!-- <div class="hidden group-hover:flex items-center gap-1 bg-surface-200 dark:bg-surface-800 rounded px-1">
-                        <i class="pi pi-pencil text-xs text-primary-500 hover:text-primary-700 cursor-pointer p-1"></i>
-                     </div> -->
         </div>
       </ng-template>
     </p-tree>
@@ -94,4 +91,51 @@
   </div>
 </div>
 
-<p-contextMenu #cm [model]="menuItems"></p-contextMenu>
+<p-contextMenu #cm [model]="menuItems" [appendTo]="'body'"></p-contextMenu>
+
+<p-dialog
+  [(visible)]="displayDialog"
+  [header]="dialogTitle"
+  [modal]="true"
+  [style]="{ width: '350px' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="flex flex-col gap-4 mt-2">
+    <div class="flex flex-col gap-2">
+      <label
+        htmlFor="name"
+        class="text-sm font-semibold text-surface-600 dark:text-surface-300"
+        >Name</label
+      >
+      <input
+        pInputText
+        id="name"
+        [(ngModel)]="dialogInputName"
+        class="w-full"
+        autofocus
+        (keydown.enter)="handleDialogSubmit()"
+      />
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-end gap-2">
+      <button
+        pButton
+        label="Cancel"
+        class="p-button-text p-button-sm"
+        (click)="displayDialog = false"
+      ></button>
+      <button
+        pButton
+        label="Save"
+        class="p-button-primary p-button-sm"
+        (click)="handleDialogSubmit()"
+      ></button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+<p-toast></p-toast>

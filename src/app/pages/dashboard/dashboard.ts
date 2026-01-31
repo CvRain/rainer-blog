@@ -70,21 +70,6 @@ export class Dashboard implements OnInit {
     }
   }
 
-  handleCreate(event: {
-    type: 'theme' | 'chapter' | 'article';
-    parentId?: string;
-  }) {
-    if (event.type === 'theme') {
-      this.router.navigate(['/dashboard/themes', 'new']);
-    } else if (event.type === 'article') {
-      // If we have parentId (chapter), maybe pre-select it?
-      // For now just go to new article page
-      this.router.navigate(['/dashboard/articles', 'new'], {
-        queryParams: { chapterId: event.parentId },
-      });
-    }
-  }
-
   onChildActivate(instance: any) {
     if (
       instance &&
