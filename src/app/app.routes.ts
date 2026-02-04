@@ -117,6 +117,12 @@ export const routes: Routes = [
     title: '文章归档 - ClaudeRainer的博客',
   },
   {
+    path: 'category',
+    loadComponent: () =>
+      import('./pages/category/category').then((m) => m.Category),
+    title: '分类 - ClaudeRainer的博客',
+  },
+  {
     path: 'theme/:id',
     loadComponent: () =>
       import('./pages/theme-detail/theme-detail').then((m) => m.ThemeDetail),

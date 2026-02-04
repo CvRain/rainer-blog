@@ -1,0 +1,77 @@
+<main>
+  <app-mini-header></app-mini-header>
+
+  <app-blur-cover
+    [title]="'分类'"
+    [description]="'通过标签探索文章'"
+    [showScrollIndicator]="false"
+    imageUrl="images/gallery-default-2.jpg"
+  >
+  </app-blur-cover>
+
+  <div class="container mx-auto px-4 py-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+      <section class="tag-stage">
+        <div class="tag-cloud" [class.has-selection]="!!selectedTag">
+          @for (tag of tags; track tag.name) {
+          <button
+            class="tag-bubble {{ tag.color }}"
+            [class.is-selected]="selectedTag?.name === tag.name"
+            [style.--x.px]="tag.x"
+            [style.--y.px]="tag.y"
+            (click)="selectTag(tag)"
+          >
+            <span class="tag-name">#{{ tag.name }}</span>
+            <span class="tag-count">{{ tag.count }}</span>
+          </button>
+          }
+        </div>
+        @if (!isLoading && tags.length === 0) {
+        <div class="tag-empty">暂无标签</div>
+        }
+        <div class="tag-hint">点击标签查看文章</div>
+      </section>
+
+      <section class="tag-detail-card">
+        @if (isLoading) {
+        <div class="tag-loading">加载中...</div>
+        } @else if (selectedTag) {
+        <div class="detail-header">
+          <div>
+            <p class="text-sm text-surface-500">当前标签</p>
+            <h2 class="text-2xl font-semibold text-surface-800">
+              #{{ selectedTag.name }}
+            </h2>
+          </div>
+          <span class="detail-count">{{ selectedTag.count }} 篇</span>
+        </div>
+
+        @if (selectedTag.articles.length > 0) {
+        <ul class="article-list">
+          @for (article of selectedTag.articles; track article.id) {
+          <li class="article-item" (click)="openArticle(article)">
+            <div>
+              <h3 class="article-title">{{ article.title }}</h3>
+              @if (article.subtitle) {
+              <p class="article-subtitle">{{ article.subtitle }}</p>
+              }
+            </div>
+            <span class="article-date">
+              {{ article.inserted_at | date: 'yyyy-MM-dd' }}
+            </span>
+          </li>
+          }
+        </ul>
+        } @else {
+        <div class="article-empty">该标签下暂无文章</div>
+        } } @else {
+        <div class="article-empty">请选择一个标签查看文章</div>
+        }
+      </section>
+    </div>
+  </div>
+
+  <app-simple-footer></app-simple-footer>
+</main>
+
+<router-outlet></router-outlet>

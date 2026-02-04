@@ -49,7 +49,7 @@ export class HeaderComponent {
     this.router.navigate(['/archive']);
   }
 
-  showComingSoon() {
-    alert('暂未完成');
+  navigateToCategory() {
+    this.router.navigate(['/category']);
   }
 }
