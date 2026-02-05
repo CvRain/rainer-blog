@@ -25,6 +25,11 @@ p-image ::ng-deep img {
   display: block;
 }
 
+:host.blur-cover--blurred p-image ::ng-deep img {
+  filter: blur(6px) brightness(0.85);
+  transform: scale(1.05);
+}
+
 /* 响应式文字大小 */
 @media (max-width: 768px) {
   .text-4xl {

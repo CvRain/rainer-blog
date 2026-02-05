@@ -109,13 +109,18 @@ export class Category {
         );
 
     const total = sourceTags.length;
-    const baseRadius = total > 8 ? 160 : 140;
+    const maxRadius =
+      total > 24 ? 260 : total > 16 ? 230 : total > 10 ? 200 : 170;
+    const minRadius = 70;
+    const goldenAngle = Math.PI * (3 - Math.sqrt(5));
 
     return sourceTags.map(([name, items], index) => {
-      const angle = (2 * Math.PI * index) / total;
-      const radius = baseRadius + (index % 3) * 18;
-      const x = Math.cos(angle) * radius;
-      const y = Math.sin(angle) * radius;
+      const ratio = total <= 1 ? 1 : (index + 1) / total;
+      const radius = minRadius + (maxRadius - minRadius) * Math.sqrt(ratio);
+      const angle = index * goldenAngle;
+      const jitter = (index % 2 === 0 ? 1 : -1) * 6;
+      const x = Math.cos(angle) * (radius + jitter);
+      const y = Math.sin(angle) * (radius - jitter);
       return {
         name,
         color: this.tagPalette[index % this.tagPalette.length],

@@ -1,6 +1,11 @@
 import { Component, input, OnInit } from '@angular/core';
 import { ImageModule } from 'primeng/image';
-import { LucideAngularModule, GitPullRequest, LucideIconData, TvIcon } from 'lucide-angular';
+import {
+  LucideAngularModule,
+  GitPullRequest,
+  LucideIconData,
+  TvIcon,
+} from 'lucide-angular';
 
 export interface SocialLink {
   url: string;
@@ -10,25 +15,26 @@ export interface SocialLink {
 
 @Component({
   selector: 'app-blur-cover',
-  imports: [
-    ImageModule, LucideAngularModule
-  ],
+  imports: [ImageModule, LucideAngularModule],
   templateUrl: './blur-cover.component.html',
-  styleUrl: './blur-cover.component.css'
+  styleUrl: './blur-cover.component.css',
+  host: {
+    '[class.blur-cover--blurred]': 'blurBackground()',
+  },
 })
 export class BlurCoverComponent implements OnInit {
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
   readonly Code = GitPullRequest;
   readonly TvIcon = TvIcon;
 
   imageUrl = input('images/placeholder.jpg');
   title = input('笨拙的探索这个世界');
   description = input('std::find(world.beg(),world.end())');
+  showText = input(true);
+  blurBackground = input(false);
   socialLinks = input<SocialLink[]>([
     { url: 'https://github.com', icon: this.Code, label: 'GitHub' },
-    { url: 'https://bilibili.com', icon: this.TvIcon, label: 'Bilibili' }
+    { url: 'https://bilibili.com', icon: this.TvIcon, label: 'Bilibili' },
   ]);
   showScrollIndicator = input(true);
 }

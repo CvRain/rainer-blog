@@ -1,18 +1,25 @@
 <main>
   <app-mini-header></app-mini-header>
 
-  <app-blur-cover
-    [title]="'分类'"
-    [description]="'通过标签探索文章'"
-    [showScrollIndicator]="false"
-    imageUrl="images/gallery-default-2.jpg"
-  >
-  </app-blur-cover>
+  <section class="category-hero">
+    <app-blur-cover
+      [title]="'分类'"
+      [description]="'通过标签探索文章'"
+      [showText]="false"
+      [blurBackground]="true"
+      [showScrollIndicator]="false"
+      imageUrl="images/gallery-default-2.jpg"
+    >
+    </app-blur-cover>
 
-  <div class="container mx-auto px-4 py-10">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+    <div class="hero-overlay">
       <section class="tag-stage">
-        <div class="tag-cloud" [class.has-selection]="!!selectedTag">
+        <div
+          class="tag-cloud"
+          [class.has-selection]="!!selectedTag"
+          [class.is-dense]="tags.length > 14"
+          [class.is-super-dense]="tags.length > 24"
+        >
           @for (tag of tags; track tag.name) {
           <button
             class="tag-bubble {{ tag.color }}"
@@ -32,7 +39,7 @@
         <div class="tag-hint">点击标签查看文章</div>
       </section>
 
-      <section class="tag-detail-card">
+      <section class="tag-detail-card" [class.is-visible]="!!selectedTag">
         @if (isLoading) {
         <div class="tag-loading">加载中...</div>
         } @else if (selectedTag) {
@@ -69,7 +76,7 @@
         }
       </section>
     </div>
-  </div>
+  </section>
 
   <app-simple-footer></app-simple-footer>
 </main>
